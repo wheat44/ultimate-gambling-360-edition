@@ -5,4 +5,3 @@
 -smorres
 
 ##Nice to have
--no dimal etc
