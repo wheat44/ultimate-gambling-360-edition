@@ -15,7 +15,7 @@ Jonathan Hlady and his sidekick Thomas Jordan Ham have the goal to make a functi
 ##Nice to have
 - A multiplayer game, which is playable from separate devices (poker potential)
 - Accounts and logins, secured player balances
-- Watch an ad to gain money
+- Watch an ad to gain in-game currency
 - Physics based plinko
 - In game purchases 
 - Mobile compatability

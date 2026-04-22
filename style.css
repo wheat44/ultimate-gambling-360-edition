@@ -1,7 +1,10 @@
 html, 
 body {
   background-color: white;
+  margin: 0;
 }
+
+
 
 h1 {
   color: black;
@@ -16,4 +19,25 @@ p {
 
 canvas {
   display: block;
+}
+
+.topnav {
+  background-color: black;
+  overflow: hidden;
+}
+
+.topnav {
+  position: fixed;   
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  background-color: black;
+  display: flex;      
+  align-items: center;
+
+  padding: 10px 20px;
+  z-index: 1000;      
+
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5); 
 }

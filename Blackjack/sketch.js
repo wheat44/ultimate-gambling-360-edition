@@ -60,22 +60,22 @@ let choice;
 
 function preload() {
   ///load background and menu images
-  main = loadImage("Assets/BG/mainBG.png");
-  menu = loadImage("Assets/BG/menu.png");
-  instructions = loadImage('Assets/BG/instructions.png');
+  main = loadImage("Blackjack/Assets/BG/mainBG.png");
+  menu = loadImage("Blackjack/Assets/BG/menu.png");
+  instructions = loadImage('Blackjack/Assets/BG/instructions.png');
 
   ///load font
-  font = loadFont('Assets/Moralana Demo.otf');
+  font = loadFont('Blackjack/Assets/Moralana Demo.otf');
 
   //back of card
-  bOC = loadImage('Assets/Cards/back_of_card.png');
+  bOC = loadImage('Blackjack/Assets/Cards/back_of_card.png');
 
   /// load sound effects
-  win = loadSound('Assets/SFX/win.mp3');
-  lose = loadSound('Assets/SFX/lose.mp3');
-  cardFlip = loadSound('Assets/SFX/cardFlip.mp3');
-  betSound = loadSound('Assets/SFX/bet.mp3');
-  deal = loadSound('Assets/SFX/deal.mp3');
+  win = loadSound('Blackjack/Assets/SFX/win.mp3');
+  lose = loadSound('Blackjack/Assets/SFX/lose.mp3');
+  cardFlip = loadSound('Blackjack/Assets/SFX/cardFlip.mp3');
+  betSound = loadSound('Blackjack/Assets/SFX/bet.mp3');
+  deal = loadSound('Blackjack/Assets/SFX/deal.mp3');
 
   ///load cards using a nested loop
   for (let index = 0; index < 4; index++) {
@@ -84,7 +84,7 @@ function preload() {
       let key = values[j] + "_" + suits[index];
       /// key in form 2_Spades
 
-      cardImages[key] = loadImage("Assets/Cards/" + fileName);
+      cardImages[key] = loadImage("Blackjack/Assets/Cards/" + fileName);
     }
   }
 }
@@ -99,7 +99,7 @@ function setup() {
   cardHeight = windowHeight/6;
   cardWidth = windowWidth/13;
   spacing = width / 10;
-  totalWidth = (3 * spacing + cardWidth); // distance from first to last card
+  totalWidth = 3 * spacing + cardWidth; // distance from first to last card
   cardX = width / 2 - totalWidth / 2;
   cardY = height / 2.2;
 }
@@ -274,7 +274,7 @@ function displayButtons(){
 function calcResult(){
   ///function calculates result after button push
   if (playStage === 0){
-    if ((choice === 'Red' && (cards[0].suit === 'Hearts' || cards[0].suit === 'Diamonds')) ||(choice === 'Black' && (cards[0].suit === 'Spades' || cards[0].suit === 'Clubs'))){
+    if (choice === 'Red' && (cards[0].suit === 'Hearts' || cards[0].suit === 'Diamonds') ||choice === 'Black' && (cards[0].suit === 'Spades' || cards[0].suit === 'Clubs')){
       playStage++;
     } 
     else {
@@ -289,7 +289,7 @@ function calcResult(){
     let curr = values.indexOf(cards[1].value); 
     let prev = values.indexOf(cards[0].value);
 
-    if ((choice === 'Higher' && curr > prev) ||(choice === 'Lower' && curr < prev) ||(choice === 'Same' && curr === prev)){
+    if (choice === 'Higher' && curr > prev ||choice === 'Lower' && curr < prev ||choice === 'Same' && curr === prev){
       playStage++;
     } 
     else {
@@ -307,12 +307,12 @@ function calcResult(){
     let b = values.indexOf(cards[1].value);
     let c = values.indexOf(cards[2].value);
 
-    ///create min and maxval variable to choose between which is bigger and smaller to decide what peramiters choice must bein
+    ///create min and maxval variable to choose between which is bigger and smaller to decide what peramiters choice must be in
     let minVal = Math.min(a, b);
     let maxVal = Math.max(a, b);
 
     ///compare choice to peramiters
-    if ((choice === 'Inside' && c > minVal && c < maxVal) || (choice === 'Outside' && (c < minVal || c > maxVal)) || (choice === 'Same' && (c === a || c === b))){
+    if (choice === 'Inside' && c > minVal && c < maxVal || choice === 'Outside' && (c < minVal || c > maxVal) || choice === 'Same' && (c === a || c === b)){
       playStage++;
     } 
 
@@ -374,8 +374,8 @@ function displayBet(){
 
   ///check if playerMoney is greater than 0 
   if (playerMoney <0){
-    bet = 0
-    playerMoney = 0
+    bet = 0;
+    playerMoney = 0;
   }
 }
 
@@ -476,7 +476,7 @@ function windowResized() {
   cardWidth = windowWidth / 14;
   cardHeight = windowHeight/ 6 ;
   spacing = width / 10;
-  totalWidth = (3 * spacing + cardWidth); // distance from first to last card
+  totalWidth = 3 * spacing + cardWidth; // distance from first to last card
   cardX = width / 2 - totalWidth / 2;
   cardY = height / 2.2;
 }
