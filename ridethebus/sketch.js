@@ -60,22 +60,22 @@ let choice;
 
 function preload() {
   ///load background and menu images
-  main = loadImage("Blackjack/Assets/BG/mainBG.png");
-  menu = loadImage("Blackjack/Assets/BG/menu.png");
-  instructions = loadImage('Blackjack/Assets/BG/instructions.png');
+  main = loadImage("ridethebus/assets/bg/mainbg.png");
+  menu = loadImage("ridethebus/assets/bg/menu.png");
+  instructions = loadImage('ridethebus/assets/bg/instructions.png');
 
   ///load font
-  font = loadFont('Blackjack/Assets/Moralana Demo.otf');
+  font = loadFont('ridethebus/assets/Moralana Demo.otf');
 
   //back of card
-  bOC = loadImage('Blackjack/Assets/Cards/back_of_card.png');
+  bOC = loadImage('ridethebus/assets/Cards/back_of_card.png');
 
   /// load sound effects
-  win = loadSound('Blackjack/Assets/SFX/win.mp3');
-  lose = loadSound('Blackjack/Assets/SFX/lose.mp3');
-  cardFlip = loadSound('Blackjack/Assets/SFX/cardFlip.mp3');
-  betSound = loadSound('Blackjack/Assets/SFX/bet.mp3');
-  deal = loadSound('Blackjack/Assets/SFX/deal.mp3');
+  win = loadSound('ridethebus/assets/sfx/win.mp3');
+  lose = loadSound('ridethebus/assets/sfx/lose.mp3');
+  cardFlip = loadSound('ridethebus/assets/sfx/cardFlip.mp3');
+  betSound = loadSound('ridethebus/assets/sfx/bet.mp3');
+  deal = loadSound('ridethebus/assets/sfx/deal.mp3');
 
   ///load cards using a nested loop
   for (let index = 0; index < 4; index++) {
@@ -84,7 +84,7 @@ function preload() {
       let key = values[j] + "_" + suits[index];
       /// key in form 2_Spades
 
-      cardImages[key] = loadImage("Blackjack/Assets/Cards/" + fileName);
+      cardImages[key] = loadImage("ridethebus/assets/Cards/" + fileName);
     }
   }
 }
