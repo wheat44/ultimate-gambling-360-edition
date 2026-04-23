@@ -68,7 +68,7 @@ function preload() {
   font = loadFont('ridethebus/assets/Moralana Demo.otf');
 
   //back of card
-  bOC = loadImage('ridethebus/assets/Cards/back_of_card.png');
+  bOC = loadImage('ridethebus/assets/cards/back_of_card.png');
 
   /// load sound effects
   win = loadSound('ridethebus/assets/sfx/win.mp3');
@@ -84,7 +84,7 @@ function preload() {
       let key = values[j] + "_" + suits[index];
       /// key in form 2_Spades
 
-      cardImages[key] = loadImage("ridethebus/assets/Cards/" + fileName);
+      cardImages[key] = loadImage("ridethebus/assets/cards/" + fileName);
     }
   }
 }
