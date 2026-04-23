@@ -65,7 +65,7 @@ function preload() {
   instructions = loadImage('ridethebus/assets/bg/instructions.png');
 
   ///load font
-  font = loadFont('ridethebus/assets/Moralana Demo.otf');
+  font = loadFont('ridethebus/assets/moralanademo.otf');
 
   //back of card
   bOC = loadImage('ridethebus/assets/cards/back_of_card.png');
