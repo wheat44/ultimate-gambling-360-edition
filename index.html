@@ -15,27 +15,44 @@
 <body>
 
   <div class="topnav">
-    <a href="ridethebus.html">
+    <a href="index.html">
       <img src="assets/logo.png" alt="logo" style="width:400px;height:100px;">
     </a>
+      <a href="#" class="account-btn" id="accountBtn">👤 Account</a>
+
+    <style>
+      .account-btn {
+        background-color: grey; 
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 10px;
+        border-color: gold;
+        display: inline-block;
+        transition: 0.25s;
+      }
+      .account-btn:hover {
+        background-color: #0056b3;
+      }
+    </style>
   </div>
 
   <div class="game-grid">
 
-    <a href="ridethebus/ridethebus.html" class="game-card">
+    <a href= "ridethebus.html" class="game-card">
       <h2>Ride The Bus</h2>
     </a>
 
-    <a href="blackjack/blackjack.html" class="game-card">
+    <a href="blackjack.html" class="game-card">
       <h2>Blackjack</h2>
     </a>
 
-    <a href="#" class="game-card">
-      <h2>Slots</h2>
+    <a href="plinko.html" class="game-card">
+      <h2>Plinko</h2>
     </a>
 
     <a href="#" class="game-card">
-      <h2>Plinko </h2>
+      <h2>Slotts </h2>
     </a>
 
     <a href="#" class="game-card">
@@ -47,6 +64,12 @@
     </a>
 
   </div>
+<div class="popup" id="popup">
+  <img src="Assets/popup.png" alt="popup image">
+  <h2>about us type beans</h2>
+  <p>all bout no dimal type beans</p>
+  <button id="closePopup">Close</button>
+</div>
 
 
 </body>

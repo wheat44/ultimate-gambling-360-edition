@@ -47,6 +47,9 @@ let cardY;
 let spacing;
 let totalWidth;
 
+const NAVBAR = 80;
+let updatedScreenheight;
+
 
 ///playstage tracks what card is show and what options can be selected.
 let playStage = 0;
@@ -91,12 +94,13 @@ function preload() {
 
 function setup() {
   ///function setup, define canvas and variables for button and card dimensions and locations.
-  createCanvas(windowWidth, windowHeight);
-  buttonH = windowHeight/ 10;
+  createCanvas(windowWidth, windowHeight-80);
+  updatedScreenheight = windowHeight-80;
+  buttonH = updatedScreenheight/ 10;
   buttonW = windowWidth / 10;
   buttonX = windowWidth / 2;
-  buttonY = windowHeight / 1.2;
-  cardHeight = windowHeight/6;
+  buttonY = updatedScreenheight / 1.2;
+  cardHeight = updatedScreenheight/6;
   cardWidth = windowWidth/13;
   spacing = width / 10;
   totalWidth = 3 * spacing + cardWidth; // distance from first to last card
@@ -116,13 +120,13 @@ function displayBG(){
   ///display background based on game state
   imageMode(CORNER);
   if (state === 'menu'){
-    image(menu,0,0, windowWidth, windowHeight);
+    image(menu,0,0, windowWidth, updatedScreenheight);
   }
   else if (state === 'main' || state === 'play' || state ==='redo'){
-    image(main, 0, 0, windowWidth, windowHeight);
+    image(main, 0, 0, windowWidth, updatedScreenheight);
   }
   else if (state === 'instructions'){
-    image(instructions, 0,0, windowWidth, windowHeight);
+    image(instructions, 0,0, windowWidth, updatedScreenheight);
   }
 }
 
@@ -171,7 +175,7 @@ function mouseClicked(){
       }
     }
     ///check if cash out button is clicked
-    if (mouseX > windowWidth * 0.9 - buttonW/2 && mouseX < windowWidth * 0.9 + buttonW/2 && mouseY > windowHeight * 0.9 - buttonH/2 && mouseY < windowHeight * 0.9 + buttonH/2 && playStage >=1){
+    if (mouseX > windowWidth * 0.9 - buttonW/2 && mouseX < windowWidth * 0.9 + buttonW/2 && mouseY > updatedScreenheight * 0.9 - buttonH/2 && mouseY < updatedScreenheight * 0.9 + buttonH/2 && playStage >=1){
       state = 'main';
       ///change player money based on bet and playstage
       playerMoney += bet + bet * (playStage + 1);
@@ -221,9 +225,9 @@ function displayButtons(){
     ///cash out button
     rectMode(CENTER);
     fill(79);
-    rect(windowWidth * 0.9, windowHeight * 0.9, buttonW, buttonH);
+    rect(windowWidth * 0.9, updatedScreenheight * 0.9, buttonW, buttonH);
     fill('white');
-    text('Cash Out', windowWidth * 0.9, windowHeight * 0.9);
+    text('Cash Out', windowWidth * 0.9, updatedScreenheight * 0.9);
 
 
     if (playStage === 0){
@@ -362,9 +366,9 @@ function displayBet(){
     fill(212,141,51);
     textSize(40);
     let amount = bet;
-    text("Bet: $" + amount, windowWidth * 0.1, windowHeight * 0.88);
+    text("Bet: $" + amount, windowWidth * 0.1, updatedScreenheight * 0.88);
     let money = playerMoney;
-    text("Money: $" + money, windowWidth * 0.1, windowHeight * 0.92); 
+    text("Money: $" + money, windowWidth * 0.1, updatedScreenheight * 0.92); 
   }
 
   ///check if bet is invalid
@@ -468,13 +472,13 @@ function keyPressed(){
 
 function windowResized() {
   /// redefine variables when window is resized.
-  resizeCanvas(windowWidth, windowHeight);
-  buttonH = windowHeight/ 10;
+  resizeCanvas(windowWidth, updatedScreenheight);
+  buttonH = updatedScreenheight/ 10;
   buttonW = windowWidth / 10;
   buttonX = windowWidth /2;
-  buttonY = windowHeight / 1.2;
+  buttonY = updatedScreenheight / 1.2;
   cardWidth = windowWidth / 14;
-  cardHeight = windowHeight/ 6 ;
+  cardHeight = updatedScreenheight/ 6 ;
   spacing = width / 10;
   totalWidth = 3 * spacing + cardWidth; // distance from first to last card
   cardX = width / 2 - totalWidth / 2;
