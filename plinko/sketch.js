@@ -11,21 +11,35 @@ let balls = [];
 let pegs = [];
 
 
-
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
   engine = Engine.create();
   world = engine.world;
 
-  pegs.push(Bodies.circle(width/2, height/2, 10, { isStatic: true }));
-  pegs.push(Bodies.circle(width/2 - 100, height/2, 10, { isStatic: true }));
-  pegs.push(Bodies.circle(width/2 + 100, height/2, 10, { isStatic: true }));
+  let rows = 10;
+  let spacing = 80;
 
-  for (let peg of pegs) {
-    World.add(world, peg);
+  for (let row = 0; row < rows; row++) {
+
+    let y = 100 + row * spacing;
+
+    // number of pegs increases each row
+    let cols = row + 1;
+
+    // center the row
+    let totalWidth = (cols - 1) * spacing;
+    let startX = width / 2 - totalWidth / 2;
+
+    for (let col = 0; col < cols; col++) {
+
+      let x = startX + col * spacing;
+
+      let peg = Bodies.circle(x, y, 8, { isStatic: true });
+      pegs.push(peg);
+      World.add(world, peg);
+    }
   }
-
 }
 
 class Ball {
@@ -56,7 +70,7 @@ function draw() {
   for (let ball of balls){
     ball.show();
   }
-  fill(0,255,0);
+  fill("white");
   noStroke();
 
   for (let peg of pegs) {
@@ -66,5 +80,5 @@ function draw() {
 
 
 function mousePressed() {
-  balls.push(new Ball(mouseX, 50, 15));
+  balls.push(new Ball(mouseX, 50, 12));
 }

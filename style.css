@@ -22,7 +22,6 @@ html, body {
 h1 {
   color: black;
   text-align: left;
-  
 }
 
 p {
@@ -100,18 +99,54 @@ canvas {
   font-size: 1.2rem;
   height: 100%;
   width: 100%; 
-  
-  
-
 }
 
-/* HOVER EFFECT */
+
 .game-card:hover {
   border-color: gold;
   box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
 }
 
-/* TEXT */
+.Bus:hover {
+  background-image: url("assets/Logo.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.Blackjack:hover {
+  background-image: url("assets/Logo.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.Plinko:hover {
+  background-image: url("assets/pinkotemporarylolherman.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.Slotts:hover {
+  background-image: url("assets/pinkotemporarylolherman.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.Mines:hover {
+  background-image: url("assets/pinkotemporarylolherman.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.Roulette:hover {
+  background-image: url("assets/pinkotemporarylolherman.png");
+  background-size: cover;
+  background-position: center;
+}
+
+
+
+
+
 .game-card h2 {
   margin: 0;
   color: gold;
@@ -121,6 +156,8 @@ canvas {
 
 
 .popup {
+  display: none;  
+
   width: 900px;
   height: 600px;
   background: orangered;
@@ -132,7 +169,6 @@ canvas {
   text-align: center;
   padding: 30px;
   color: black;
-
 }
 
 .popup h2{
