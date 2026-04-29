@@ -72,8 +72,18 @@
 </div>
 
 <script>
-  document.getElementById("closePopup").onclick = function() {
-    document.getElementById("popup").style.display = "none";
+  const popup = document.getElementById("popup");
+  const closeBtn = document.getElementById("closePopup");
+  const accountBtn = document.getElementById("accountBtn");
+
+
+  accountBtn.onclick = function() {
+    popup.style.display = "block";
+  };
+
+
+  closeBtn.onclick = function() {
+    popup.style.display = "none";
   };
 </script>
 
