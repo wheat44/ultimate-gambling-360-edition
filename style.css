@@ -119,22 +119,31 @@ canvas {
 
 }
 
-.popup{
-  width: auto;
-  height: auto;
-  background: white;
+
+
+.popup {
+  width: 900px;
+  height: 600px;
+  background: orangered;
   border-radius: 6px;
   position: absolute;
-  top: 50%;
+  top: 55%;
   left: 50%;
   transform: translate(-50%,-50%);
   text-align: center;
   padding: 30px;
   color: black;
+
 }
 
 .popup h2{
-  
+  font-size: 4rem;
+  color: orange;
+}
+
+.popup p{
+  font-size: medium;
+  color: rgb(13, 60, 148);
 }
 
 .popup button{

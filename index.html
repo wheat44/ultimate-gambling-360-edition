@@ -65,11 +65,17 @@
 
   </div>
 <div class="popup" id="popup">
-  <img src="Assets/popup.png" alt="popup image">
-  <h2>about us type beans</h2>
+  <img src="Assets/popup.png" alt="popup image" width="auto">
+  <h2>ABOUT US</h2>
   <p>all bout no dimal type beans</p>
   <button id="closePopup">Close</button>
 </div>
+
+<script>
+  document.getElementById("closePopup").onclick = function() {
+    document.getElementById("popup").style.display = "none";
+  };
+</script>
 
 
 </body>
