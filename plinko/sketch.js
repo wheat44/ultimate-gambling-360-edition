@@ -18,6 +18,14 @@ function setup() {
   engine = Engine.create();
   world = engine.world;
 
+  pegs.push(Bodies.circle(width/2, height/2, 10, { isStatic: true }));
+  pegs.push(Bodies.circle(width/2 - 100, height/2, 10, { isStatic: true }));
+  pegs.push(Bodies.circle(width/2 + 100, height/2, 10, { isStatic: true }));
+
+  for (let peg of pegs) {
+    World.add(world, peg);
+  }
+
 }
 
 class Ball {
@@ -38,6 +46,8 @@ class Ball {
   }
 }
 
+
+
 function draw() {
   background(0);
   
@@ -45,6 +55,12 @@ function draw() {
 
   for (let ball of balls){
     ball.show();
+  }
+  fill(0,255,0);
+  noStroke();
+
+  for (let peg of pegs) {
+    circle(peg.position.x, peg.position.y, 20);
   }
 }
 
