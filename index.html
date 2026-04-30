@@ -19,6 +19,8 @@
       <img src="assets/logo.png" alt="logo" style="width:400px;height:100px;">
     </a>
       <a href="#" class="account-btn" id="accountBtn">👤 Account</a>
+    
+    <h1 id="moneyDisplay">Money: </h1>
 
     <style>
       .account-btn {
@@ -65,7 +67,7 @@
 
   </div>
 <div class="popup" id="popup">
-  <img src="Assets/popup.png" alt="popup image" width="auto">
+  <img src="Assets/popup.png" alt="popup image">
   <h2>ABOUT US</h2>
   <p>all bout no dimal type beans</p>
   <button id="closePopup">Close</button>
@@ -85,7 +87,21 @@
   closeBtn.onclick = function() {
     popup.style.display = "none";
   };
+
+
+
+    if (localStorage.getItem("money") === null) {
+    localStorage.setItem("money", 5000);
+  }
+
+  function updateMoneyDisplay() {
+    let money = parseInt(localStorage.getItem("money")) || 0;
+    document.getElementById("moneyDisplay").textContent = "Money: $" + money;
+  }
+
+  updateMoneyDisplay();
 </script>
+
 
 
 </body>

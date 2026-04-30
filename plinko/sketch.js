@@ -10,6 +10,13 @@ let world;
 let balls = [];
 let pegs = [];
 
+let playerMoney = parseInt(localStorage.getItem("money"));
+
+let bet = 25;
+
+let startX;
+let totalWidth;
+let spacing;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -18,9 +25,9 @@ function setup() {
   world = engine.world;
 
   let rows = 10;
-  let spacing = 80;
+  spacing = 80;
 
-  for (let row = 0; row < rows; row++) {
+  for (let row = 1; row < rows; row++) {
 
     let y = 100 + row * spacing;
 
@@ -28,8 +35,8 @@ function setup() {
     let cols = row + 1;
 
     // center the row
-    let totalWidth = (cols - 1) * spacing;
-    let startX = width / 2 - totalWidth / 2;
+    totalWidth = (cols - 1) * spacing;
+    startX = width / 2 - totalWidth / 2;
 
     for (let col = 0; col < cols; col++) {
 
@@ -46,7 +53,7 @@ class Ball {
   constructor(x, y, r) {
     this.body = Bodies.circle(x, y, r, {
       restitution: 0.5,
-      friction: 0.1
+      friction: 0.1,
     });
     this.r = r;
     World.add(world, this.body);
@@ -64,21 +71,39 @@ class Ball {
 
 function draw() {
   background(0);
-  
   Engine.update(engine);
 
-  for (let ball of balls){
-    ball.show();
-  }
+  drawBalls();
+  drawGrid();
+  updateLocalStorage();
+}
+
+
+function mousePressed() {
+  let randomSpawn = random(startX + totalWidth/2 - spacing/2, startX + totalWidth/2 + spacing/2);
+  const DROP_HEIGHT = 100;
+  const RADIUS = 20;
+  balls.push(new Ball(randomSpawn, DROP_HEIGHT, RADIUS));
+}
+
+
+function drawGrid(){
   fill("white");
   noStroke();
-
   for (let peg of pegs) {
     circle(peg.position.x, peg.position.y, 20);
   }
 }
 
+function placeBet(){
+  playerMoney -= bet;
+}
 
-function mousePressed() {
-  balls.push(new Ball(mouseX, 50, 12));
+function drawBalls(){
+  for (let ball of balls){
+    ball.show();
+  }
+}
+function updateLocalStorage(){
+  localStorage.money = playerMoney;
 }

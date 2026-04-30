@@ -18,7 +18,7 @@
 
 
 ///define gamestate
-let state = 'menu';
+let state = 'main';
 
 ///define variables for images, sounds, fonts, card values and suits, buttons and options
 let suits = ["Spades", "Hearts", "Diamonds", "Clubs"];
@@ -55,7 +55,7 @@ let updatedScreenheight;
 let playStage = 0;
 
 let bet = 100;
-let playerMoney = 5000;
+let playerMoney = parseInt(localStorage.getItem("money"));
 
 
 let choice;
@@ -110,46 +110,18 @@ function setup() {
 
 function draw() {
   ///draw loop
-  displayBG();
+  background("#374243");
   displayButtons();
   displayBet();
   displayCardValue();
+  updateLocalStorage();
 }
 
-function displayBG(){
-  ///display background based on game state
-  imageMode(CORNER);
-  if (state === 'menu'){
-    image(menu,0,0, windowWidth, updatedScreenheight);
-  }
-  else if (state === 'main' || state === 'play' || state ==='redo'){
-    image(main, 0, 0, windowWidth, updatedScreenheight);
-  }
-  else if (state === 'instructions'){
-    image(instructions, 0,0, windowWidth, updatedScreenheight);
-  }
-}
+
 
 function mouseClicked(){
   ///mouseclicked handles all mouse interactions
-  /// check if mouse is within boundaries for menu and instructions buttons
-  if (state === 'menu') {
-    if (mouseX > buttonX - buttonW/2 &&mouseX < buttonX + buttonW/2 &&mouseY > buttonY - buttonH/2 &&mouseY < buttonY + buttonH/2
-    ){
-      ///change state and play sound 
-      cardFlip.play();
-      state = 'instructions';
-    }
-  }
-
-  else if (state === 'instructions') {
-    if (mouseX > buttonX - buttonW/2 && mouseX < buttonX + buttonW/2 && mouseY > buttonY - buttonH/2 && mouseY < buttonY + buttonH/2){
-      cardFlip.play();
-      state = 'main';
-    }
-  }
-
-  else if (state === 'main' || state === 'redo' || playStage === 4) {
+  if (state === 'main' || state === 'redo' || playStage === 4) {
     ///deal button
     if (mouseX > buttonX - buttonW/2 && mouseX < buttonX + buttonW/2 && mouseY > buttonY - buttonH/2 && mouseY < buttonY + buttonH/2){
       deal.play();
@@ -483,4 +455,9 @@ function windowResized() {
   totalWidth = 3 * spacing + cardWidth; // distance from first to last card
   cardX = width / 2 - totalWidth / 2;
   cardY = height / 2.2;
+}
+
+
+function updateLocalStorage(){
+  localStorage.money = playerMoney;
 }
