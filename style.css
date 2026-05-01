@@ -108,37 +108,37 @@ canvas {
 }
 
 .Bus:hover {
-  background-image: url("assets/Logo.png");
+  background-image: url("Assets/Logo.png");
   background-size: cover;
   background-position: center;
 }
 
 .Blackjack:hover {
-  background-image: url("assets/Logo.png");
+  background-image: url("Assets/Logo.png");
   background-size: cover;
   background-position: center;
 }
 
 .Plinko:hover {
-  background-image: url("assets/pinkotemporarylolherman.png");
+  background-image: url("Assets/pinkotemporarylolherman.png");
   background-size: cover;
   background-position: center;
 }
 
 .Slotts:hover {
-  background-image: url("assets/pinkotemporarylolherman.png");
+  background-image: url("Assets/pinkotemporarylolherman.png");
   background-size: cover;
   background-position: center;
 }
 
 .Mines:hover {
-  background-image: url("assets/pinkotemporarylolherman.png");
+  background-image: url("Assets/pinkotemporarylolherman.png");
   background-size: cover;
   background-position: center;
 }
 
 .Roulette:hover {
-  background-image: url("assets/pinkotemporarylolherman.png");
+  background-image: url("Assets/pinkotemporarylolherman.png");
   background-size: cover;
   background-position: center;
 }
