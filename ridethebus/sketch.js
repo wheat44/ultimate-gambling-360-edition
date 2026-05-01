@@ -100,7 +100,7 @@ function setup() {
   buttonW = windowWidth / 10;
   buttonX = windowWidth / 2;
   buttonY = updatedScreenheight / 1.2;
-  cardHeight = updatedScreenheight/6;
+  cardHeight = updatedScreenheight/4;
   cardWidth = windowWidth/13;
   spacing = width / 10;
   totalWidth = 3 * spacing + cardWidth; // distance from first to last card
