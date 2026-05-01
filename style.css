@@ -108,13 +108,13 @@ canvas {
 }
 
 .Bus:hover {
-  background-image: url("Assets/Logo.png");
+  background-image: url("Assets/logo.png");
   background-size: cover;
   background-position: center;
 }
 
 .Blackjack:hover {
-  background-image: url("Assets/Logo.png");
+  background-image: url("Assets/logo.png");
   background-size: cover;
   background-position: center;
 }
