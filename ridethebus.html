@@ -17,10 +17,63 @@
   <div class="topnav">
     <a href="index.html">
       <img src="Assets/logo.png" alt="logo" style="width:400px;height:100px;">
+
     </a>
+
+    <script src="ridethebus/sketch.js"></script>
+
+      <a href="#" class="account-btn" id="accountBtn">About Us</a>
+    
+    <h1 id="moneyDisplay">Money: </h1>
+
+    <style>
+      .account-btn {
+        background-color: grey; 
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 10px;
+        border-color: gold;
+        display: inline-block;
+        transition: 0.25s;
+      }
+      .account-btn:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </div>
+  
+  <div class="popup" id="popup">
+    <button id="closePopup">Close</button>
   </div>
 
-  <script src="ridethebus/sketch.js"></script>
+  <script>
+    const popup = document.getElementById("popup");
+    const closeBtn = document.getElementById("closePopup");
+    const accountBtn = document.getElementById("accountBtn");
 
+
+    accountBtn.onclick = function() {
+      popup.style.display = "block";
+    };
+
+
+    closeBtn.onclick = function() {
+      popup.style.display = "none";
+    };
+
+
+
+    if (localStorage.getItem("money") === null) {
+    localStorage.setItem("money", 5000);
+  }
+
+  function updateMoneyDisplay() {
+    let money = parseInt(localStorage.getItem("money")) || 0;
+    document.getElementById("moneyDisplay").textContent = "Money: $" + money;
+  }
+
+  updateMoneyDisplay();
+  </script>
 </body>
 </html>

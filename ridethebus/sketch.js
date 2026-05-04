@@ -115,6 +115,10 @@ function draw() {
   displayBet();
   displayCardValue();
   updateLocalStorage();
+  let moneyDisplay = document.getElementById("moneyDisplay");
+  if (moneyDisplay) {
+    moneyDisplay.textContent = "Money: $" + playerMoney;
+  }
 }
 
 
@@ -151,6 +155,7 @@ function mouseClicked(){
       state = 'main';
       ///change player money based on bet and playstage
       playerMoney += bet + bet * (playStage + 1);
+      updateLocalStorage();
     }
   }
 }
@@ -252,11 +257,13 @@ function calcResult(){
   if (playStage === 0){
     if (choice === 'Red' && (cards[0].suit === 'Hearts' || cards[0].suit === 'Diamonds') ||choice === 'Black' && (cards[0].suit === 'Spades' || cards[0].suit === 'Clubs')){
       playStage++;
+      updateLocalStorage();
     } 
     else {
       state = 'redo';
       playStage++;
       lose.play();
+      updateLocalStorage();
     }
   }
 
@@ -459,5 +466,5 @@ function windowResized() {
 
 
 function updateLocalStorage(){
-  localStorage.money = playerMoney;
+  localStorage.setItem("money", playerMoney);
 }

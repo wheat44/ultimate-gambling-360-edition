@@ -54,6 +54,9 @@ class Ball {
     this.body = Bodies.circle(x, y, r, {
       restitution: 0.5,
       friction: 0.1,
+      collisionFilter: {
+        group: -1
+      }
     });
     this.r = r;
     World.add(world, this.body);
@@ -80,10 +83,13 @@ function draw() {
 
 
 function mousePressed() {
-  let randomSpawn = random(startX + totalWidth/2 - spacing/2, startX + totalWidth/2 + spacing/2);
-  const DROP_HEIGHT = 100;
-  const RADIUS = 20;
-  balls.push(new Ball(randomSpawn, DROP_HEIGHT, RADIUS));
+  if (mouseY > 100){
+    let randomSpawn = random(startX + totalWidth/2 - spacing/2, startX + totalWidth/2 + spacing/2); // spawns the ball within the top two pegs
+    const DROP_HEIGHT = 100;
+    const RADIUS = 20;
+    balls.push(new Ball(randomSpawn, DROP_HEIGHT, RADIUS));
+    placeBet();
+  }
 }
 
 
@@ -96,7 +102,9 @@ function drawGrid(){
 }
 
 function placeBet(){
-  playerMoney -= bet;
+  if (bet <= playerMoney){
+    playerMoney -= bet;
+  }
 }
 
 function drawBalls(){
@@ -106,4 +114,8 @@ function drawBalls(){
 }
 function updateLocalStorage(){
   localStorage.money = playerMoney;
+}
+
+function drawText(){
+  text("Money" + playerMoney, width/2, height/2);
 }

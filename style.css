@@ -20,8 +20,8 @@ html, body {
 
 
 h1 {
-  color: green;
-  text-align: left;
+  color: red;
+  margin-right: 40px;
 }
 
 p {
