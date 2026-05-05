@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Home</title>
+  <title>Sketch</title>
 
   <link rel="stylesheet" href="style.css">
 
@@ -17,8 +17,12 @@
   <div class="topnav">
     <a href="index.html">
       <img src="Assets/logo.png" alt="logo" style="width:400px;height:100px;">
+
     </a>
-      <a href="#" class="account-btn" id="accountBtn">👤 About US</a>
+
+    <script src="blackjack/sketch.js"></script>
+
+      <a href="#" class="account-btn" id="accountBtn">About Us</a>
     
     <h1 id="moneyDisplay">Money: </h1>
 
@@ -38,55 +42,25 @@
       }
     </style>
   </div>
-
-  <div class="game-grid">
-
-    <a href= "ridethebus.html" class="game-card Bus">
-      <h2>Ride The Bus</h2>
-    </a>
-
-    <a href="blackjack.html" class="game-card Blackjack">
-      <h2>Blackjack</h2>
-    </a>
-
-    <a href="plinko.html" class="game-card Plinko">
-      <h2>Plinko</h2>
-    </a>
-
-    <a href="slots.html" class="game-card Slotts">
-      <h2>Slots </h2>
-    </a>
-
-    <a href="mines.html" class="game-card Mines">
-      <h2>Mines</h2>
-    </a>
-
-    <a href="roulette.html" class="game-card Roulette">
-      <h2>Roulette</h2>
-    </a>
-
+  
+  <div class="popup" id="popup">
+    <button id="closePopup">Close</button>
   </div>
-<div class="popup" id="popup">
-  <img src="Assets/popup.png" alt="popup image">
-  <h2>ABOUT US</h2>
-  <p>herman</p>
-  <button id="closePopup">Close</button>
-</div>
 
-<script>
-  const popup = document.getElementById("popup");
-  const closeBtn = document.getElementById("closePopup");
-  const accountBtn = document.getElementById("accountBtn");
+  <script>
+    const popup = document.getElementById("popup");
+    const closeBtn = document.getElementById("closePopup");
+    const accountBtn = document.getElementById("accountBtn");
 
 
-  accountBtn.onclick = function() {
-    popup.style.display = "block";
-  };
+    accountBtn.onclick = function() {
+      popup.style.display = "block";
+    };
 
 
-  closeBtn.onclick = function() {
-    popup.style.display = "none";
-  };
+    closeBtn.onclick = function() {
+      popup.style.display = "none";
+    };
 
 
 
@@ -100,9 +74,6 @@
   }
 
   updateMoneyDisplay();
-</script>
-
-
-
+  </script>
 </body>
 </html>

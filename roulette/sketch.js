@@ -80,17 +80,17 @@ let whiteBallLanding;
 
 function preload() {
   ///load background and meny images
-  startIMG = loadImage("Assets/BG/Start.png");
-  mainIMG = loadImage('Assets/BG/main.png');
-  instructionsIMG = loadImage('Assets/BG/instructions.png');
-  rouletteIMG = loadImage('Assets/IMG/pictures/r88_Casino_pictures/roulette/roulette_wheel.png');
-  rouletteBaseIMG = loadImage('Assets/IMG/pictures/r88_Casino_pictures/roulette/roulette_base.png');
-  whiteBall = loadImage('Assets/IMG/pictures/r88_Casino_pictures/roulette/roulette_pill2.png');
-  chipImage = loadImage('Assets/IMG/pictures/r88_Casino_pictures/chips/chipStack1.png');
-  win = loadSound('Assets/audio/se/r88_Casino_se/win.mp3');
-  lose = loadSound('Assets/audio/se/r88_Casino_se/lose.mp3');
-  spin = loadSound('Assets/audio/se/r88_Casino_se/roulette_spin.ogg');
-  stop = loadSound('Assets/audio/se/r88_Casino_se/roulette_stop.ogg');
+  startIMG = loadImage("roulette/Assets/BG/Start.png");
+  mainIMG = loadImage('roulette/Assets/BG/main.png');
+  instructionsIMG = loadImage('roulette/Assets/BG/instructions.png');
+  rouletteIMG = loadImage('roulette/Assets/IMG/pictures/r88_Casino_pictures/roulette/roulette_wheel.png');
+  rouletteBaseIMG = loadImage('roulette/Assets/IMG/pictures/r88_Casino_pictures/roulette/roulette_base.png');
+  whiteBall = loadImage('roulette/Assets/IMG/pictures/r88_Casino_pictures/roulette/roulette_pill2.png');
+  chipImage = loadImage('roulette/Assets/IMG/pictures/r88_Casino_pictures/chips/chipStack1.png');
+  win = loadSound('roulette/Assets/audio/se/r88_Casino_se/win.mp3');
+  lose = loadSound('roulette/Assets/audio/se/r88_Casino_se/lose.mp3');
+  spin = loadSound('roulette/Assets/audio/se/r88_Casino_se/roulette_spin.ogg');
+  stop = loadSound('roulette/Assets/audio/se/r88_Casino_se/roulette_stop.ogg');
 }
 
 function setup() {

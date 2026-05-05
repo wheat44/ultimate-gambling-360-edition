@@ -58,13 +58,13 @@ let wrongTileSound;
 
 function preload(){
   //loads audio for correct/incorrect tile clicks
-  dingSound = loadSound("correctTileSound.wav");
-  wrongTileSound = loadSound("wrongTileSound.wav");
+  dingSound = loadSound("mines/correctTileSound.wav");
+  wrongTileSound = loadSound("mines/wrongTileSound.wav");
   
   //loads images used in the game
-  bombImage = loadImage("bomb.jpg");
-  questionMarkImage = loadImage("unknownTile.png");
-  diamondImage = loadImage("diamondTileImage.avif");
+  bombImage = loadImage("mines/bomb.jpg");
+  questionMarkImage = loadImage("mines/unknownTile.png");
+  diamondImage = loadImage("mines/diamondTileImage.avif");
 }
 
 

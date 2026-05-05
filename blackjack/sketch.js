@@ -76,12 +76,12 @@ let dealerCard = {
 /// preload
 function preload() {
   ///load background and meny images
-  bg = loadImage("Assets/BG/background.png");
-  menu = loadImage("Assets/BG/blackjack bg.png");
-  instructionsImg  = loadImage("Assets/BG/Instructions_BG.png");
+  bg = loadImage("blackjack/Assets/BG/background.png");
+  menu = loadImage("blackjack/Assets/BG/blackjack bg.png");
+  instructionsImg  = loadImage("blackjack/Assets/BG/Instructions_BG.png");
 
   //back of card
-  bOC = loadImage('Assets/Cards/back_of_card.png')
+  bOC = loadImage('blackjack/Assets/Cards/back_of_card.png')
 
   ///load cards using a nested loop
   for (let index = 0; index < 4; index++) {
@@ -90,7 +90,7 @@ function preload() {
       let key = values[j] + "_" + suits[index];
       /// key in form 2_Spades
 
-      cardImages[key] = loadImage("Assets/Cards/" + fileName);
+      cardImages[key] = loadImage("blackjack/Assets/Cards/" + fileName);
     }
   }
 }
