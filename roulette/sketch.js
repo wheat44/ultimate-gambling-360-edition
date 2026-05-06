@@ -123,7 +123,7 @@ function draw() {
   animateWheel();
   animateBall();
 
-/// static drawing of wheel and ball
+  /// static drawing of wheel and ball
   drawWheel();
   drawBall();
 }
@@ -190,43 +190,43 @@ function drawGrid() {
       textAlign(CENTER, CENTER);
 
       if (y === 0) {
-        text("1st 12", rightX + (cellX * 1.4) / 2, sideY + cellY / 2);
+        text("1st 12", rightX + cellX * 1.4 / 2, sideY + cellY / 2);
       }
       else if (y === 1) {
-        text("2nd 12", rightX + (cellX * 1.4) / 2, sideY + cellY / 2);
+        text("2nd 12", rightX + cellX * 1.4 / 2, sideY + cellY / 2);
       }
       else if (y === 2) {
-        text("3rd 12", rightX + (cellX * 1.4) / 2, sideY + cellY / 2);
+        text("3rd 12", rightX + cellX * 1.4 / 2, sideY + cellY / 2);
       }
     }
 
     // draw bottom row for red/black/odd/even
     let bottomY = betY + COLS * cellY;
-    let bottomBoxW = (ROWS * cellX) / 4;
+    let bottomBoxW = ROWS * cellX / 4;
 
     // RED
     fill('red');
     rect(betX, bottomY, bottomBoxW, cellY * 0.9);
     fill('white');
-    text("RED", betX + bottomBoxW / 2, bottomY + (cellY * 0.9) / 2);
+    text("RED", betX + bottomBoxW / 2, bottomY + cellY * 0.9 / 2);
 
     // black
     fill('black');
     rect(betX + bottomBoxW, bottomY, bottomBoxW, cellY * 0.9);
     fill('white');
-    text("BLACK", betX + bottomBoxW + bottomBoxW / 2, bottomY + (cellY * 0.9) / 2);
+    text("BLACK", betX + bottomBoxW + bottomBoxW / 2, bottomY + cellY * 0.9 / 2);
 
     // Odd
     fill(40);
     rect(betX + bottomBoxW * 2, bottomY, bottomBoxW, cellY * 0.9);
     fill('white');
-    text("19 to 36 ODD", betX + bottomBoxW * 2 + bottomBoxW / 2, bottomY + (cellY * 0.9) / 2);
+    text("19 to 36 ODD", betX + bottomBoxW * 2 + bottomBoxW / 2, bottomY + cellY * 0.9 / 2);
 
     // even
     fill(70);
     rect(betX + bottomBoxW * 3, bottomY, bottomBoxW, cellY * 0.9);
     fill('white');
-    text("1 to 18 EVEN", betX + bottomBoxW * 3 + bottomBoxW / 2, bottomY + (cellY * 0.9) / 2);
+    text("1 to 18 EVEN", betX + bottomBoxW * 3 + bottomBoxW / 2, bottomY + cellY * 0.9 / 2);
   }
 }
 
@@ -321,7 +321,7 @@ function animateWheel() {
     if (distanceLeft < 2) {
       step = 0.10;
     }
-    if (distanceLeft < .3) {
+    if (distanceLeft < 0.3) {
       step = 0.06;
       spin.stop();
       stop.play();
@@ -337,7 +337,7 @@ function animateWheel() {
 
       ///ensure not negative angle
       if (currentAngle < 0) {
-        currentAngle += (2 * Math.PI);
+        currentAngle += 2 * Math.PI;
       }
 
       ///snap ball angle to final angle
@@ -345,7 +345,7 @@ function animateWheel() {
 
       ///ensure not negative angle
       if (ballAngle < 0) {
-        ballAngle += (2 * Math.PI);
+        ballAngle += 2 * Math.PI;
       }
 
       isSpinning = false;
@@ -357,50 +357,50 @@ function animateWheel() {
 
 function startSpin(){
   // function that when state is spin, calculates the winning result and determines the angles
-      ///choose a random number that the wheel will land on.
-      winningNumber = floor(random(WHEELNUMBERS));
-      whiteBallLanding = floor(random(WHEELNUMBERS.length));
+  ///choose a random number that the wheel will land on.
+  winningNumber = floor(random(WHEELNUMBERS));
+  whiteBallLanding = floor(random(WHEELNUMBERS.length));
 
-      //play sound effect
-      spin.play();
+  //play sound effect
+  spin.play();
       
-      ///assign values to the slot index
-      let slotIndex = WHEELNUMBERS.indexOf(winningNumber);
-      //seperate slots into angles 
-      let slotAngle = (2 * Math.PI) / WHEELNUMBERS.length;
+  ///assign values to the slot index
+  let slotIndex = WHEELNUMBERS.indexOf(winningNumber);
+  //seperate slots into angles 
+  let slotAngle = 2 * Math.PI / WHEELNUMBERS.length;
 
-      ///add extra rotations
-      let extraRotations = 2* Math.PI * EXTRASPINS;
+  ///add extra rotations
+  let extraRotations = 2* Math.PI * EXTRASPINS;
 
-      ///determine target angle
-      targetAngle = extraRotations - (slotIndex * slotAngle);
+  ///determine target angle
+  targetAngle = extraRotations - slotIndex * slotAngle;
 
-      ///create pointer offset to make the pointer land in different places.
-      let pointerOffset = whiteBallLanding * slotAngle;
+  ///create pointer offset to make the pointer land in different places.
+  let pointerOffset = whiteBallLanding * slotAngle;
 
-      let finalAngle = pointerOffset - slotIndex * slotAngle;
+  let finalAngle = pointerOffset - slotIndex * slotAngle;
 
 
-      //set starting angle based on previous angle for a good looking animation
-      spinStartAngle = currentAngle;
-      targetAngle = finalAngle + (2 * Math.PI) * EXTRASPINS;
+  //set starting angle based on previous angle for a good looking animation
+  spinStartAngle = currentAngle;
+  targetAngle = finalAngle + 2 * Math.PI * EXTRASPINS;
 
-      ///spin only one direction towards the target angle.
-      while (targetAngle <= spinStartAngle) {
-        targetAngle += (2 * Math.PI);
-      }
+  ///spin only one direction towards the target angle.
+  while (targetAngle <= spinStartAngle) {
+    targetAngle += 2 * Math.PI;
+  }
 
-      /// handle ball spinning variables.
-      ballAngle = 0;
-      ballSpeed = -0.25;
+  /// handle ball spinning variables.
+  ballAngle = 0;
+  ballSpeed = -0.25;
 
-      // 0 = 12 o'clock, 1 = one slot clockwise, etc.
-      ballTargetAngle = (2 * Math.PI) + whiteBallLanding * slotAngle;
+  // 0 = 12 o'clock, 1 = one slot clockwise, etc.
+  ballTargetAngle = 2 * Math.PI + whiteBallLanding * slotAngle;
 
-      ///isspinning set true to start animation and reset spin progress
-      spinProgress = 0;
-      isSpinning = true;
-      state = 'spin';
+  ///isspinning set true to start animation and reset spin progress
+  spinProgress = 0;
+  isSpinning = true;
+  state = 'spin';
 }
 
 function animateBall() {
@@ -491,7 +491,7 @@ function mousePressed() {
       }
       ///2nd dozen
       if (playerMoney >= 100 && mouseY >= betY + cellY && mouseY < betY + 2 * cellY && !placedBets.some(bet => bet.type === "dozen" && bet.value === 2)) { 
-                placedBets.push({
+        placedBets.push({
           type: "dozen",
           value: 2,
         });
@@ -509,39 +509,39 @@ function mousePressed() {
       }
     }
 
-      ///bottom row betting
-      let bottomY = betY + COLS * cellY;
-      let bottomBoxW = (ROWS * cellX) / 4;
-      if (playerMoney >= 100 && mouseY >= bottomY && mouseY < bottomY + cellY) {
-        if (mouseX >= betX && mouseX < betX + bottomBoxW && !placedBets.some(bet => bet.type === "bottom" && bet.value === 1)) {
-          placedBets.push({
-            type: "bottom",
-            value: 1
-          });
-          playerMoney -= 100;
-        }
-        else if (mouseX >= betX + bottomBoxW && mouseX < betX + 2 * bottomBoxW && !placedBets.some(bet => bet.type === "bottom" && bet.value === 2)) {
-          placedBets.push({
-            type: "bottom",
-            value: 2
-          });
-          playerMoney -= 100;
-        }
-        else if (mouseX >= betX + 2 * bottomBoxW && mouseX < betX + 3 * bottomBoxW && !placedBets.some(bet => bet.type === "bottom" && bet.value === 3)) {
-            placedBets.push({
-              type: "bottom",
-              value: 3
-            });
-            playerMoney -= 100;
-        }
-        else if (mouseX >= betX + 3 * bottomBoxW && mouseX < betX + 4 * bottomBoxW  && !placedBets.some(bet => bet.type === "bottom" && bet.value === 4)) {
-          placedBets.push({
-            type: "bottom",
-            value: 4
-          });
-          playerMoney -= 100;
-        }
+    ///bottom row betting
+    let bottomY = betY + COLS * cellY;
+    let bottomBoxW = ROWS * cellX / 4;
+    if (playerMoney >= 100 && mouseY >= bottomY && mouseY < bottomY + cellY) {
+      if (mouseX >= betX && mouseX < betX + bottomBoxW && !placedBets.some(bet => bet.type === "bottom" && bet.value === 1)) {
+        placedBets.push({
+          type: "bottom",
+          value: 1
+        });
+        playerMoney -= 100;
       }
+      else if (mouseX >= betX + bottomBoxW && mouseX < betX + 2 * bottomBoxW && !placedBets.some(bet => bet.type === "bottom" && bet.value === 2)) {
+        placedBets.push({
+          type: "bottom",
+          value: 2
+        });
+        playerMoney -= 100;
+      }
+      else if (mouseX >= betX + 2 * bottomBoxW && mouseX < betX + 3 * bottomBoxW && !placedBets.some(bet => bet.type === "bottom" && bet.value === 3)) {
+        placedBets.push({
+          type: "bottom",
+          value: 3
+        });
+        playerMoney -= 100;
+      }
+      else if (mouseX >= betX + 3 * bottomBoxW && mouseX < betX + 4 * bottomBoxW  && !placedBets.some(bet => bet.type === "bottom" && bet.value === 4)) {
+        placedBets.push({
+          type: "bottom",
+          value: 4
+        });
+        playerMoney -= 100;
+      }
+    }
   }
 }
 
@@ -553,7 +553,7 @@ function drawPlacedBets() {
     imageMode(CENTER);
     //define local positions
     let rightX = betX + ROWS * cellX;
-    let bottomBoxW = (ROWS * cellX) / 4;
+    let bottomBoxW = ROWS * cellX / 4;
     let bottomY = betY + COLS * cellY;
 
     for (let bet of placedBets) {
@@ -565,11 +565,11 @@ function drawPlacedBets() {
       }
       else if (bet.type === "dozen") {
         let dozenX = bet.value === 1 ? rightX + cellX / 2 : rightX + cellX / 2;
-        let dozenY = bet.value === 1 ? betY + cellY / 2 : (bet.value === 2 ? betY + cellY + cellY / 2 : betY + 2 * cellY + cellY / 2);
+        let dozenY = bet.value === 1 ? betY + cellY / 2 : bet.value === 2 ? betY + cellY + cellY / 2 : betY + 2 * cellY + cellY / 2;
         image(chipImage, dozenX, dozenY, cellX * 0.6, cellY * 0.4);
       }
       else if (bet.type === "bottom") {
-        let bottomX = bet.value === 1 ? betX + bottomBoxW / 2 : (bet.value === 2 ? betX + bottomBoxW + bottomBoxW / 2 : (bet.value === 3 ? betX + 2 * bottomBoxW + bottomBoxW / 2 : betX + 3 * bottomBoxW + bottomBoxW / 2));
+        let bottomX = bet.value === 1 ? betX + bottomBoxW / 2 : bet.value === 2 ? betX + bottomBoxW + bottomBoxW / 2 : bet.value === 3 ? betX + 2 * bottomBoxW + bottomBoxW / 2 : betX + 3 * bottomBoxW + bottomBoxW / 2;
         let bottomY = betY + COLS * cellY + cellY / 2;
         image(chipImage, bottomX, bottomY, cellX * 0.6, cellY * 0.4);
       }
@@ -586,9 +586,9 @@ function calcWinner() {
       lose.play();
     }
     else if (bet.type === "dozen") {
-      if ((bet.value === 1 && FIRSTDOZEN.includes(winningNumber)) ||
-          (bet.value === 2 && SECONDDOZEN.includes(winningNumber)) ||
-          (bet.value === 3 && THIRDDOZEN.includes(winningNumber))) {
+      if (bet.value === 1 && FIRSTDOZEN.includes(winningNumber) ||
+          bet.value === 2 && SECONDDOZEN.includes(winningNumber) ||
+          bet.value === 3 && THIRDDOZEN.includes(winningNumber)) {
         playerMoney += 100 * 3;
         win.play();
       }
@@ -632,7 +632,7 @@ function calcWinner() {
         lose.play();
       }
     }
-  placedBets = [];
+    placedBets = [];
   }
 }
 

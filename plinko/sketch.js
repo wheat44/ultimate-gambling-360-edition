@@ -52,7 +52,7 @@ function setup() {
 class Ball {
   constructor(x, y, r) {
     this.body = Bodies.circle(x, y, r, {
-      restitution: 0.5,
+      restitution: 0.3,
       friction: 0.1,
       collisionFilter: {
         group: -1

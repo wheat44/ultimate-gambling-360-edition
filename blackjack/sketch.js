@@ -13,7 +13,7 @@
 
 
 /// Assign Gamestate
-state = "menu"; 
+state = "play"; 
 /// Assign global variables and define terms
 
 /// create arrays for suits, values, images, and player cards
@@ -55,8 +55,8 @@ let result = "";
 
 
 ///numerical game variables 
-let bet = 100
-let playerMoney = 5000
+let bet = 100;
+let playerMoney = localStorage.money;
 let score = 0;
 let dealerScore = 0;
 
@@ -69,19 +69,15 @@ let card = {
 let dealerCard = {
   cardValue: values[12],
   cardSuite: suits[2]
-}
+};
 
 
 
 /// preload
 function preload() {
-  ///load background and meny images
-  bg = loadImage("blackjack/Assets/BG/background.png");
-  menu = loadImage("blackjack/Assets/BG/blackjack bg.png");
-  instructionsImg  = loadImage("blackjack/Assets/BG/Instructions_BG.png");
 
   //back of card
-  bOC = loadImage('blackjack/Assets/Cards/back_of_card.png')
+  bOC = loadImage('blackjack/Assets/Cards/back_of_card.png');
 
   ///load cards using a nested loop
   for (let index = 0; index < 4; index++) {
@@ -119,7 +115,7 @@ function setup() {
 
 ///main draw loop, calls all functions
 function draw() {
-  displayBg();
+  background("#374243");
   startButton();
   displayBet();
   dealCards();
@@ -127,28 +123,10 @@ function draw() {
   displayResult();
   dealDealerCards();
   displayGameResult();
+  updateLocalStorage();
 }
 
 
-function displayBg() {
-  ///displays background based on the game state
-  if (state === "main" || state === 'play') {
-    image(bg, 0, 0, width, height);
-  }
-  if (state === "menu") {
-    image(menu, 0, 0, width, height);
-  }
-  if(state === 'main'){
-    image(instructionsImg,0,0,width,height)
-    let buttonDist = dist(mouseX, mouseY, buttonX, buttonY);
-    fill('white');
-    ellipseMode(CENTER);
-    ellipse(buttonX, height-160, 400, 200, 6);
-    fill('black');
-    textSize(100);
-    text("OKAY!", buttonX, height-130);
-  }
-}
 
 
 function startButton() {
@@ -236,7 +214,7 @@ function keyPressed(){
     
 function dealCards() {
 
-/// when new deal is called reset all varaibles
+  /// when new deal is called reset all varaibles
   if (deal === true) {
 
     playerCards = []; // clear old cards
@@ -254,15 +232,15 @@ function dealCards() {
     dealerCards = [];
     dealerScore = 0;
 
-// determine 2 dealer cards
-  for (let index = 0; index < 2; index++) {
-    dealerCards.push({
-      suit: floor(random(0,4)),
-      value: floor(random(0,13))
-    });
-  }
+    // determine 2 dealer cards
+    for (let index = 0; index < 2; index++) {
+      dealerCards.push({
+        suit: floor(random(0,4)),
+        value: floor(random(0,13))
+      });
+    }
 
-/// determine the first 2 cards, evenly scaped out using index variable
+    /// determine the first 2 cards, evenly scaped out using index variable
     for (let index = 0; index < 2; index++) {
       playerCards.push({
         suit: floor(random(0,4)),
@@ -273,7 +251,7 @@ function dealCards() {
     deal = false;
   }
 
-/// hit button adds card to player hand
+  /// hit button adds card to player hand
   if (hit === true && score < 21) {
     playerCards.push({
       suit: floor(random(0,4)),
@@ -283,7 +261,7 @@ function dealCards() {
     hit = false;
   }
 
-///draw the cards
+  ///draw the cards
   if (state === 'play') {
 
     for (let index = 0; index < playerCards.length; index++) {
@@ -299,7 +277,9 @@ function dealCards() {
 
 function dealDealerCards() {
 
-  if (state !== "play") return;
+  if (state !== "play") {
+    return;
+  }
 
   for (let i = 0; i < dealerCards.length; i++) {
 
@@ -345,16 +325,16 @@ function mouseWheel(event) {
     bet += 25;
   }
   ///prevent screen from scrolling when mouse scrolls 
-  return false 
+  return false; 
 }
 
 function displayBet(){
   if (state === 'play'){
     textSize(20);
-    let amount = bet
-    text("Bet: $" + amount, width * 0.1, height * 0.2)
-    let money = playerMoney
-    text("Money: $" + money, width * 0.1, height * 0.25)
+    let amount = bet;
+    text("Bet: $" + amount, width * 0.1, height * 0.2);
+    let money = playerMoney;
+    text("Money: $" + money, width * 0.1, height * 0.25);
     
   }
 }
@@ -362,47 +342,49 @@ function displayBet(){
 
 
 function calcScore(){
-   if (state !== 'play' || playerCards.length === 0) return; /// if not in play state or no cards dealt return to avoid errors
+  if (state !== 'play' || playerCards.length === 0) {
+    return;
+  } /// if not in play state or no cards dealt return to avoid errors
 
-    score = 0;
-    let aceCount = 0; /// track number of aces for ace adjustment
+  score = 0;
+  let aceCount = 0; /// track number of aces for ace adjustment
     
 
-    for (let index = 0; index < playerCards.length; index++) {/// loop through player cards and calculate score
-      let value = playerCards[index].value;
+  for (let index = 0; index < playerCards.length; index++) {/// loop through player cards and calculate score
+    let value = playerCards[index].value;
 
 
-      if (value === 0) { /// if card is an ace
-        aceCount++;
-        score += 11; /// count ace as 11
-      }
+    if (value === 0) { /// if card is an ace
+      aceCount++;
+      score += 11; /// count ace as 11
+    }
 
-      else if (value >= 10) { /// if card is a face card
-        score += 10;
-      }
+    else if (value >= 10) { /// if card is a face card
+      score += 10;
+    }
 
-      else { /// for cards 2-10
-        score += value + 1; /// add 1 because card values are 0 indexed
+    else { /// for cards 2-10
+      score += value + 1; /// add 1 because card values are 0 indexed
     }
     
 
     // Ace adjustment
-      while (score > 21 && aceCount > 0) {
-        score -= 10;
-        aceCount--;
-      }
+    while (score > 21 && aceCount > 0) {
+      score -= 10;
+      aceCount--;
+    }
 
 
     //calulate for bust
     if (score > 21){
       textSize(300);
-      fill('red')
+      fill('red');
       textAlign(CENTER, CENTER);
       text("BUST!", windowWidth/2, windowHeight/1.5);
-      inPlay = false
+      inPlay = false;
     }
     score = score;   
-    }
+  }
 }
 
 
@@ -433,12 +415,16 @@ function calculateDealerScore(){
 
 
 
-function getCardValue(index){
+function getCardValue(diddy){
   /// Determine the value of the card based on its index in the values array
 
-  if (index === 0) return 11; // Ace
+  if (index === 0) {
+    return 11;
+  } // Ace
 
-  if (index >= 10) return 10; // Jack, Queen, King
+  if (index >= 10) {
+    return 10;
+  } // Jack, Queen, King
 
   return index + 1; // because 2 is index 1, 3 is index 2, etc.
 }
@@ -465,7 +451,7 @@ function displayGameResult(){
   /// determine game result based on scores, declare roundOver
   if (state === 'play' && !inPlay && !roundOver){ /// if not in play dont display score
     textSize(300);
-    fill('red')
+    fill('red');
     if (dealerScore > 21){
       result = "PLAYER WINS";
       changeMoney(result);
@@ -496,7 +482,7 @@ function displayGameResult(){
       }
     }
   }
-/// display result text
+  /// display result text
   if (state === "play" && roundOver){
     textSize(150);
     fill('red');
@@ -540,4 +526,9 @@ function windowResized() {
   dealerCardY = height / 2 - 300;
   cardWidth = width / 13.5;
   cardHeight = height / 6;
+}
+
+
+function updateLocalStorage(){
+  localStorage.setItem("money", playerMoney);
 }
