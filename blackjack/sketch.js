@@ -13,7 +13,7 @@
 
 
 /// Assign Gamestate
-state = "play"; 
+state = "main"; 
 /// Assign global variables and define terms
 
 /// create arrays for suits, values, images, and player cards
@@ -52,6 +52,7 @@ let cardFlipped = false;
 let temp = false;
 let roundOver = false;
 let result = "";
+let dealButton = false;
 
 
 ///numerical game variables 
@@ -161,6 +162,10 @@ function startButton() {
     text("STAND!", sButtonX, sButtonY);
 
   }
+  if (state === 'main'){
+
+    dealButton = collidePointRect(mouseX, mouseY, windowWidth/2, windowHeight/1.5, 100, 150);
+  }
 }
 
 ///button mousepressed controls
@@ -198,6 +203,10 @@ function mousePressed() {
       stand = true;
       
     }
+  }
+
+  if (dealButton){
+    state = 'play';
   }
 }
 

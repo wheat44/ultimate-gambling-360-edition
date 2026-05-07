@@ -340,7 +340,7 @@ function mouseWheel(event) {
 
 function displayBet(){
   ///display the player bet and money amount
-  if (state === 'main' || state === 'play' || state === 'redo'){
+  if (state === 'j' || state === 'play' || state === 'redo'){
     textFont(font);
     fill(212,141,51);
     textSize(40);
