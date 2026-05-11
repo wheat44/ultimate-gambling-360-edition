@@ -18,6 +18,11 @@ let startX;
 let totalWidth;
 let spacing;
 
+let slots = [];
+let multipliers = [100, 10, 5, 2, 1, 0.5, 1, 2, 5, 10, 100,];
+let slotHeight = 100;
+
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
@@ -47,6 +52,7 @@ function setup() {
       World.add(world, peg);
     }
   }
+  createSlots();
 }
 
 class Ball {
@@ -59,6 +65,7 @@ class Ball {
       }
     });
     this.r = r;
+    this.scored = false;
     World.add(world, this.body);
   }
 
@@ -79,6 +86,7 @@ function draw() {
   drawBalls();
   drawGrid();
   updateLocalStorage();
+  drawTheGridAtBottomToDetermineWinnings();
 }
 
 
@@ -118,4 +126,65 @@ function updateLocalStorage(){
 
 function drawText(){
   text("Money" + playerMoney, width/2, height/2);
+}
+
+function drawTheGridAtBottomToDetermineWinnings(){
+
+  fill("white");
+
+  for (let slot of slots){
+    rectMode(CENTER);
+
+    rect(
+      slot.position.x,
+      slot.position.y,
+      10,
+      slotHeight
+    );
+  }
+
+  let slotWidth = spacing;
+
+  let totalSlotWidth = multipliers.length * slotWidth;
+  let slotStartX = width / 2 - totalSlotWidth / 2;
+
+  textAlign(CENTER);
+  fill(255);
+  textSize(24);
+
+  for (let i = 0; i < multipliers.length; i++){
+
+    let x = slotStartX + i * slotWidth + slotWidth / 2;
+
+    text(
+      multipliers[i] + "x",
+      x,
+      height - 30
+    );
+  }
+}
+
+function createSlots(){
+  let slotCount = multipliers.length;
+
+  let slotWidth = spacing;
+
+  let totalSlotWidth = slotCount * slotWidth;
+  let slotStartX = width / 2 - totalSlotWidth / 2;
+
+  for (let i = 0; i <= slotCount; i++) {
+
+    let x = slotStartX + i * slotWidth;
+
+    let divider = Bodies.rectangle(
+      x,
+      height - slotHeight / 2,
+      10,
+      slotHeight,
+      { isStatic: true }
+    );
+
+    slots.push(divider);
+    World.add(world, divider);
+  }
 }

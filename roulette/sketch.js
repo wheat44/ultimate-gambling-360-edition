@@ -10,7 +10,7 @@
 
 
 ///designate gamestate
-let state = 'start';
+let state = 'main';
 
 ///game variables
 let playerMoney = 1000;
@@ -97,11 +97,11 @@ function setup() {
   ///redefine screen base dimensional variables after screenwidth and height was created
   createCanvas(windowWidth, windowHeight);
   betX = windowWidth/2;
-  betY = windowHeight/2.2;
+  betY = windowHeight/2;
   cellX = windowWidth/30;
   cellY = windowHeight/9;
   wheelX = windowWidth/4;
-  wheelY =  windowHeight/1.5;
+  wheelY =  windowHeight/1.75;
   imgWidth = windowWidth/3.5;
   imgHeight = windowHeight/2;
   ballRadius = imgWidth * 0.37;
@@ -114,7 +114,7 @@ function setup() {
 
 function draw() {
   ///draw loop
-  displayBG();
+
   drawGrid();
   drawPlacedBets();
   displayMoney();
@@ -463,7 +463,7 @@ function mousePressed() {
 
 
 
-        placedBets.push({
+        placedBets.pus({
           type: "number",
           value: clickedNumber,
           gridX: gridX,
