@@ -17,7 +17,7 @@ state = "play";
 /// Assign global variables and define terms
 
 /// create arrays for suits, values, images, and player cards
-let suits = ["Spades", "Hearts", "Diamonds", "Clubs"];
+let suits = ["spades", "hearts", "diamonds", "clubs"];
 let values = [ "ace","2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king"];
 let cardImages = [];
 let playerCards = [];

@@ -21,7 +21,7 @@
 let state = 'main';
 
 ///define variables for images, sounds, fonts, card values and suits, buttons and options
-let suits = ["Spades", "Hearts", "Diamonds", "Clubs"];
+let suits = ["spades", "hearts", "diamonds", "clubs"];
 let values = [ "ace","2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king"];
 let cardImages = [];
 let options = [];
