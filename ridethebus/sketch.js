@@ -55,7 +55,7 @@ let updatedScreenheight;
 let playStage = 0;
 
 let bet = 100;
-let playerMoney = parseInt(localStorage.getItem("money"));
+let playerMoney = parseInt(localStorage.getItem("money")) || 5000;
 
 
 let choice;
@@ -255,7 +255,7 @@ function displayButtons(){
 function calcResult(){
   ///function calculates result after button push
   if (playStage === 0){
-    if (choice === 'Red' && (cards[0].suit === 'Hearts' || cards[0].suit === 'Diamonds') ||choice === 'Black' && (cards[0].suit === 'Spades' || cards[0].suit === 'Clubs')){
+    if (choice === 'Red' && (cards[0].suit === 'hearts' || cards[0].suit === 'diamonds') ||choice === 'black' && (cards[0].suit === 'spades' || cards[0].suit === 'clubs')){
       playStage++;
       updateLocalStorage();
     } 
@@ -340,7 +340,7 @@ function mouseWheel(event) {
 
 function displayBet(){
   ///display the player bet and money amount
-  if (state === 'j' || state === 'play' || state === 'redo'){
+  if (state === 'main' || state === 'play' || state === 'redo'){
     textFont(font);
     fill(212,141,51);
     textSize(40);
@@ -447,17 +447,16 @@ function keyPressed(){
   }
 }
     
-
-
 function windowResized() {
   /// redefine variables when window is resized.
+  updatedScreenheight = windowHeight - 80;
   resizeCanvas(windowWidth, updatedScreenheight);
   buttonH = updatedScreenheight/ 10;
   buttonW = windowWidth / 10;
   buttonX = windowWidth /2;
   buttonY = updatedScreenheight / 1.2;
   cardWidth = windowWidth / 14;
-  cardHeight = updatedScreenheight/ 6 ;
+  cardHeight = updatedScreenheight/ 5 ;
   spacing = width / 10;
   totalWidth = 3 * spacing + cardWidth; // distance from first to last card
   cardX = width / 2 - totalWidth / 2;

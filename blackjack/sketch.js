@@ -128,8 +128,6 @@ function draw() {
 }
 
 
-
-
 function startButton() {
   ///display start button when in menu state
   if (state === "menu") {
@@ -163,7 +161,8 @@ function startButton() {
 
   }
   if (state === 'main'){
-
+    fill("white");
+    rect(windowWidth/2, windowHeight/1.5, 100, 150);
     dealButton = collidePointRect(mouseX, mouseY, windowWidth/2, windowHeight/1.5, 100, 150);
   }
 }
