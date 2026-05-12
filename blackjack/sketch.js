@@ -57,7 +57,7 @@ let dealButton = false;
 
 ///numerical game variables 
 let bet = 100;
-let playerMoney = localStorage.money;
+let playerMoney = parseInt(localStorage.getItem("money")) || 5000;
 let score = 0;
 let dealerScore = 0;
 
@@ -459,13 +459,14 @@ function displayGameResult(){
   /// determine game result based on scores, declare roundOver
   if (state === 'play' && !inPlay && !roundOver){ /// if not in play dont display score
     textSize(300);
-    fill('red');
     if (dealerScore > 21){
+      fill('green');
       result = "PLAYER WINS";
       changeMoney(result);
       roundOver = true;
     }
     if (score > 21){
+      fill('red');
       result = "DEALER WINS";
       changeMoney(result);
       roundOver = true;
@@ -473,11 +474,13 @@ function displayGameResult(){
     }
     if (score <= 21 && dealerScore <= 21){
       if (score > dealerScore){
+        fill('green');
         result = "PLAYER WINS";
         changeMoney(result);
         roundOver = true;
       }
       else if (dealerScore > score){
+        fill('red');
         result = "DEALER WINS";
         changeMoney(result);
         roundOver = true;
@@ -493,7 +496,7 @@ function displayGameResult(){
   /// display result text
   if (state === "play" && roundOver){
     textSize(150);
-    fill('red');
+    fill('green');
     textAlign(CENTER, CENTER);
     text(result, windowWidth/2, windowHeight/2);
   }
