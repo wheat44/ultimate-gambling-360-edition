@@ -57,8 +57,10 @@ function setup() {
 
 class Ball {
   constructor(x, y, r) {
-    this.body = Bodies.circle(x, y, r, {
-      restitution: 0.3,
+    this.x = x;
+    this.y = y;
+    this.body = Bodies.circle(this.x, this.y, r, {
+      restitution: 0.4,
       friction: 0.1,
       collisionFilter: {
         group: -1
@@ -187,4 +189,20 @@ function createSlots(){
     slots.push(divider);
     World.add(world, divider);
   }
+}
+
+function calculateWinnings(){
+  for (let ball of balls){
+    if(ball.y > height){
+      let location = checkBallLocation(ball);
+    }
+    if (location > totalWidth){
+
+
+    }
+  }
+}
+
+function checkBallLocation(ball){
+  return ball.x;
 }
