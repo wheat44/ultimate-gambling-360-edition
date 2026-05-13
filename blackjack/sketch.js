@@ -97,7 +97,10 @@ function setup() {
   ///define canvas size based on window size
   let canvasH = windowHeight;
   let canvasW = windowWidth;
-  createCanvas(canvasW, canvasH);
+  let canvas = createCanvas(canvasW, canvasH);
+
+  canvas.parent("gameViewport");
+
 
   /// define button dimensions based on window size.
   buttonX = width / 2;
