@@ -95,11 +95,21 @@ function preload() {
 
 function setup() {
   ///define canvas size based on window size
-  let canvasH = windowHeight;
-  let canvasW = windowWidth;
+
+  let viewport = document.getElementById("gameViewport");
+
+  let canvasW = viewport.offsetWidth;
+  let canvasH = viewport.offsetHeight;
+
   let canvas = createCanvas(canvasW, canvasH);
 
   canvas.parent("gameViewport");
+
+setTimeout(() => {
+  windowResized();
+}, 0);
+
+
 
 
   /// define button dimensions based on window size.
@@ -165,13 +175,18 @@ function startButton() {
   }
   if (state === 'main'){
     fill("white");
-    rect(windowWidth/2, windowHeight/1.5, 100, 150);
-    dealButton = collidePointRect(mouseX, mouseY, windowWidth/2, windowHeight/1.5, 100, 150);
+    rectMode(CENTER)
+    rect(width/2, height/1.3, width/15, height/15);
+    fill('black');
+    textAlign(CENTER)
+    text("Deal!", width/2, height/1.3);
+    
   }
 }
 
 ///button mousepressed controls
 function mousePressed() {
+  dealButton = collidePointRect(mouseX, mouseY, width/2, height/1.3, width/20, height/20);
 
   /// if in menu do start button control
   if (state === 'menu') {
@@ -207,8 +222,9 @@ function mousePressed() {
     }
   }
 
-  if (dealButton){
+  if (dealButton && state === 'main'){
     state = 'play';
+    deal = true
   }
 }
 
@@ -391,7 +407,7 @@ function calcScore(){
       textSize(300);
       fill('red');
       textAlign(CENTER, CENTER);
-      text("BUST!", windowWidth/2, windowHeight/1.5);
+      text("BUST!", width/2, height/1.5);
       inPlay = false;
     }
     score = score;   
@@ -426,7 +442,7 @@ function calculateDealerScore(){
 
 
 
-function getCardValue(diddy){
+function getCardValue(index){
   /// Determine the value of the card based on its index in the values array
 
   if (index === 0) {
@@ -501,7 +517,7 @@ function displayGameResult(){
     textSize(150);
     fill('green');
     textAlign(CENTER, CENTER);
-    text(result, windowWidth/2, windowHeight/2);
+    text(result, width/2, height/2);
   }
 
 
@@ -526,18 +542,27 @@ function changeMoney(result){
 
 /// if window is resized, resize the canvas
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+
+  let viewport = document.getElementById("gameViewport");
+
+  let canvasW = viewport.offsetWidth;
+  let canvasH = viewport.offsetHeight;
+
+  resizeCanvas(canvasW, canvasH);
+
   buttonX = width / 2;
   buttonY = height / 2;
   hButtonX = width / 2 - 100;
   hButtonY = height / 2 + 300;
   sButtonX = width / 2 + 100;
   sButtonY = height / 2 + 300;
-  buttonR = width / 6;
+
   cardX = width / 3 - 250;
   cardY = height / 2 - 60;
+
   dealerCardX = width / 3 - 250;
   dealerCardY = height / 2 - 300;
+
   cardWidth = width / 13.5;
   cardHeight = height / 6;
 }

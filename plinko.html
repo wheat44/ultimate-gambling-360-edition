@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>plinko</title>
+  <title>Sketch</title>
 
   <link rel="stylesheet" href="style.css">
 
@@ -13,31 +13,61 @@
 </head>
 
 <body>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <script src="libraries/p5.collide2d.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+
   <div class="topnav">
     <a href="index.html">
       <img src="Assets/logo.png" alt="logo" style="width:400px;height:100px;">
+
     </a>
+
+      <a href="#" class="account-btn" id="accountBtn">About Us</a>
+    
+    <h1 id="moneyDisplay">Money: </h1>
+
+    <style>
+      .account-btn {
+        background-color: grey; 
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 10px;
+        border-color: gold;
+        display: inline-block;
+        transition: 0.25s;
+      }
+      .account-btn:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </div>
+
+  <div id="gameViewport">
+
+
+  </div>
+  
+  <div class="popup" id="popup">
+    <button id="closePopup">Close</button>
   </div>
 
   <script src="plinko/sketch.js"></script>
 
-
-
   <script>
-  const popup = document.getElementById("popup");
-  const closeBtn = document.getElementById("closePopup");
-  const accountBtn = document.getElementById("accountBtn");
+    const popup = document.getElementById("popup");
+    const closeBtn = document.getElementById("closePopup");
+    const accountBtn = document.getElementById("accountBtn");
 
 
-  accountBtn.onclick = function() {
-    popup.style.display = "block";
-  };
+    accountBtn.onclick = function() {
+      popup.style.display = "block";
+    };
 
 
-  closeBtn.onclick = function() {
-    popup.style.display = "none";
-  };
+    closeBtn.onclick = function() {
+      popup.style.display = "none";
+    };
 
 
 
@@ -51,6 +81,6 @@
   }
 
   updateMoneyDisplay();
-</script>
+  </script>
 </body>
 </html>

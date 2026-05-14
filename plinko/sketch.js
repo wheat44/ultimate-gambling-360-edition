@@ -10,8 +10,7 @@ let world;
 let balls = [];
 let pegs = [];
 
-let playerMoney = parseInt(localStorage.getItem("money"));
-
+let playerMoney = parseInt(localStorage.getItem("money")) || 1000;
 let bet = 25;
 
 let startX;
@@ -19,12 +18,19 @@ let totalWidth;
 let spacing;
 
 let slots = [];
-let multipliers = [10, 5, 2, 1.1, 0.5, 0.25, 0.5, 1.1, 2, 5, 10];
+let multipliers = [10, 2.5, 1.5, 1.1, 0.5, 0.25, 0.5, 1.1, 1.5, 2.5, 10];
 let slotHeight = 100;
 
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  let viewport = document.getElementById("gameViewport");
+
+  let canvasW = viewport.offsetWidth;
+  let canvasH = viewport.offsetHeight;
+
+  let canvas = createCanvas(canvasW, canvasH);
+
+  canvas.parent("gameViewport");
 
   engine = Engine.create();
   world = engine.world;
@@ -32,9 +38,13 @@ function setup() {
   let rows = 10;
   spacing = 80;
 
+  setTimeout(() => {
+    windowResized();
+  }, 0);
+
   for (let row = 1; row < rows; row++) {
 
-    let y = 100 + row * spacing;
+    let y = 25 + row * spacing;
 
     // number of pegs increases each row
     let cols = row + 1;
@@ -87,15 +97,19 @@ function draw() {
 
   drawBalls();
   drawGrid();
+  drawText();
   updateLocalStorage();
   drawTheGridAtBottomToDetermineWinnings();
+  for (let ball of balls){
+    calculateWinnings(ball);
+  }
 }
 
 
 function mousePressed() {
   if (mouseY > 100){
     let randomSpawn = random(startX + totalWidth/2 - spacing/2, startX + totalWidth/2 + spacing/2); // spawns the ball within the top two pegs
-    const DROP_HEIGHT = 100;
+    const DROP_HEIGHT = 50;
     const RADIUS = 20;
     balls.push(new Ball(randomSpawn, DROP_HEIGHT, RADIUS));
     placeBet();
@@ -180,7 +194,7 @@ function createSlots(){
 
     let divider = Bodies.rectangle(
       x,
-      height - slotHeight / 2,
+      height + 75, 
       10,
       slotHeight,
       { isStatic: true }
@@ -191,18 +205,48 @@ function createSlots(){
   }
 }
 
-function calculateWinnings(){
-  for (let ball of balls){
-    if(ball.y > height){
-      let location = checkBallLocation(ball);
-    }
-    if (location > totalWidth){
+function calculateWinnings(ball){
 
+  // prevent scoring multiple times
+  if (ball.scored){
+    return;
+  } 
 
-    }
+  // only score when ball reaches bottom
+  if (ball.body.position.y < height - slotHeight){
+    return;
   }
+
+  let slotWidth = spacing;
+
+  let totalSlotWidth = multipliers.length * slotWidth;
+  let slotStartX = width / 2 - totalSlotWidth / 2;
+
+  let index = floor((ball.body.position.x - slotStartX) / slotWidth);
+
+  index = constrain(index, 0, multipliers.length - 1);
+
+  let multiplier = multipliers[index];
+
+  let winnings = bet * multiplier;
+
+  playerMoney += winnings;
+
+  console.log("Multiplier:", multiplier);
+
+  ball.scored = true;
 }
 
 function checkBallLocation(ball){
-  return ball.x;
+  return ball.body.position.x;
+}
+
+function windowResized(){
+  let viewport = document.getElementById("gameViewport");
+
+  let canvasW = viewport.offsetWidth;
+  let canvasH = viewport.offsetHeight;
+
+  resizeCanvas(canvasW, canvasH);
+
 }

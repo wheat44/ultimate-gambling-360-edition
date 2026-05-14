@@ -208,6 +208,7 @@ canvas {
 
   width: 100%;
 
+
   display: flex;
   justify-content: center;
 
@@ -215,16 +216,14 @@ canvas {
 
 /* GAME WINDOW */
 #gameViewport {
-
-  width: auto;
-  height: 100%;
+  width: 100%;
+  height: calc(100vh - 110px);
 
   background-color: #1b1b1b;
 
   border: 8px solid #111;
   border-radius: 18px;
 
-  overflow: hidden;
 
   position: relative;
 

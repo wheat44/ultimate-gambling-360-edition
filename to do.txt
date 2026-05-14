@@ -2,3 +2,5 @@ Colour based win messages blackjack
 Proper Scaling/positioning all card games
 blakcjack deal button implimentation
 CSS Cleanup
+make games github compatible
+html viewport displays
