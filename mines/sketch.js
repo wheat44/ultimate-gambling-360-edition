@@ -344,7 +344,7 @@ function updateMultiplier(){
   // safe tiles defines maximum possible progression
   let safeTiles = rows * cols - numberOfBombs;
 
-  //creates a number between 0 and 1 to determine how for into the round the user is
+  //creates a number between 0 and 1 to determine how far into the round the user is
   let progress = safeClicks / safeTiles;
 
   // max multiplier scales with bomb count

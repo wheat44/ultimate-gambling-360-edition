@@ -18,7 +18,7 @@ let totalWidth;
 let spacing;
 
 let slots = [];
-let multipliers = [10, 2.5, 1.5, 1.1, 0.5, 0.25, 0.5, 1.1, 1.5, 2.5, 10];
+let multipliers = [10, 2.5, 1.5, 1.1, 0.25, 0.1, 0.25, 1.1, 1.5, 2.5, 10];
 let slotHeight = 100;
 
 
@@ -70,7 +70,7 @@ class Ball {
     this.x = x;
     this.y = y;
     this.body = Bodies.circle(this.x, this.y, r, {
-      restitution: 0.4,
+      restitution: 0.3,
       friction: 0.1,
       collisionFilter: {
         group: -1
@@ -110,7 +110,7 @@ function mousePressed() {
   if (mouseY > 100){
     let randomSpawn = random(startX + totalWidth/2 - spacing/2, startX + totalWidth/2 + spacing/2); // spawns the ball within the top two pegs
     const DROP_HEIGHT = 50;
-    const RADIUS = 20;
+    const RADIUS = 22;
     balls.push(new Ball(randomSpawn, DROP_HEIGHT, RADIUS));
     placeBet();
   }
