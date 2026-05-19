@@ -90,6 +90,10 @@ function preload() {
       cardImages[key] = loadImage("blackjack/Assets/Cards/" + fileName);
     }
   }
+  partyConnect(
+    "wss://demoserver.p5party.org",
+    "hello_party"
+  );
 }
 
 
