@@ -105,7 +105,7 @@ function setup() {
   spacing = width / 10;
   totalWidth = 3 * spacing + cardWidth; // distance from first to last card
   cardX = width / 2 - totalWidth / 2;
-  cardY = height / 2.2;
+  cardY = height / 2.9;
 }
 
 function draw() {
@@ -151,7 +151,7 @@ function mouseClicked(){
       }
     }
     ///check if cash out button is clicked
-    if (mouseX > windowWidth * 0.9 - buttonW/2 && mouseX < windowWidth * 0.9 + buttonW/2 && mouseY > updatedScreenheight * 0.9 - buttonH/2 && mouseY < updatedScreenheight * 0.9 + buttonH/2 && playStage >=1){
+    if (mouseX > windowWidth * 0.9 - buttonW/2 && mouseX < windowWidth * 0.9 + buttonW/2 && mouseY > updatedScreenheight * 0.2 - buttonH/2 && mouseY < updatedScreenheight * 0.2 + buttonH/2 && playStage >=1){
       state = 'main';
       ///change player money based on bet and playstage
       playerMoney += bet + bet * (playStage + 1);
@@ -191,9 +191,10 @@ function displayButtons(){
 
   /// deal button during main and redo states
   else if (state === 'main' || state === 'redo' || playStage === 4){
-    fill(212,141,51);
+    fill(79);
     rect(buttonX, buttonY, buttonW, buttonH);
-    fill('black');
+    textSize(35);
+    fill('white');
     text('Deal!', buttonX, buttonY);
   }
 
@@ -202,9 +203,9 @@ function displayButtons(){
     ///cash out button
     rectMode(CENTER);
     fill(79);
-    rect(windowWidth * 0.9, updatedScreenheight * 0.9, buttonW, buttonH);
+    rect(windowWidth * 0.9, updatedScreenheight * 0.2, buttonW, buttonH);
     fill('white');
-    text('Cash Out', windowWidth * 0.9, updatedScreenheight * 0.9);
+    text('Cash Out', windowWidth * 0.9, updatedScreenheight * 0.2);
 
 
     if (playStage === 0){
@@ -342,12 +343,12 @@ function displayBet(){
   ///display the player bet and money amount
   if (state === 'main' || state === 'play' || state === 'redo'){
     textFont(font);
-    fill(212,141,51);
+    fill('white');
     textSize(40);
     let amount = bet;
-    text("Bet: $" + amount, windowWidth * 0.1, updatedScreenheight * 0.88);
+    text("Bet: $" + amount, windowWidth * 0.1, updatedScreenheight * 0.2);
     let money = playerMoney;
-    text("Money: $" + money, windowWidth * 0.1, updatedScreenheight * 0.92); 
+    text("Money: $" + money, windowWidth * 0.1, updatedScreenheight * 0.25); 
   }
 
   ///check if bet is invalid
