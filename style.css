@@ -61,6 +61,13 @@ canvas {
 
 }
 
+.instrutions {
+  margin-left: auto;
+  margin-right: 10%;
+
+}
+
+
 .topnav img {
   height: 60px;
   width: auto; 
@@ -108,7 +115,7 @@ canvas {
 }
 
 .Bus:hover {
-  background-image: url("Assets/logo.png");
+  background-image: url("Assets/buscoverimage.png");
   background-size: cover;
   background-position: center;
 }

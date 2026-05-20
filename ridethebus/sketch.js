@@ -209,7 +209,7 @@ function displayButtons(){
 
 
     if (playStage === 0){
-      options = ['Red', 'Black'];
+      options = ['red', 'black'];
     }
     else if (playStage === 1){
       options = ['Higher', 'Lower', 'Same'];
@@ -218,7 +218,7 @@ function displayButtons(){
       options = ['Inside', 'Outside', 'Same'];
     }
     else if (playStage === 3){
-      options = ['Hearts', 'Diamonds', 'Spades', 'Clubs'];
+      options = ['hearts', 'diamonds', 'spades', 'clubs'];
     }
 
     ///create buttons equally spaced based on number of options and display them using button object.
@@ -235,10 +235,10 @@ function displayButtons(){
       });
 
       ///choose colours for red and black buttons and gray for the rest
-      if (options[i] === 'Red' || options[i] === 'Hearts' || options[i] === 'Diamonds'){
+      if (options[i] === 'red' || options[i] === 'hearts' || options[i] === 'diamonds'){
         fill('red');
       }
-      else if (options[i] === 'Black' || options[i] === 'Spades' || options[i] === 'Clubs'){
+      else if (options[i] === 'black' || options[i] === 'spades' || options[i] === 'clubs'){
         fill('black');
       }
       else {
@@ -256,7 +256,7 @@ function displayButtons(){
 function calcResult(){
   ///function calculates result after button push
   if (playStage === 0){
-    if (choice === 'Red' && (cards[0].suit === 'hearts' || cards[0].suit === 'diamonds') ||choice === 'black' && (cards[0].suit === 'spades' || cards[0].suit === 'clubs')){
+    if (choice === 'red' && (cards[0].suit === 'hearts' || cards[0].suit === 'diamonds') ||choice === 'black' && (cards[0].suit === 'spades' || cards[0].suit === 'clubs')){
       playStage++;
       updateLocalStorage();
     } 
