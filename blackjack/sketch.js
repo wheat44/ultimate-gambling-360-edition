@@ -109,9 +109,9 @@ function setup() {
 
   canvas.parent("gameViewport");
 
-setTimeout(() => {
-  windowResized();
-}, 0);
+  setTimeout(() => {
+    windowResized();
+  }, 0);
 
 
 
@@ -228,7 +228,7 @@ function mousePressed() {
 
   if (dealButton && state === 'main'){
     state = 'play';
-    deal = true
+    deal = true;
   }
 }
 
