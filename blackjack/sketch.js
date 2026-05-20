@@ -109,9 +109,9 @@ function setup() {
 
   canvas.parent("gameViewport");
 
-setTimeout(() => {
-  windowResized();
-}, 0);
+  setTimeout(() => {
+    windowResized();
+  }, 0);
 
 
 
@@ -138,10 +138,11 @@ function draw() {
   displayBet();
   dealCards();
   calcScore();
-  displayResult();
   dealDealerCards();
   displayGameResult();
   updateLocalStorage();
+  // partyState = partyLoadShared('state', state);
+  // state = partyState;
 }
 
 
@@ -228,7 +229,7 @@ function mousePressed() {
 
   if (dealButton && state === 'main'){
     state = 'play';
-    deal = true
+    deal = true;
   }
 }
 

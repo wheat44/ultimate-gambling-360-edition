@@ -13,7 +13,7 @@
 
 
 //game state variable that lets the program know if the user is playing
-let gameState = "start screen";
+let gameState = "playing";
 
 //money and bet variables
 let money = 1000;
@@ -45,6 +45,15 @@ let shapeOne = "square";
 let shapeTwo = "square";
 let shapeThree = "square";
 
+//variables for the delay on the slots
+let reel1Done = false;
+let reel2Done = false;
+let reel3Done = false;
+
+let reel1Delay = 1000;
+let reel2Delay = 1800;
+let reel3Delay = 2600;
+
 
 function setup() {
   handleX = windowWidth*0.8; // initalizes the handle variables once the windowHeight and Width have been declared
@@ -69,10 +78,7 @@ function windowResized(){
 
 
 function draw() {
-  if (gameState === "start screen"){
-    drawStartScreen();
-  } 
-  else if (gameState === "playing"){
+  if (gameState === "playing"){
     
     if(allIn){
       background(255,255,0);
@@ -82,44 +88,55 @@ function draw() {
     }
     drawText();
     spinDelay();
-    drawSlotMachine();  
+    drawSlotMachine(); 
+    slotDelay();
+    // determines the delay for each slot to appear 
 
+  }
+
+  //draws the start screen with the game title
+
+
+  //function for when the spacec key is pressed, change the game state to playing
+  function keyPressed(){ 
+    if (keyCode === SHIFT && gameState === "playing" && !spinning){
+      allIn = !allIn;
+    }
+    if (gameState === "playing" && key === "r" && !spinning){
+      money = 1000;
+      bet = betMin;
+    }
+  }
+
+  function slotDelay(){
     if (spinning) {
-      shapeOne = random(symbols);
-      shapeTwo = random(symbols);
-      shapeThree = random(symbols);
 
+      if (!reel1Done) {
+        shapeOne = random(symbols);
+
+        if (millis() - spinStartTime >= reel1Delay) {
+          reel1Done = true;
+        }
+      }
+
+      if (!reel2Done) {
+        shapeTwo = random(symbols);
+
+        if (millis() - spinStartTime >= reel2Delay) {
+          reel2Done = true;
+        }
+      }
+
+      if (!reel3Done) {
+        shapeThree = random(symbols);
+
+        if (millis() - spinStartTime >= reel3Delay) {
+          reel3Done = true;
+        }
+      }
     }
   }
 }
-
-//draws the start screen with the game title
-function drawStartScreen(){
-  background(0,0,100);
-  fill(255);
-  textAlign(CENTER, CENTER);
-  textSize(60); 
-  textStyle(BOLD);
-  text("SLOTS MACHINE", windowWidth/2, windowHeight/2);
-
-  textSize(40);
-  text("Press SPACE to start!", windowWidth/2, windowHeight/2 + 100); 
-}
-
-//function for when the spacec key is pressed, change the game state to playing
-function keyPressed(){ 
-  if (gameState === "start screen" && key === ' '){ 
-    gameState = "playing"; 
-  }
-  if (keyCode === SHIFT && gameState === "playing" && !spinning){
-    allIn = !allIn;
-  }
-  if (gameState === "playing" && key === "r" && !spinning){
-    money = 1000;
-    bet = betMin;
-  }
-}
-
 
 
 //updates and displays all money, bet, and result text
@@ -209,6 +226,14 @@ function placeBet(){
       activeBet = bet;
     }
     money -= activeBet;
+    reel1Done = false;
+    reel2Done = false;
+    reel3Done = false;
+    
+    randomOdds();
+    setFinalShapes();
+
+
     spinning = true;
     spinStartTime = millis();
     result = "";
@@ -239,10 +264,8 @@ function mouseWheel(event){
 //adds a delay for the spinning animation, then finalizes results
 function spinDelay(){
   if (spinning && millis() - spinStartTime >= delay){
-    randomOdds();
     spinning = false;
     pullHere = "Pull To Spin!";
-    setFinalShapes(); // once the result is given after the delay, set the graphics for the final shapes
   }
 }
 
