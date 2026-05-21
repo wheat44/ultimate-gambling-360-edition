@@ -70,8 +70,12 @@
 <div class="popup" id="popup">
   <img src="Assets/popup.png" alt="popup image">
   <h2>ABOUT US</h2>
-  <p>herman</p>
-  <button id="closePopup">Close</button>
+  <p>Ultimate Gambling 360 is your one-stop destination for classic casino-style games and interactive entertainment. 
+    Our goal is to create fun, engaging, and visually polished gaming experiences that bring the excitement of the casino 
+    to players everywhere. From blackjack to party-style card games, we focus on smooth gameplay, retro-inspired design, and non
+    stop entertainment. More features, games, and updates are always on the way as we continue building the ultimate online casin
+    o experience.</p>
+  <button class="closePopup" id="closePopup">Close</button>
 </div>
 
 <script>
@@ -88,7 +92,6 @@
   closeBtn.onclick = function() {
     popup.style.display = "none";
   };
-
 
 
     if (localStorage.getItem("money") === null) {
