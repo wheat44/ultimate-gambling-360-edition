@@ -93,50 +93,50 @@ function draw() {
     // determines the delay for each slot to appear 
 
   }
+}
+//draws the start screen with the game title
 
-  //draws the start screen with the game title
 
-
-  //function for when the spacec key is pressed, change the game state to playing
-  function keyPressed(){ 
-    if (keyCode === SHIFT && gameState === "playing" && !spinning){
-      allIn = !allIn;
-    }
-    if (gameState === "playing" && key === "r" && !spinning){
-      money = 1000;
-      bet = betMin;
-    }
+//function for when the space key is pressed, change the game state to playing
+function keyPressed(){ 
+  if (keyCode === SHIFT && gameState === "playing" && !spinning){
+    allIn = !allIn;
+  } 
+  if (gameState === "playing" && key === "r" && !spinning){
+    money = 1000;
+    bet = betMin;
   }
+}
 
-  function slotDelay(){
-    if (spinning) {
+function slotDelay(){
+  if (spinning) {
 
-      if (!reel1Done) {
-        shapeOne = random(symbols);
+    if (!reel1Done) {
+      shapeOne = random(symbols);
 
-        if (millis() - spinStartTime >= reel1Delay) {
-          reel1Done = true;
-        }
+      if (millis() - spinStartTime >= reel1Delay) {
+        reel1Done = true;
       }
+    }
 
-      if (!reel2Done) {
-        shapeTwo = random(symbols);
+    if (!reel2Done) {
+      shapeTwo = random(symbols);
 
-        if (millis() - spinStartTime >= reel2Delay) {
-          reel2Done = true;
-        }
+      if (millis() - spinStartTime >= reel2Delay) {
+        reel2Done = true;
       }
+    }
 
-      if (!reel3Done) {
-        shapeThree = random(symbols);
+    if (!reel3Done) {
+      shapeThree = random(symbols);
 
-        if (millis() - spinStartTime >= reel3Delay) {
-          reel3Done = true;
-        }
+      if (millis() - spinStartTime >= reel3Delay) {
+        reel3Done = true;
       }
     }
   }
 }
+
 
 
 //updates and displays all money, bet, and result text
