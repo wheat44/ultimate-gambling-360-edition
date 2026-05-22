@@ -19,3 +19,5 @@ Jonathan Hlady and his sidekick Thomas Jordan Ham have the goal to make a functi
 - In game purchases 
 - Mobile compatability
 - Make it harder to cheat
+- plinko autobet
+- plinko standard deviation

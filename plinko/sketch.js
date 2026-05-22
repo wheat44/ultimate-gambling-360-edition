@@ -21,6 +21,9 @@ let slots = [];
 let multipliers = [10, 2.5, 1.5, 1.1, 0.25, 0.1, 0.25, 1.1, 1.5, 2.5, 10];
 let slotHeight = 100;
 
+let autoBetMode = true;
+let autoBetDelay = 500;
+
 
 function setup() {
   let viewport = document.getElementById("gameViewport");
@@ -249,4 +252,10 @@ function windowResized(){
 
   resizeCanvas(canvasW, canvasH);
 
+}
+
+function autoBet(){
+  while(autoBetMode && frameCount % 60 === 0){
+    balls.push(new Ball(randomSpawn, DROP_HEIGHT, RADIUS));
+  }
 }

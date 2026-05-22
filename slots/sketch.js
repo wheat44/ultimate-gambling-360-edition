@@ -98,7 +98,8 @@ function draw() {
 
 
 //function for when the space key is pressed, change the game state to playing
-function keyPressed(){ 
+function 
+keyPressed(){ 
   if (keyCode === SHIFT && gameState === "playing" && !spinning){
     allIn = !allIn;
   } 

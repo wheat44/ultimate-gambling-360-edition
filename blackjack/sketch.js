@@ -141,6 +141,7 @@ function draw() {
   dealDealerCards();
   displayGameResult();
   updateLocalStorage();
+
   // partyState = partyLoadShared('state', state);
   // state = partyState;
 }
@@ -191,7 +192,10 @@ function startButton() {
 
 ///button mousepressed controls
 function mousePressed() {
-  dealButton = collidePointRect(mouseX, mouseY, width/2, height/1.3, width/20, height/20);
+  if (state === 'main'){
+    dealButton = collidePointRect(mouseX, mouseY, width/2, height/1.3, width/20, height/20);
+    console.log('button PRessed')
+  }
 
   /// if in menu do start button control
   if (state === 'menu') {
@@ -227,9 +231,13 @@ function mousePressed() {
     }
   }
 
-  if (dealButton && state === 'main'){
-    state = 'play';
+  if (dealButton){
     deal = true;
+    console.log(deal)
+    dealCards();
+    console.log('deal cards happened')
+    state = 'play';
+    console.log('state updated')
   }
 }
 
