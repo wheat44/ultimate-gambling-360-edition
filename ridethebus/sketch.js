@@ -115,10 +115,7 @@ function draw() {
   displayBet();
   displayCardValue();
   updateLocalStorage();
-  let moneyDisplay = document.getElementById("moneyDisplay");
-  if (moneyDisplay) {
-    moneyDisplay.textContent = "Money: $" + playerMoney;
-  }
+
 }
 
 
@@ -466,5 +463,10 @@ function windowResized() {
 
 
 function updateLocalStorage(){
+  ///updates 
   localStorage.setItem("money", playerMoney);
+  let moneyDisplay = document.getElementById("moneyDisplay");
+  if (moneyDisplay) {
+    moneyDisplay.textContent = "Money: $" + playerMoney;
+  }
 }

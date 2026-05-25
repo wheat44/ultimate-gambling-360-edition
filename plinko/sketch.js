@@ -24,6 +24,11 @@ let slotHeight = 100;
 let autoBetMode = true;
 let autoBetDelay = 500;
 
+let slider;
+let sliderSize;
+let currentRows = 5;
+
+
 
 function setup() {
   let viewport = document.getElementById("gameViewport");
@@ -44,28 +49,17 @@ function setup() {
   setTimeout(() => {
     windowResized();
   }, 0);
-
-  for (let row = 1; row < rows; row++) {
-
-    let y = 25 + row * spacing;
-
-    // number of pegs increases each row
-    let cols = row + 1;
-
-    // center the row
-    totalWidth = (cols - 1) * spacing;
-    startX = width / 2 - totalWidth / 2;
-
-    for (let col = 0; col < cols; col++) {
-
-      let x = startX + col * spacing;
-
-      let peg = Bodies.circle(x, y, 8, { isStatic: true });
-      pegs.push(peg);
-      World.add(world, peg);
-    }
-  }
   createSlots();
+
+  //slider scales with the window
+  sliderSize = windowWidth *0.33;
+  
+  //creates a slider up to a max of 24 so there is still one safe tile left and sets size
+  slider = createSlider(10, 15, 10, 1);
+  slider.size(sliderSize);
+  slider.position(windowWidth/1.1 - sliderSize/2, windowHeight * 0.95);
+
+  drawPegs(currentRows);
 }
 
 class Ball {
@@ -95,12 +89,18 @@ class Ball {
 
 
 function draw() {
-  background(0);
-  Engine.update(engine);
+  
+  let newRows = slider.value();
 
+  if (newRows !== currentRows){
+    currentRows = newRows;
+    drawPegs(currentRows);
+  }
+
+  background("#374243");
+  Engine.update(engine);
   drawBalls();
   drawGrid();
-  drawText();
   updateLocalStorage();
   drawTheGridAtBottomToDetermineWinnings();
   for (let ball of balls){
@@ -139,13 +139,16 @@ function drawBalls(){
     ball.show();
   }
 }
+
+
 function updateLocalStorage(){
-  localStorage.money = playerMoney;
+  localStorage.setItem("money", playerMoney);
+  let moneyDisplay = document.getElementById("moneyDisplay");
+  if (moneyDisplay) {
+    moneyDisplay.textContent = "Money: $" + playerMoney;  
+  }
 }
 
-function drawText(){
-  text("Money" + playerMoney, width/2, height/2);
-}
 
 function drawTheGridAtBottomToDetermineWinnings(){
 
@@ -257,5 +260,36 @@ function windowResized(){
 function autoBet(){
   while(autoBetMode && frameCount % 60 === 0){
     balls.push(new Ball(randomSpawn, DROP_HEIGHT, RADIUS));
+  }
+}
+
+function drawPegs(rows){
+
+  for (let peg of pegs){
+    World.remove(world, peg);
+  }
+
+  pegs = [];
+
+  for (let row = 1; row < rows; row++) {
+
+    let y = 25 + row * spacing;
+
+    let cols = row + 1;
+
+    totalWidth = (cols - 1) * spacing;
+    startX = width / 2 - totalWidth / 2;
+
+    for (let col = 0; col < cols; col++) {
+
+      let x = startX + col * spacing;
+
+      let peg = Bodies.circle(x, y, 8, {
+        isStatic: true
+      });
+
+      pegs.push(peg);
+      World.add(world, peg);
+    }
   }
 }

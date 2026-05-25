@@ -4,7 +4,6 @@ Colour based win messages blackjack
 Proper Scaling/positioning all card games
 blakcjack deal button implimentation ---->no idea why it doesnt work tbh
 CSS Cleanup
-make games github compatible
 html viewport displays
 impliment p5 party into p5js
 update visuals (include table) ride the bus
@@ -12,5 +11,7 @@ make text scale with the window size ride the bus
 add in a dealer that gives tips or smt like that
 go through and re comment all of the code/ remove unescisasry code/house-keeping
 remove old menus from blackjack
+blackjack multiplayer
 rescale blackjack
+roulette remake
 
