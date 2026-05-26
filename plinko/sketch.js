@@ -43,9 +43,6 @@ function setup() {
   engine = Engine.create();
   world = engine.world;
 
-  let rows = 10;
-  spacing = 80;
-
   setTimeout(() => {
     windowResized();
   }, 0);
@@ -113,7 +110,7 @@ function mousePressed() {
   if (mouseY > 100){
     let randomSpawn = random(startX + totalWidth/2 - spacing/2, startX + totalWidth/2 + spacing/2); // spawns the ball within the top two pegs
     const DROP_HEIGHT = 50;
-    const RADIUS = 22;
+    const RADIUS = spacing * 0.25;
     balls.push(new Ball(randomSpawn, DROP_HEIGHT, RADIUS));
     placeBet();
   }
@@ -123,8 +120,13 @@ function mousePressed() {
 function drawGrid(){
   fill("white");
   noStroke();
+
   for (let peg of pegs) {
-    circle(peg.position.x, peg.position.y, 20);
+    circle(
+      peg.position.x,
+      peg.position.y,
+      peg.circleRadius * 2
+    );
   }
 }
 
@@ -271,9 +273,20 @@ function drawPegs(rows){
 
   pegs = [];
 
+  let maxBoardWidth = width;
+  let maxBoardHeight = height * 0.9;
+
+  let spacingX = maxBoardWidth / rows;
+
+  let spacingY = maxBoardHeight / rows;
+
+  spacing = min(spacingX, spacingY);
+
+  let pegRadius = spacing * 0.12;
+
   for (let row = 1; row < rows; row++) {
 
-    let y = 25 + row * spacing;
+    let y = 50 + row * spacing;
 
     let cols = row + 1;
 
@@ -284,7 +297,7 @@ function drawPegs(rows){
 
       let x = startX + col * spacing;
 
-      let peg = Bodies.circle(x, y, 8, {
+      let peg = Bodies.circle(x, y, pegRadius, {
         isStatic: true
       });
 
