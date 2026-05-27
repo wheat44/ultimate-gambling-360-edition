@@ -18,15 +18,18 @@ let totalWidth;
 let spacing;
 
 let slots = [];
-let multipliers = [10, 2.5, 1.5, 1.1, 0.25, 0.1, 0.25, 1.1, 1.5, 2.5, 10];
+let multipliers = [5, 1.5, 1, 0.5, 0.25, 0.1, 0.25, 0.5, 1, 1.5, 5];
 let slotHeight = 100;
 
-let autoBetMode = true;
-let autoBetDelay = 500;
+let autoBetMode = false;
+let autoBetDelay = 750;
 
 let slider;
 let sliderSize;
 let currentRows = 5;
+
+
+
 
 
 
@@ -49,7 +52,7 @@ function setup() {
   createSlots();
 
   //slider scales with the window
-  sliderSize = windowWidth *0.33;
+  sliderSize = windowWidth *0.1;
   
   //creates a slider up to a max of 24 so there is still one safe tile left and sets size
   slider = createSlider(10, 15, 10, 1);
@@ -64,7 +67,7 @@ class Ball {
     this.x = x;
     this.y = y;
     this.body = Bodies.circle(this.x, this.y, r, {
-      restitution: 0.3,
+      restitution: 0.35,
       friction: 0.1,
       collisionFilter: {
         group: -1
@@ -96,6 +99,10 @@ function draw() {
 
   background("#374243");
   Engine.update(engine);
+
+  if (autoBetMode){
+    autoBet();
+  }
   drawBalls();
   drawGrid();
   updateLocalStorage();
@@ -107,12 +114,15 @@ function draw() {
 
 
 function mousePressed() {
-  if (mouseY > 100){
-    let randomSpawn = random(startX + totalWidth/2 - spacing/2, startX + totalWidth/2 + spacing/2); // spawns the ball within the top two pegs
-    const DROP_HEIGHT = 50;
-    const RADIUS = spacing * 0.25;
-    balls.push(new Ball(randomSpawn, DROP_HEIGHT, RADIUS));
-    placeBet();
+  if (!autoBetMode){
+
+    if (mouseY > 100){
+      const DROP_HEIGHT = 50;
+      const RADIUS = spacing * 0.25;
+      let randomSpawn = random(startX + totalWidth/2 - spacing/2, startX + totalWidth/2 + spacing/2); // spawns the ball within the top two pegs
+      balls.push(new Ball(randomSpawn, DROP_HEIGHT, RADIUS));
+      placeBet();
+    }
   }
 }
 
@@ -155,6 +165,7 @@ function updateLocalStorage(){
 function drawTheGridAtBottomToDetermineWinnings(){
 
   fill("white");
+  textSize(25 * spacing/100);
 
   for (let slot of slots){
     rectMode(CENTER);
@@ -163,7 +174,7 @@ function drawTheGridAtBottomToDetermineWinnings(){
       slot.position.x,
       slot.position.y,
       10,
-      slotHeight
+      slotHeight,
     );
   }
 
@@ -174,7 +185,7 @@ function drawTheGridAtBottomToDetermineWinnings(){
 
   textAlign(CENTER);
   fill(255);
-  textSize(24);
+  // textSize(24);
 
   for (let i = 0; i < multipliers.length; i++){
 
@@ -259,11 +270,37 @@ function windowResized(){
 
 }
 
-function autoBet(){
-  while(autoBetMode && frameCount % 60 === 0){
+let lastAutoBet = 0;
+
+function autoBet() {
+
+  let currentTime = millis();
+
+  if (currentTime - lastAutoBet > autoBetDelay){
+
+    const DROP_HEIGHT = 50;
+    const RADIUS = spacing * 0.25;
+
+    let randomSpawn = random(
+      startX + totalWidth/2 - spacing/2,
+      startX + totalWidth/2 + spacing/2
+    );
+
     balls.push(new Ball(randomSpawn, DROP_HEIGHT, RADIUS));
+    placeBet();
+
+    lastAutoBet = currentTime;
   }
 }
+
+
+function keyPressed(){
+  if (key === "a"){
+    autoBetMode = !autoBetMode;
+  }
+
+}
+
 
 function drawPegs(rows){
 
