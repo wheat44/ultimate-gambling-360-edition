@@ -164,16 +164,16 @@ function createExtraSquares(){
     }
 
     if (x === 0) {
-      squareText = "1 to 18"
+      squareText = "1 to 18";
     }
     else if (x === 1) {
-      squareText = "Even"
+      squareText = "Even";
     }
     else if (x === 4) {
-      squareText = "Odd"
+      squareText = "Odd";
     }
     else if (x === 5) {
-      squareText = "19 to 36"
+      squareText = "19 to 36";
     }
 
     fill(colour);
@@ -222,74 +222,74 @@ function snapBet(bet) {
   /// given the bet object, snap it to the right place and determine what numbers it covers
 
   /// if its a nubmer bet snap to center of the square
- if (bet.value === "number") {
-  let snapX = cellX / 2;
-  let snapY = cellY / 2;
+  if (bet.value === "number") {
+    let snapX = cellX / 2;
+    let snapY = cellY / 2;
 
-  bet.x = round((bet.x - betX) / snapX) * snapX + betX;
-  bet.y = round((bet.y - betY) / snapY) * snapY + betY;
+    bet.x = round((bet.x - betX) / snapX) * snapX + betX;
+    bet.y = round((bet.y - betY) / snapY) * snapY + betY;
 
-  // block outside edges, ie dont let it snap outside of numbers section and just return null
-  if (
-    bet.x === betX || bet.x === betX + cellX * ROWS ||
+    // block outside edges, ie dont let it snap outside of numbers section and just return null
+    if (
+      bet.x === betX || bet.x === betX + cellX * ROWS ||
     bet.y === betY || bet.y === betY + cellY * COLS
-  ) {
-    bet.value = null;
-    return;
-  }
+    ) {
+      bet.value = null;
+      return;
+    }
 
 
-  let colPos = round((bet.x - betX) / (cellX / 2)) / 2;
-  let rowPos = round((bet.y - betY) / (cellY / 2)) / 2;
+    let colPos = round((bet.x - betX) / (cellX / 2)) / 2;
+    let rowPos = round((bet.y - betY) / (cellY / 2)) / 2;
 
-  let nums = [];
+    let nums = [];
 
-  // center of one square
-  if (colPos % 1 === 0.5 && rowPos % 1 === 0.5) {
-    let col = floor(colPos);
-    let row = floor(rowPos);
+    // center of one square
+    if (colPos % 1 === 0.5 && rowPos % 1 === 0.5) {
+      let col = floor(colPos);
+      let row = floor(rowPos);
 
-    nums.push(bettingGrid[col][row]);
-    bet.value = "straight";
-  }
+      nums.push(bettingGrid[col][row]);
+      bet.value = "straight";
+    }
 
-  // vertical split: left/right
-  else if (colPos % 1 === 0 && rowPos % 1 === 0.5) {
-    let leftCol = colPos - 1;
-    let rightCol = colPos;
-    let row = floor(rowPos);
+    // vertical split: left/right
+    else if (colPos % 1 === 0 && rowPos % 1 === 0.5) {
+      let leftCol = colPos - 1;
+      let rightCol = colPos;
+      let row = floor(rowPos);
 
-    nums.push(bettingGrid[leftCol][row]);
-    nums.push(bettingGrid[rightCol][row]);
-    bet.value = "split";
-  }
+      nums.push(bettingGrid[leftCol][row]);
+      nums.push(bettingGrid[rightCol][row]);
+      bet.value = "split";
+    }
 
-  // horizontal split: top/bottom
-  else if (colPos % 1 === 0.5 && rowPos % 1 === 0) {
-    let col = floor(colPos);
-    let topRow = rowPos - 1;
-    let bottomRow = rowPos;
+    // horizontal split: top/bottom
+    else if (colPos % 1 === 0.5 && rowPos % 1 === 0) {
+      let col = floor(colPos);
+      let topRow = rowPos - 1;
+      let bottomRow = rowPos;
 
-    nums.push(bettingGrid[col][topRow]);
-    nums.push(bettingGrid[col][bottomRow]);
-    bet.value = "split";
-  }
+      nums.push(bettingGrid[col][topRow]);
+      nums.push(bettingGrid[col][bottomRow]);
+      bet.value = "split";
+    }
 
-  // corner: four numbers
-  else if (colPos % 1 === 0 && rowPos % 1 === 0) {
-    let leftCol = colPos - 1;
-    let rightCol = colPos;
-    let topRow = rowPos - 1;
-    let bottomRow = rowPos;
+    // corner: four numbers
+    else if (colPos % 1 === 0 && rowPos % 1 === 0) {
+      let leftCol = colPos - 1;
+      let rightCol = colPos;
+      let topRow = rowPos - 1;
+      let bottomRow = rowPos;
 
-    nums.push(bettingGrid[leftCol][topRow]);
-    nums.push(bettingGrid[rightCol][topRow]);
-    nums.push(bettingGrid[leftCol][bottomRow]);
-    nums.push(bettingGrid[rightCol][bottomRow]);
-    bet.value = "corner";
-  }
+      nums.push(bettingGrid[leftCol][topRow]);
+      nums.push(bettingGrid[rightCol][topRow]);
+      nums.push(bettingGrid[leftCol][bottomRow]);
+      nums.push(bettingGrid[rightCol][bottomRow]);
+      bet.value = "corner";
+    }
 
-  bet.numbers = nums;
+    bet.numbers = nums;
   }
   else if (bet.value === "0 or 00") {
     bet.x = betX - cellX / 2;
@@ -335,12 +335,24 @@ function snapBet(bet) {
     bet.x = betX + bottom * cellX * 2 + cellX;
     bet.y = betY + cellY * COLS + cellX * 1.5;
 
-    if (bottom === 0) bet.value = "1 to 18";
-    else if (bottom === 1) bet.value = "Even";
-    else if (bottom === 2) bet.value = "Red";
-    else if (bottom === 3) bet.value = "Black";
-    else if (bottom === 4) bet.value = "Odd";
-    else if (bottom === 5) bet.value = "19 to 36";
+    if (bottom === 0) {
+      bet.value = "1 to 18";
+    }
+    else if (bottom === 1) {
+      bet.value = "Even";
+    }
+    else if (bottom === 2) {
+      bet.value = "Red";
+    }
+    else if (bottom === 3) {
+      bet.value = "Black";
+    }
+    else if (bottom === 4) {
+      bet.value = "Odd";
+    }
+    else if (bottom === 5) {
+      bet.value = "19 to 36";
+    }
   }
 }
 
@@ -478,7 +490,8 @@ function tempRandomOutput(){
   let rand = random(0, 38);
   if (rand < 37) {
     output = floor(rand);
-  } else {
+  }
+  else {
     output = "00";
   }
   return output;
