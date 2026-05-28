@@ -253,7 +253,7 @@ function snapBet(bet) {
       bet.value = "straight";
     }
 
-    // vertical split: left/right
+    // vertical split left/right
     else if (colPos % 1 === 0 && rowPos % 1 === 0.5) {
       let leftCol = colPos - 1;
       let rightCol = colPos;
@@ -264,7 +264,7 @@ function snapBet(bet) {
       bet.value = "split";
     }
 
-    // horizontal split: top/bottom
+    // horizontal split top/bottom
     else if (colPos % 1 === 0.5 && rowPos % 1 === 0) {
       let col = floor(colPos);
       let topRow = rowPos - 1;
@@ -275,7 +275,7 @@ function snapBet(bet) {
       bet.value = "split";
     }
 
-    // corner: four numbers
+    // corner four numbers
     else if (colPos % 1 === 0 && rowPos % 1 === 0) {
       let leftCol = colPos - 1;
       let rightCol = colPos;
@@ -361,8 +361,10 @@ function snapBet(bet) {
 function drawPlacedBets() {
   for (let i = 0; i < placedBets.length; i++) {
     let bet = placedBets[i];
+    fillColours = ['yellow','orange','green','cyan','purple','cyan','red','white'];
+    colourChoice = fillColours[(bet.amount/100)];
 
-    fill("yellow");
+    fill(colourChoice);
     circle(bet.x, bet.y, chipR);
 
     fill("black");
@@ -458,7 +460,12 @@ function displayResult(output) {
   textSize(60);
   fill('orange');
   textAlign(CENTER, CENTER);
+  text("the result is" + output, 200,200);
 }
+
+
+
+
 function calcResult(output) {
   let totalChange = 0;
 
@@ -638,6 +645,12 @@ function drawBetSelection(){
   fill('black');
   rect(0, windowHeight - 100, windowWidth, 100);
 }
+
+function spinWheel(){
+
+}
+
+
 
 
 function windowResized() {

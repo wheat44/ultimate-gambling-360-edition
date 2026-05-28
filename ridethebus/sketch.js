@@ -112,12 +112,10 @@ function draw() {
   ///draw loop
   background("#374243");
   displayButtons();
-  displayBet();
   displayCardValue();
   updateLocalStorage();
 
 }
-
 
 
 function mouseClicked(){
@@ -336,29 +334,6 @@ function mouseWheel(event) {
   return false;
 }
 
-function displayBet(){
-  ///display the player bet and money amount
-  if (state === 'main' || state === 'play' || state === 'redo'){
-    textFont(font);
-    fill('white');
-    textSize(40);
-    let amount = bet;
-    text("Bet: $" + amount, windowWidth * 0.1, updatedScreenheight * 0.2);
-    let money = playerMoney;
-    text("Money: $" + money, windowWidth * 0.1, updatedScreenheight * 0.25); 
-  }
-
-  ///check if bet is invalid
-  if (bet >playerMoney){
-    bet = playerMoney;
-  }
-
-  ///check if playerMoney is greater than 0 
-  if (playerMoney <0){
-    bet = 0;
-    playerMoney = 0;
-  }
-}
 
 function displayCardValue(){
   ///function initially displays blank back of cards untill correct playstage, which then reads key and displays images
