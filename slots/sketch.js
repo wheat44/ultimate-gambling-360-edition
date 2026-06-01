@@ -16,7 +16,7 @@
 let gameState = "playing";
 
 //money and bet variables
-let money = 1000;
+let playerMoney = parseInt(localStorage.getItem("money")) || 1000;
 let bet = 25;
 let betMax = 500;
 let betMin = 25;
@@ -93,6 +93,8 @@ function draw() {
     // determines the delay for each slot to appear 
 
   }
+
+  updateLocalStorage();
 }
 //draws the start screen with the game title
 
@@ -103,10 +105,6 @@ keyPressed(){
   if (keyCode === SHIFT && gameState === "playing" && !spinning){
     allIn = !allIn;
   } 
-  if (gameState === "playing" && key === "r" && !spinning){
-    money = 1000;
-    bet = betMin;
-  }
 }
 
 function slotDelay(){
@@ -146,15 +144,8 @@ function drawText(){
   fill(0, 150, 0);
   textSize(windowWidth*0.015);
   textStyle(BOLD);
-  text("Money $" + money, windowWidth*0.8, windowHeight* 0.05);
 
-  let displayBet;
-  if(allIn){
-    displayBet = money;
-  }
-  else{
-    displayBet = bet;
-  }
+  let displayBet = bet;
 
   fill(200, 150, 0);
   text("Bet: $"+ displayBet, windowWidth*0.8, windowHeight*0.09); 
@@ -175,7 +166,6 @@ function drawText(){
   text("WIN 2x BET: 🟥🟥🟥", xOffset, windowHeight/2 - windowHeight * 0.05);
   text("BREAK EVEN: 🟥🟥", xOffset, windowHeight/2);
   text("PRESS SHIFT TO GO ALL IN", xOffset, windowHeight/2 + windowHeight * 0.05);
-  text("PRESS R TO RESET MONEY", xOffset, windowHeight/2 + windowHeight *0.1);
 
   text(result, windowWidth/2, windowHeight * 0.95); // text for the result of the spin
  
@@ -190,19 +180,19 @@ function randomOdds(){
   let odds = floor(random(1000)); // odds from 1-1000, using floor so that I only get integers
   
   if (odds === 999){ // jackpot, pays out 100x
-    money = money + 100*activeBet; 
+    playerMoney = playerMoney + 100*activeBet; 
     result = "JACKPOT!";
   }  
   else if (odds >= 975){ // big win odds, pays out 25x
-    money = money + 25*activeBet;
+    playerMoney = playerMoney + 25*activeBet;
     result = "BIG WIN!";
   }
   else if (odds >= 900){ // normal win pays out 2x, but is highly rigged
-    money = money + 2*activeBet;
+    playerMoney = playerMoney + 2*activeBet;
     result = "WIN";
   }
   else if (odds >= 600){ // breaking even
-    money = money + activeBet;
+    playerMoney = playerMoney + activeBet;
     result = "BROKE EVEN";
   }
   else{
@@ -214,19 +204,19 @@ function randomOdds(){
 //function that places the users bet if they have enough money and starts the spin
 //
 function placeBet(){ 
-  if (money === 0){
+  if (playerMoney === 0){
     result = "No Money Left!";
     return; 
   }
   
-  if(!spinning && bet<=money ){ 
+  if(!spinning && bet<= playerMoney ){ 
     if (allIn) { // uses allIn toggle to bet all money if activated
-      activeBet = money;
+      activeBet = playerMoney;
     }   
     else {
       activeBet = bet;
     }
-    money -= activeBet;
+    playerMoney -= activeBet;
     reel1Done = false;
     reel2Done = false;
     reel3Done = false;
@@ -240,7 +230,7 @@ function placeBet(){
     result = "";
   }
   
-  else if (money < bet){
+  else if (playerMoney < bet){
     result = "Not Enough Funds";
   }
 }
@@ -377,5 +367,13 @@ function drawSymbol(symbol, x, y){
     let size = windowWidth/32;
     fill(255,255,0);
     triangle(x-size/2, y+size/2, x, y-size/2, x+size/2, y+size/2);
+  }
+}
+
+function updateLocalStorage(){
+  localStorage.setItem("money", playerMoney);
+  let moneyDisplay = document.getElementById("moneyDisplay");
+  if (moneyDisplay) {
+    moneyDisplay.textContent = "Money: $" + playerMoney;  
   }
 }

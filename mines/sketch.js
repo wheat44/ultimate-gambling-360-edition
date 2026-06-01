@@ -13,7 +13,6 @@ let gameState = "stopped";
 const BET_MAX = 500;
 const BET_MIN = 25;
 let bet = 25;
-let money = 500;
 let winMultiplier = 1;
 let safeClicks = 0;
 
@@ -51,6 +50,9 @@ let revealAllTiles = false;
 //sound variables
 let dingSound;
 let wrongTileSound;
+
+let playerMoney = parseInt(localStorage.getItem("money")) || 1000;
+
 
 
 function preload(){
@@ -117,6 +119,9 @@ function draw() {
   else if (gameState === "playing"){
     slider.attribute('disabled', '');
   }
+
+  updateLocalStorage();
+
 }
 
 
@@ -131,7 +136,7 @@ function drawGrid(){
   totalGridH = rows*tileY + (rows -1)* spacingY;
 
   startX = windowWidth/2 - totalGridW /2;
-  startY = windowHeight/2 - totalGridH /2;
+  startY = windowHeight/2 - totalGridH /2 -  100;
   
   //loops through all columns and rows to create a 5x5 grid
   for (let r = 0; r < rows; r++){
@@ -206,7 +211,7 @@ function inButton(button){
 function mousePressed(){
 
   //starts the round if the game is stopped and user has enough money
-  if (inButton(betButton) && gameState === "stopped" && bet <= money){
+  if (inButton(betButton) && gameState === "stopped" && bet <= playerMoney){
     placeBet(); // places the users bet
     generateGrid(); // once the game starts the grid gets randomized for a new grid each game
     gameState = "playing";
@@ -266,7 +271,7 @@ function drawText(){
   textAlign(LEFT);
   fill("white");
   textSize(windowWidth*0.01);
-  text("Number Of Bombs: " + numberOfBombs, windowWidth*0.45, windowHeight*0.93);
+  text("Number Of Bombs: " + numberOfBombs, windowWidth*0.45, windowHeight*0.87);
 
   textSize(windowWidth*0.015);
   if (gameState === "stopped"){
@@ -275,22 +280,13 @@ function drawText(){
   else if (gameState === "playing"){
     text("Cash Out", cashOutButton.x + windowWidth/64, cashOutButton.y + windowHeight/30);
   }
-  fill(10, 12, 18);
-  rect(0, 0, width, height * 0.08);
-
-  fill(0, 255, 100);
-  textSize(windowWidth*0.02);
-  textAlign(LEFT, CENTER);
-  text("Balance: $" + money.toFixed(2), width*0.02, height*0.04);
 
   fill(255);
-  textAlign(RIGHT, CENTER);
-  text("Multiplier: " + winMultiplier.toFixed(2) + "x", width*0.98, height*0.04);
-  
-  fill(255, 200, 0);
-  textSize(windowWidth * 0.02);
-  text("BET: $" + bet, windowWidth * 0.5, windowHeight * 0.04);
+  textAlign(LEFT, CENTER);
+  text("Multiplier: " + winMultiplier.toFixed(2) + "x", width*0.87, height*0.04);
 
+  fill(255, 200, 0);
+  text("BET: $" + bet, windowWidth * 0.87, windowHeight * 0.08);
 }
 
 function generateGrid(){
@@ -328,16 +324,17 @@ function generateGrid(){
 function placeBet(){
   safeClicks = 0;
   winMultiplier = 1;
-  if (bet <= money){ // ensures the player cannot bet more money than they currently have
-    money -= bet;
+  if (bet <= playerMoney){ // ensures the player cannot bet more money than they currently have
+    playerMoney -= bet;
   }
 }
 
 //returns the users money + any money they made off their bet
 function cashOut(){
   gameState = "stopped";
-  money += bet * winMultiplier;
+  playerMoney = floor(playerMoney += bet * winMultiplier);
   winMultiplier = 1;
+  revealAllTiles = true;
 }
 
 function updateMultiplier(){
@@ -367,11 +364,11 @@ function mouseWheel(event){
   return false; // so that the screen doesn't scroll when the mouse wheel scrolls.
 }
 
-//pressing r will reset users money to $500
-function keyPressed(){
-  if (gameState === "stopped"){
-    if (key === "r"){
-      money = 500;
-    }
+
+function updateLocalStorage(){
+  localStorage.setItem("money", playerMoney);
+  let moneyDisplay = document.getElementById("moneyDisplay");
+  if (moneyDisplay) {
+    moneyDisplay.textContent = "Money: $" + playerMoney;  
   }
 }

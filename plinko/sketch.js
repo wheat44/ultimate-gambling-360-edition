@@ -18,7 +18,7 @@ let totalWidth;
 let spacing;
 
 let slots = [];
-let multipliers = [5, 1.5, 1, 0.5, 0.25, 0.1, 0.25, 0.5, 1, 1.5, 5];
+let multipliers = [5, 1.5, 1.1, 0.5, 0.25, 0.1, 0.25, 0.5, 1.1, 1.5, 5];
 let slotHeight = 100;
 
 let autoBetMode = false;
@@ -172,7 +172,7 @@ function drawTheGridAtBottomToDetermineWinnings(){
   for (let slot of slots){
     rectMode(CENTER);
 
-    rect(slot.position.x, slot.position.y - 100, 10, slotHeight,);
+    rect(slot.position.x, slot.position.y - 100, 10, slotHeight);
   }
 
   let slotWidth = spacing;
