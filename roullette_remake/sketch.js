@@ -46,6 +46,7 @@ function draw() {
   drawPlacedBets();
   drawrouletteWheel();
   drawBetSelection();
+  spinWheel();
 }
 
 
@@ -253,7 +254,7 @@ function snapBet(bet) {
       bet.value = "straight";
     }
 
-    // vertical split: left/right
+    // vertical split left/right
     else if (colPos % 1 === 0 && rowPos % 1 === 0.5) {
       let leftCol = colPos - 1;
       let rightCol = colPos;
@@ -264,7 +265,7 @@ function snapBet(bet) {
       bet.value = "split";
     }
 
-    // horizontal split: top/bottom
+    // horizontal split top/bottom
     else if (colPos % 1 === 0.5 && rowPos % 1 === 0) {
       let col = floor(colPos);
       let topRow = rowPos - 1;
@@ -275,7 +276,7 @@ function snapBet(bet) {
       bet.value = "split";
     }
 
-    // corner: four numbers
+    // corner four numbers
     else if (colPos % 1 === 0 && rowPos % 1 === 0) {
       let leftCol = colPos - 1;
       let rightCol = colPos;
@@ -361,14 +362,18 @@ function snapBet(bet) {
 function drawPlacedBets() {
   for (let i = 0; i < placedBets.length; i++) {
     let bet = placedBets[i];
+    fillColours = ['yellow','orange','green','cyan','purple','cyan','red','white','yellow','violet','blue'];
+    colourChoice = fillColours[bet.amount/100];
 
-    fill("yellow");
+    fill(colourChoice);
     circle(bet.x, bet.y, chipR);
 
     fill("black");
     textSize(chipR * 0.35);
     textAlign(CENTER, CENTER);
     text("$" + bet.amount, bet.x, bet.y);
+
+
   }
 }
 
@@ -435,8 +440,13 @@ function addOrIncreaseBet(newBet) {
 
     // same snapped chip location = same bet spot
     if (oldBet.x === newBet.x && oldBet.y === newBet.y) {
-      oldBet.amount += newBet.amount;
-      return;
+      if (oldBet.amount === 1000){
+        newBet.amount = 1000;
+      }
+      else{
+        oldBet.amount += newBet.amount;
+        return;
+      }
     }
   }
 
@@ -451,6 +461,7 @@ function keyPressed() {
     calcResult(output);
     console.log("the output is: " + output);
     displayResult(output);
+    state = 'spin';
   }
 }
 
@@ -458,7 +469,12 @@ function displayResult(output) {
   textSize(60);
   fill('orange');
   textAlign(CENTER, CENTER);
+  text("the result is" + output, 200,200);
 }
+
+
+
+
 function calcResult(output) {
   let totalChange = 0;
 
@@ -638,6 +654,20 @@ function drawBetSelection(){
   fill('black');
   rect(0, windowHeight - 100, windowWidth, 100);
 }
+
+function spinWheel(){
+  if (state === 'spin'){
+    counter = 0;
+    if (frameCount % 10 === 0 && counter < 100){
+      push();
+      rotate(10);
+      pop();
+      counter ++;
+    }
+  }
+}
+
+
 
 
 function windowResized() {
