@@ -46,6 +46,7 @@ function draw() {
   drawPlacedBets();
   drawrouletteWheel();
   drawBetSelection();
+  spinWheel();
 }
 
 
@@ -361,8 +362,8 @@ function snapBet(bet) {
 function drawPlacedBets() {
   for (let i = 0; i < placedBets.length; i++) {
     let bet = placedBets[i];
-    fillColours = ['yellow','orange','green','cyan','purple','cyan','red','white'];
-    colourChoice = fillColours[(bet.amount/100)];
+    fillColours = ['yellow','orange','green','cyan','purple','cyan','red','white','yellow','violet','blue'];
+    colourChoice = fillColours[bet.amount/100];
 
     fill(colourChoice);
     circle(bet.x, bet.y, chipR);
@@ -371,6 +372,8 @@ function drawPlacedBets() {
     textSize(chipR * 0.35);
     textAlign(CENTER, CENTER);
     text("$" + bet.amount, bet.x, bet.y);
+
+
   }
 }
 
@@ -437,8 +440,13 @@ function addOrIncreaseBet(newBet) {
 
     // same snapped chip location = same bet spot
     if (oldBet.x === newBet.x && oldBet.y === newBet.y) {
-      oldBet.amount += newBet.amount;
-      return;
+      if (oldBet.amount === 1000){
+        newBet.amount = 1000;
+      }
+      else{
+        oldBet.amount += newBet.amount;
+        return;
+      }
     }
   }
 
@@ -453,6 +461,7 @@ function keyPressed() {
     calcResult(output);
     console.log("the output is: " + output);
     displayResult(output);
+    state = 'spin';
   }
 }
 
@@ -647,7 +656,15 @@ function drawBetSelection(){
 }
 
 function spinWheel(){
-
+  if (state === 'spin'){
+    counter = 0;
+    if (frameCount % 10 === 0 && counter < 100){
+      push();
+      rotate(10);
+      pop();
+      counter ++;
+    }
+  }
 }
 
 
