@@ -20,7 +20,10 @@ state = "main";
 let suits = ["spades", "hearts", "diamonds", "clubs"];
 let values = [ "ace","2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king"];
 let cardImages = [];
-let playerCards = [];
+let player1Cards = [];
+let player2Cards = []; 
+let player3Cards = []; 
+let player4Cards = []; 
 let dealerCards = [];
 
 
@@ -194,7 +197,7 @@ function startButton() {
 function mousePressed() {
   if (state === 'main'){
     dealButton = collidePointRect(mouseX, mouseY, width/2, height/1.3, width/20, height/20);
-    console.log('button PRessed')
+    console.log('button PRessed');
   }
 
   /// if in menu do start button control
@@ -233,11 +236,11 @@ function mousePressed() {
 
   if (dealButton){
     deal = true;
-    console.log(deal)
+    console.log(deal);
     dealCards();
-    console.log('deal cards happened')
+    console.log('deal cards happened');
     state = 'play';
-    console.log('state updated')
+    console.log('state updated');
   }
 }
 
