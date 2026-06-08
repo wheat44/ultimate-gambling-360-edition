@@ -73,39 +73,36 @@ function createGrid(){
 }
 
 function drawGrid() {
-  if (state === 'main') {
+  // draw main 12 x 3 number grid
+  for (let x = 0; x < ROWS; x++) {
+    for (let y = 0; y < COLS; y++) {
 
-    // draw main 12 x 3 number grid
-    for (let x = 0; x < ROWS; x++) {
-      for (let y = 0; y < COLS; y++) {
+      let boxX = x * cellX + betX;
+      let boxY = y * cellY + betY;
 
-        let boxX = x * cellX + betX;
-        let boxY = y * cellY + betY;
+      betTextX = boxX + cellX / 2;
+      betTextY = boxY + cellY / 2;
 
-        betTextX = boxX + cellX / 2;
-        betTextY = boxY + cellY / 2;
+      /// alternate colours based on box for roulette pattern
+      let currentNumber = bettingGrid[x][y];
 
-        /// alternate colours based on box for roulette pattern
-        let currentNumber = bettingGrid[x][y];
-
-        if (REDNUMBERS.includes(currentNumber)) {
-          colour = 'red';
-        }
-        else if (BLACKNUMBERS.includes(currentNumber)) {
-          colour = 'black';
-        }
-
-
-        ///draw each square
-        fill(colour);
-        rect(boxX, boxY, cellX, cellY);
-
-        ///number each box
-        fill('white');
-        textSize(cellX * 0.4);
-        textAlign(CENTER, CENTER);
-        text(bettingGrid[x][y], betTextX, betTextY);
+      if (REDNUMBERS.includes(currentNumber)) {
+        colour = 'red';
       }
+      else if (BLACKNUMBERS.includes(currentNumber)) {
+        colour = 'black';
+      }
+
+
+      ///draw each square
+      fill(colour);
+      rect(boxX, boxY, cellX, cellY);
+
+      ///number each box
+      fill('white');
+      textSize(cellX * 0.4);
+      textAlign(CENTER, CENTER);
+      text(bettingGrid[x][y], betTextX, betTextY);
     }
   }
 }
@@ -608,6 +605,7 @@ function drawrouletteWheel() {
     let startAngle = i * angleSize - HALF_PI;
     let endAngle = startAngle + angleSize;
 
+    //fillColours
     if (num === 0 || num === "00") {
       fill("green");
     }

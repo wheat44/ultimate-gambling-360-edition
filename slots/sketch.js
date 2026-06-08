@@ -84,7 +84,7 @@ function draw() {
       background(255,255,0);
     }
     else {
-      background(0);
+      background("#374243");
     }
     drawText();
     spinDelay();

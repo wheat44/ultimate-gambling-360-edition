@@ -28,7 +28,7 @@ let slider;
 let sliderSize;
 let currentRows = 5;
 
-
+let newRows;
 
 
 
@@ -54,8 +54,8 @@ function setup() {
   //slider scales with the window
   sliderSize = windowWidth *0.1;
   
-  //creates a slider up to a max of 24 so there is still one safe tile left and sets size
-  slider = createSlider(10, 15, 10, 1);
+  //creates a slider up to a max of 16 rows that counts by 2
+  slider = createSlider(10, 16, 10, 2);
   slider.size(sliderSize);
   slider.position(windowWidth/1.1 - sliderSize/2, windowHeight * 0.95);
 
@@ -89,8 +89,13 @@ class Ball {
 
 
 function draw() {
-  
-  let newRows = slider.value();
+  if (newRows !== currentRows){
+    currentRows = newRows;
+    drawPegs(currentRows);
+
+    createSlots(); // rebuild slots
+  }
+  newRows = slider.value();
 
   if (newRows !== currentRows){
     currentRows = newRows;
@@ -167,13 +172,7 @@ function updateLocalStorage(){
 function drawTheGridAtBottomToDetermineWinnings(){
 
   fill("white");
-  textSize(25 * spacing/100);
-
-  for (let slot of slots){
-    rectMode(CENTER);
-
-    rect(slot.position.x, slot.position.y - 100, 10, slotHeight);
-  }
+  textSize(constrain(spacing * 0.25, 12, 30));
 
   let slotWidth = spacing;
 
@@ -184,9 +183,22 @@ function drawTheGridAtBottomToDetermineWinnings(){
   fill(255);
   // textSize(24);
 
+  if (newRows === 10){
+    multipliers = [2.5, 1.5, 1.1, 0.5, 0.25, 0.1, 0.25, 0.5, 1.1, 1.5, 2.5];
+  }
+  if (newRows === 12){
+    multipliers = [5, 2.5, 1.1, 0.75, 0.5, 0.25, 0.1, 0.25, 0.5, 0.75, 1.1, 2.5, 5];
+  }
+  if (newRows === 14){
+    multipliers = [8, 5, 1.1, 0.75, 0.6, 0.5, 0.25, 0.1, 0.25, 0.5, 0.6, 0.75, 1.1, 5, 8];
+  }
+  if (newRows === 16){
+    multipliers = [12, 8, 2, 1.1, 0.75, 0.6, 0.5, 0.25, 0.1, 0.25, 0.5, 0.6, 0.75, 1.1, 2, 8, 12];
+  }
+
   for (let i = 0; i < multipliers.length; i++){
 
-    let x = slotStartX + i * slotWidth + slotWidth / 2;
+    let x = slotStartX + i * slotWidth + slotWidth/2;
 
     text(
       multipliers[i] + "x",
@@ -197,6 +209,14 @@ function drawTheGridAtBottomToDetermineWinnings(){
 }
 
 function createSlots(){
+
+
+  for (let slot of slots){
+    World.remove(world, slot);
+  }
+
+  slots = [];
+
   let slotCount = multipliers.length;
 
   let slotWidth = spacing;

@@ -16,6 +16,10 @@ let me;
 let myPlayer;
 let mySeat = null;
 
+let buttonW;
+let buttonH;
+let buttonX;
+let buttonY;
 
 function preload() {
   // connect to a p5party server
@@ -69,7 +73,8 @@ function preload() {
   game = partyLoadShared("game", {
     dealerCards: [],
     deck: [],
-    state: "waiting"
+    state: "waiting",
+    full: false
   });
 }
 
@@ -115,13 +120,38 @@ function setup() {
   }
 
   else {
-    game.state = "full";
+    game.full= true;
+  }
+
+  buttonH = windowHeight/40;
+  buttonW = windowWidth/40;
+  
+
+
+  /// determine x position based on seat
+  if (mySeat === 1){
+    buttonX = windowWidth/4;
+    buttonY= windowWidth/3;
+  }
+  else if (mySeat === 2){
+    buttonX = windowWidth/3;
+    buttonY= windowWidth/3;
+  }
+
+  else if (mySeat ===3){
+    buttonX = windowWidth/2;
+    buttonY= windowWidth/3;
+  }
+  else if (mySeat ===4){
+    buttonX = windowWidth/1.5;
+    buttonY= windowWidth/3;
   }
 }
 
 
 function draw() {
   background("#374243");
+  readyButtons();
 
   if (partyIsHost()) {
     if (game.state === "waiting" && everyoneReady()) {
@@ -133,9 +163,11 @@ function draw() {
 
 
 function dealCards(){
-  ///clear everyones cards
+  ///only host deals the cards clear everyones cards
+  if (partyIsHost()){
+    
+  }
 
-  ///
   ///assign cards to everyone
 
   ///assign 2 dealer cards
@@ -181,11 +213,26 @@ function buildDeck() {
   shuffle(game.deck, true);
 }
 
-function shuffle(){
+function shuffle(deck, shuffle){
+  if (shuffle === 'true'){
+    ///reset and shuffle the deck
+  }
+
+  ///set shuffle to false
+  shuffle = false;
   
 }
 
 
 function drawDealerCards(){
+
+}
+
+
+function readyButtons(){
+  if (game.state === 'waiting' && myPlayer.ready === false){
+    rect(buttonX, buttonY, buttonW, buttonH);
+  }
+
 
 }

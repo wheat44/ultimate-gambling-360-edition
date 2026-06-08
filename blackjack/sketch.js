@@ -144,9 +144,6 @@ function draw() {
   dealDealerCards();
   displayGameResult();
   updateLocalStorage();
-
-  // partyState = partyLoadShared('state', state);
-  // state = partyState;
 }
 
 
