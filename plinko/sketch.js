@@ -33,9 +33,16 @@ let newRows = 10;
 let changingRowsAllowed = true;
 let sliderLocked = false;
 
+let ballDropSound;
+let ballWinningsSound;
 
 
 function setup() {
+
+  ballDropSound = loadSound("plinko/ballDroppedSound.wav");
+  ballWinningsSound = loadSound("plinko/popSoundForWinnings.mp3");
+
+  
   let viewport = document.getElementById("gameViewport");
 
   let canvasW = viewport.offsetWidth;
@@ -44,9 +51,12 @@ function setup() {
   let canvas = createCanvas(canvasW, canvasH);
 
   canvas.parent("gameViewport");
+  
 
   engine = Engine.create();
   world = engine.world;
+
+  
 
   setTimeout(() => {
     windowResized();
@@ -158,8 +168,14 @@ function placeBet(){
     const RADIUS = spacing * 0.25;
     let randomSpawn = random(startX + totalWidth/2 - spacing/2, startX + totalWidth/2 + spacing/2); // spawns the ball within the top two pegs
     balls.push(new Ball(randomSpawn, DROP_HEIGHT, RADIUS));
+
+
+  if (ballDropSound && ballDropSound.isLoaded()) {
+    ballDropSound.play();
   }
 }
+}
+
 
 function drawBalls(){
   for (let ball of balls){
@@ -279,6 +295,8 @@ function calculateWinnings(ball){
   console.log("Multiplier:", multiplier);
 
   ball.scored = true;
+
+  ballWinningsSound.play();
 
   setTimeout(() => {
   World.remove(world, ball.body);
@@ -435,5 +453,4 @@ function mouseWheel(event) {
     bet = constrain(bet, 5, 500);
     return false; 
   }
- 
 }

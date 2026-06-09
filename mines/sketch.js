@@ -65,7 +65,7 @@ function preload(){
   questionMarkImage = loadImage("mines/unknownTile.png");
   diamondImage = loadImage("mines/diamondTileImage.avif");
 }
-xz
+
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
