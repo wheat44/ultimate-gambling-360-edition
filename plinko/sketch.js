@@ -425,13 +425,15 @@ function drawText(){
 }
 
 function mouseWheel(event) {
-
-  if (event.delta < 0) {
-    bet += 5;
+  if (balls.length === 0){
+    if (event.delta < 0) {
+      bet += 5;
   }
-  else {
-    bet -= 5;
+    else {
+      bet -= 5;
   }
-  bet = constrain(bet, 5, 500);
-  return false; 
+    bet = constrain(bet, 5, 500);
+    return false; 
+  }
+ 
 }
