@@ -681,11 +681,7 @@ function drawrouletteWheel() {
 
   // pointer at top, not rotated with the wheel
   fill("yellow");
-  triangle(
-    circleX, circleY - circleR - 20,
-    circleX - 12, circleY - circleR + 10,
-    circleX + 12, circleY - circleR + 10
-  );
+  triangle(circleX, circleY - circleR + 20, circleX - 12, circleY - circleR -20, circleX + 12, circleY - circleR -20);
 }
 
 

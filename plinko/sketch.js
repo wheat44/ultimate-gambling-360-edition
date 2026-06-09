@@ -104,7 +104,8 @@ function draw() {
   // if a ball is in play lock slider completely
   if (balls.length > 0) {
     slider.value(currentRows); // force it back
-  } else {
+  }
+  else {
     newRows = slider.value();
 
     if (newRows !== currentRows) {
@@ -136,7 +137,9 @@ function draw() {
 
 function mousePressed() {
 
-  if (autoBetMode) return;
+  if (autoBetMode) {
+    return;
+  }
 
   if (mouseX > width * 0.65 && mouseY < height * 0.45) {
     return;
@@ -170,10 +173,10 @@ function placeBet(){
     balls.push(new Ball(randomSpawn, DROP_HEIGHT, RADIUS));
 
 
-  if (ballDropSound && ballDropSound.isLoaded()) {
-    ballDropSound.play();
+    if (ballDropSound && ballDropSound.isLoaded()) {
+      ballDropSound.play();
+    }
   }
-}
 }
 
 
@@ -299,9 +302,9 @@ function calculateWinnings(ball){
   ballWinningsSound.play();
 
   setTimeout(() => {
-  World.remove(world, ball.body);
-  balls.splice(balls.indexOf(ball),1);
-}, 500);
+    World.remove(world, ball.body);
+    balls.splice(balls.indexOf(ball),1);
+  }, 500);
 }
 
 function checkBallLocation(ball){
@@ -419,7 +422,7 @@ function drawMultiplierBoxes(){
 
 
     let r = 255;
-    let g = 175 - (amount * 205);
+    let g = 175 - amount * 205;
     let b = 0;
 
 
@@ -446,10 +449,10 @@ function mouseWheel(event) {
   if (balls.length === 0){
     if (event.delta < 0) {
       bet += 5;
-  }
+    }
     else {
       bet -= 5;
-  }
+    }
     bet = constrain(bet, 5, 500);
     return false; 
   }

@@ -100,13 +100,13 @@ canvas {
 }
 
 .Blackjack:hover {
-  background-image: url("Assets/logo.png");
+  background-image: url("Assets/plinkoImage.png");
   background-size: cover;
   background-position: center;
 }
 
 .Plinko:hover {
-  background-image: url("Assets/pinkotemporarylolherman.png");
+  background-image: url("Assets/logo.png");
   background-size: cover;
   background-position: center;
 }
