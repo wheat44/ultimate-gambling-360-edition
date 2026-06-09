@@ -28,8 +28,10 @@ let slider;
 let sliderSize;
 let currentRows = 5;
 
-let newRows;
+let newRows = 10;
 
+let changingRowsAllowed = true;
+let sliderLocked = false;
 
 
 
@@ -57,8 +59,7 @@ function setup() {
   //creates a slider up to a max of 16 rows that counts by 2
   slider = createSlider(10, 16, 10, 2);
   slider.size(sliderSize);
-  slider.position(windowWidth/1.1 - sliderSize/2, windowHeight * 0.95);
-
+  slider.position(width * 0.5, height - 40);
   drawPegs(currentRows);
 }
 
@@ -89,45 +90,52 @@ class Ball {
 
 
 function draw() {
-  if (newRows !== currentRows){
-    currentRows = newRows;
-    drawPegs(currentRows);
 
-    createSlots(); // rebuild slots
-  }
-  newRows = slider.value();
+  // if a ball is in play lock slider completely
+  if (balls.length > 0) {
+    slider.value(currentRows); // force it back
+  } else {
+    newRows = slider.value();
 
-  if (newRows !== currentRows){
-    currentRows = newRows;
-    drawPegs(currentRows);
+    if (newRows !== currentRows) {
+      currentRows = newRows;
+      drawPegs(currentRows);
+      createSlots();
+    }
   }
 
   background("#374243");
   Engine.update(engine);
 
-  if (autoBetMode){
+  if (autoBetMode) {
     autoBet();
   }
-  
+
+  drawText();
   drawBalls();
   drawGrid();
   updateLocalStorage();
+  drawMultiplierBoxes();
   drawTheGridAtBottomToDetermineWinnings();
-  for (let ball of balls){
+
+  for (let ball of balls) {
     calculateWinnings(ball);
   }
 }
 
 
 function mousePressed() {
-  if (!autoBetMode){
 
-    if (mouseY > 100){
-      placeBet();
-    }
+  if (autoBetMode) return;
+
+  if (mouseX > width * 0.65 && mouseY < height * 0.45) {
+    return;
+  }
+
+  if (mouseY > 100) {
+    placeBet();
   }
 }
-
 
 function drawGrid(){
   fill("white");
@@ -271,6 +279,11 @@ function calculateWinnings(ball){
   console.log("Multiplier:", multiplier);
 
   ball.scored = true;
+
+  setTimeout(() => {
+  World.remove(world, ball.body);
+  balls.splice(balls.indexOf(ball),1);
+}, 500);
 }
 
 function checkBallLocation(ball){
@@ -285,6 +298,13 @@ function windowResized(){
 
   resizeCanvas(canvasW, canvasH);
 
+  sliderSize = width * 0.15;
+  slider.size(sliderSize);
+  slider.position(width * 0.8, height *0.3
+  );
+
+  drawPegs(currentRows);
+  createSlots();
 }
 
 let lastAutoBet = 0;
@@ -352,4 +372,68 @@ function drawPegs(rows){
       World.add(world, peg);
     }
   }
+}
+
+function drawMultiplierBoxes(){
+
+  let slotWidth = spacing;
+
+  let totalSlotWidth = multipliers.length * slotWidth;
+
+  let slotStartX = width/2 - totalSlotWidth / 2;
+
+
+  let gap = 6;
+  let boxHeight = spacing;
+
+  for(let i = 0; i < multipliers.length; i++){
+
+    let x = slotStartX + i * slotWidth;
+
+
+    // distance from center
+    let center = (multipliers.length - 1) / 2;
+    let danger = abs(i - center);
+
+
+    // 0 = middle, bigger = edges
+    let amount = danger / center;
+
+
+    let r = 255;
+    let g = 175 - (amount * 205);
+    let b = 0;
+
+
+    fill(r, g, b);
+    noStroke();
+
+
+    rect(x + gap/2, height - boxHeight - 10, slotWidth - gap, boxHeight, 12);
+  }
+}
+
+function drawText(){
+  fill(255, 200, 0);
+  textSize(windowWidth*0.01);
+
+  text("BET: $" + bet, windowWidth * 0.87, windowHeight * 0.08);
+
+  fill("white");
+  text("Number Of Rows: " + newRows, windowWidth*0.88, windowHeight*0.125);
+
+}
+
+function mouseWheel(event) {
+  if (balls.length === 0){
+    if (event.delta < 0) {
+      bet += 5;
+  }
+    else {
+      bet -= 5;
+  }
+    bet = constrain(bet, 5, 500);
+    return false; 
+  }
+ 
 }
