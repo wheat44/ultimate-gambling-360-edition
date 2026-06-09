@@ -89,24 +89,25 @@ function preload() {
     deck: [],
     state: "waiting",
     full: false,
-    turn: 1
+    turn: 1,
+    results: {
+      player1: "",
+      player2: "",
+      player3: "",
+      player4: ""
+    }
   });
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  //for each player get their client id and assign it to the first available seat
-
-  // Already seated?
   if (me.seat !== null) {
     mySeat = me.seat;
     myPlayer = players["player" + mySeat];
-    return;
   }
 
-  // otherwise claim a seat
-  if (players.player1.id === null) {
+  else if (players.player1.id === null) {
     mySeat = 1;
     me.seat = 1;
     players.player1.id = 'p1';
@@ -135,37 +136,11 @@ function setup() {
   }
 
   else {
-    game.full= true;
-  }
-
-  buttonH = windowHeight/40;
-  buttonW = windowWidth/40;
-  
-
-
-  /// determine x position based on seat
-  if (mySeat === 1){
-    buttonX = windowWidth/4;
-    buttonY= windowWidth/3;
-  }
-  else if (mySeat === 2){
-    buttonX = windowWidth/3;
-    buttonY= windowWidth/3;
-  }
-
-  else if (mySeat ===3){
-    buttonX = windowWidth/2;
-    buttonY= windowWidth/3;
-  }
-  else if (mySeat ===4){
-    buttonX = windowWidth/1.5;
-    buttonY= windowWidth/3;
-  
+    game.full = true;
   }
 
   updateLayout();
 }
-
 
 
 
@@ -211,20 +186,25 @@ function updateLayout() {
 function draw() {
   background("#374243");
 
+  drawTurnText();
   readyButtons();
+
   dealDealerCards();
   drawPlayerCards();
+  drawHandTotals();
   drawActionButtons();
-
-  if (partyIsHost() && game.state === "dealer") {
-    dealerPlay();
-  }
-
+  drawResults();
+  drawResetButton();
 
   if (partyIsHost()) {
     if (game.state === "waiting" && everyoneReady()) {
       dealCards();
+      game.turn = firstActiveSeat();
       game.state = "playing";
+    }
+
+    if (game.state === "dealer") {
+      dealerPlay();
     }
   }
 }
@@ -331,22 +311,30 @@ function shuffleCards(deck, shuffle){
 
 
 function dealDealerCards() {
+  if (game.state === "waiting") {
+    return;
+  }
 
-if (game.state === "playing") {
   for (let i = 0; i < game.dealerCards.length; i++) {
-
     let card = game.dealerCards[i];
     let key = values[card.value] + "_" + suits[card.suit];
 
-    // Hide second card unless player stands or round over
+    // hide second dealer card only during player turns
     if (i === 1 && game.state === "playing") {
-      image(bOC, dealerCardX + i * (width/10), dealerCardY, cardWidth, cardHeight);
-    } 
+      image(bOC, dealerCardX + i * cardWidth * 0.6, dealerCardY, cardWidth, cardHeight);
+    }
     else {
-      image(cardImages[key], dealerCardX + i * (width/10), dealerCardY, cardWidth, cardHeight);
+      image(cardImages[key], dealerCardX + i * cardWidth * 0.6, dealerCardY, cardWidth, cardHeight);
     }
   }
-}
+
+  fill("white");
+  textSize(24);
+  textAlign(CENTER, CENTER);
+
+  if (game.state !== "playing") {
+    text("Dealer: " + getHandValue(game.dealerCards), windowWidth / 2, dealerCardY + cardHeight + 30);
+  }
 }
 
 function getRandomCard() {
@@ -355,6 +343,7 @@ function getRandomCard() {
     value: floor(random(0, 13))
   };
 }
+
 
 function readyButtons() {
   if (game.state === "waiting" && myPlayer.ready === false) {
@@ -368,26 +357,85 @@ function readyButtons() {
   }
 }
 
+
+function firstActiveSeat() {
+  for (let seat = 1; seat <= 4; seat++) {
+    let player = players["player" + seat];
+
+    if (player.id !== null) {
+      return seat;
+    }
+  }
+
+  return 1;
+}
+
+function nextTurn() {
+  let next = game.turn + 1;
+
+  while (next <= 4) {
+    let player = players["player" + next];
+
+    if (player.id !== null) {
+      game.turn = next;
+      return;
+    }
+
+    next++;
+  }
+
+  game.state = "dealer";
+}
+
 function mousePressed() {
   if (
     game.state === "waiting" &&
     collidePointRect(mouseX, mouseY, buttonX, buttonY, buttonW, buttonH)
   ) {
     myPlayer.ready = true;
+    return;
   }
 
   if (game.state === "playing" && game.turn === mySeat) {
-  if (collidePointRect(mouseX, mouseY, hitButtonX, hitButtonY, actionButtonW, actionButtonH)) {
-    myPlayer.cards.push(getRandomCard());
+
+    if (collidePointRect(mouseX, mouseY, hitButtonX, hitButtonY, actionButtonW, actionButtonH)) {
+      myPlayer.cards.push(getRandomCard());
+
+      if (getHandValue(myPlayer.cards) > 21) {
+        nextTurn();
+      }
+
+      return;
+    }
+
+    if (collidePointRect(mouseX, mouseY, standButtonX, standButtonY, actionButtonW, actionButtonH)) {
+      nextTurn();
+      return;
+    }
+  }
+
+  if (game.state === "roundOver") {
+    if (collidePointRect(mouseX, mouseY, buttonX, buttonY, buttonW, buttonH)) {
+      resetRound();
+      return;
+    }
+  }
+}
+
+
+function dealerPlay() {
+  if (!partyIsHost()) {
     return;
   }
 
-  if (collidePointRect(mouseX, mouseY, standButtonX, standButtonY, actionButtonW, actionButtonH)) {
-    game.turn++;
-    return;
+  while (getHandValue(game.dealerCards) < 17) {
+    game.dealerCards.push(getRandomCard());
   }
+
+  calculateResults();
+  game.state = "roundOver";
 }
-}
+
 
 function drawActionButtons() {
   if (game.state === "playing" && game.turn === mySeat) {
@@ -434,27 +482,142 @@ function getHandValue(cards) {
 }
 
 
+function calculateResults() {
+  let dealerTotal = getHandValue(game.dealerCards);
+
+  for (let seat = 1; seat <= 4; seat++) {
+    let player = players["player" + seat];
+
+    if (player.id !== null) {
+      let playerTotal = getHandValue(player.cards);
+
+      if (playerTotal > 21) {
+        game.results["player" + seat] = "Bust";
+      }
+      else if (dealerTotal > 21) {
+        game.results["player" + seat] = "Win";
+      }
+      else if (playerTotal > dealerTotal) {
+        game.results["player" + seat] = "Win";
+      }
+      else if (playerTotal < dealerTotal) {
+        game.results["player" + seat] = "Lose";
+      }
+      else {
+        game.results["player" + seat] = "Push";
+      }
+    }
+  }
+}
+
+
 function drawHandTotals() {
   fill("white");
   textSize(24);
   textAlign(CENTER, CENTER);
 
-  if (players.player1.id !== null) {
+  if (players.player1.id !== null && players.player1.cards.length > 0) {
     text(getHandValue(players.player1.cards), windowWidth * 0.15, windowHeight * 0.58);
   }
 
-  if (players.player2.id !== null) {
+  if (players.player2.id !== null && players.player2.cards.length > 0) {
     text(getHandValue(players.player2.cards), windowWidth * 0.35, windowHeight * 0.58);
   }
 
-  if (players.player3.id !== null) {
+  if (players.player3.id !== null && players.player3.cards.length > 0) {
     text(getHandValue(players.player3.cards), windowWidth * 0.55, windowHeight * 0.58);
   }
 
-  if (players.player4.id !== null) {
+  if (players.player4.id !== null && players.player4.cards.length > 0) {
     text(getHandValue(players.player4.cards), windowWidth * 0.75, windowHeight * 0.58);
   }
 }
+
+function drawResults() {
+  if (game.state !== "roundOver") {
+    return;
+  }
+
+  fill("gold");
+  textSize(28);
+  textAlign(CENTER, CENTER);
+
+  if (players.player1.id !== null) {
+    text(game.results.player1, windowWidth * 0.15, windowHeight * 0.55);
+  }
+
+  if (players.player2.id !== null) {
+    text(game.results.player2, windowWidth * 0.35, windowHeight * 0.55);
+  }
+
+  if (players.player3.id !== null) {
+    text(game.results.player3, windowWidth * 0.55, windowHeight * 0.55);
+  }
+
+  if (players.player4.id !== null) {
+    text(game.results.player4, windowWidth * 0.75, windowHeight * 0.55);
+  }
+}
+
+function drawTurnText() {
+  fill("white");
+  textAlign(CENTER, CENTER);
+  textSize(28);
+
+  if (game.state === "waiting") {
+    text("Waiting for players to ready up...", width / 2, height * 0.05);
+  }
+  else if (game.state === "playing") {
+    text("Player " + game.turn + "'s turn", width / 2, height * 0.05);
+  }
+  else if (game.state === "dealer") {
+    text("Dealer is playing...", width / 2, height * 0.05);
+  }
+  else if (game.state === "roundOver") {
+    text("Round Over", width / 2, height * 0.05);
+  }
+}
+
+
+function drawResetButton() {
+    if (game.state === "roundOver" && partyIsHost()) {
+    fill("gold");
+    rect(buttonX, buttonY, buttonW, buttonH, 10);
+
+    fill("black");
+    textAlign(CENTER, CENTER);
+    textSize(buttonH * 0.3);
+    text("RESET", buttonX + buttonW / 2, buttonY + buttonH / 2);
+  }
+}
+
+function resetRound() {
+  if (!partyIsHost()) {
+    return;
+  }
+
+  game.dealerCards = [];
+  game.deck = [];
+  game.state = "waiting";
+  game.turn = 1;
+
+  game.results.player1 = "";
+  game.results.player2 = "";
+  game.results.player3 = "";
+  game.results.player4 = "";
+
+  players.player1.ready = false;
+  players.player2.ready = false;
+  players.player3.ready = false;
+  players.player4.ready = false;
+
+  players.player1.cards = [];
+  players.player2.cards = [];
+  players.player3.cards = [];
+  players.player4.cards = [];
+}
+
+
 
 
 function windowResized() {
