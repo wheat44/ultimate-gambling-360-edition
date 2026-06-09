@@ -8,6 +8,28 @@ let bettingGrid = [];
 let placedBets = [];
 const ROWS = 12;
 const COLS = 3;
+
+let wheelRotation = 0;
+let startRotation = 0;
+let targetRotation = 0;
+let spinProgress = 0;
+let spinning = false;
+let spinResult = null;
+let spinSpeed = 0.0035;
+let hasWon = false;
+
+///button variables
+let buttonX;
+let buttonY;
+let buttonH;
+let buttonW;
+
+let wheelNumbers = [
+  0, 28, 9, 26, 30, 11, 7, 20, 32, 17, 5, 22,
+  34, 15, 3, 24, 36, 13, 1, "00", 27, 10, 25, 29,
+  12, 8, 19, 31, 18, 6, 21, 33, 16, 4, 23, 35, 14, 2
+];
+
 let betX;
 let betY;
 let cellX;
@@ -19,9 +41,14 @@ function setup() {
   createCanvas(windowWidth, windowHeight - 80);
   createGrid();
   updateLayout();
+  win = loadSound('roulette/Assets/audio/se/r88_Casino_se/win.mp3');
+  lose = loadSound('roulette/Assets/audio/se/r88_Casino_se/lose.mp3');
+  spin = loadSound('roulette/Assets/audio/se/r88_Casino_se/roulette_spin.ogg');
+  stop = loadSound('roulette/Assets/audio/se/r88_Casino_se/roulette_stop.ogg');
 }
 
 function updateLayout() {
+  /// all locations/ layout variables called in setup and resize functions
   betX = windowWidth / 2;
   betY = windowHeight / 5;
   cellX = windowWidth / 30;
@@ -32,6 +59,10 @@ function updateLayout() {
   circleR = windowWidth  / 8;
   menuWidth = windowWidth / 2;
   menuHeight = 100;
+  buttonH = windowHeight/ 10;
+  buttonW = windowWidth / 10;
+  buttonX = windowWidth / 4;
+  buttonY = windowHeight / 1.3;
 }
 
 
@@ -40,18 +71,18 @@ function draw() {
   background("#374243");
 
   updateLocalStorage();
-
   drawGrid();
   createExtraSquares();
   drawPlacedBets();
   drawrouletteWheel();
   drawBetSelection();
   spinWheel();
+  spinButton();
 }
 
 
 function updateLocalStorage(){
-  ///updates 
+  ///constantly updates local storage
   localStorage.setItem("money", playerMoney);
   let moneyDisplay = document.getElementById("moneyDisplay");
   if (moneyDisplay) {
@@ -186,9 +217,7 @@ function createExtraSquares(){
     else {
       text(squareText, betX + 2*cellX * x + cellX, (cellX/2 , betY + cellY *COLS) + cellX*1.5);
     }
-    // text(x + 1 +" Dozen", betX + 4*cellX * x + cellX*2, (cellX/2 , betY + cellY *COLS) + cellX/2);
   }
-
 }
 
 
@@ -196,8 +225,16 @@ function createExtraSquares(){
 
 function mousePressed() {
   let betType = getTypeFromGrid(mouseX, mouseY);
+    // check if spin button was clicked
+  if (spinning === false && collidePointRect(mouseX, mouseY, buttonX - buttonW / 2, buttonY - buttonH / 2, buttonW, buttonH)) {
+    let output = tempRandomOutput();
+    spinToNumber(output);
+    spin.play();
+    return;
+  }
 
   if (betType !== null) {
+    // if its a valid bet, log the bet into the array
     let bet = {
       x: mouseX,
       y: mouseY,
@@ -206,12 +243,14 @@ function mousePressed() {
       amount: betAmount
     };
 
+    // call snapBet function to snap the bet to the right place
     snapBet(bet);
 
-    if (bet.value !== null) {
+    if (bet.value !== null && playerMoney >= betAmount) {
       saveBetUnits(bet);
-      addOrIncreaseBet(bet);
-      console.log(placedBets);
+
+      let amountAdded = addOrIncreaseBet(bet);
+      playerMoney -= amountAdded;
     }
   }
 }
@@ -273,7 +312,7 @@ function snapBet(bet) {
       bet.value = "split";
     }
 
-    // corner four numbers
+    /// corner four numbers
     else if (colPos % 1 === 0 && rowPos % 1 === 0) {
       let leftCol = colPos - 1;
       let rightCol = colPos;
@@ -355,13 +394,14 @@ function snapBet(bet) {
 }
 
 
-
 function drawPlacedBets() {
   for (let i = 0; i < placedBets.length; i++) {
+    ///change the colour of the chip based on amount bet
     let bet = placedBets[i];
     fillColours = ['yellow','orange','green','cyan','purple','cyan','red','white','yellow','violet','blue'];
     colourChoice = fillColours[bet.amount/100];
 
+    ///draw the actual bets
     fill(colourChoice);
     circle(bet.x, bet.y, chipR);
 
@@ -375,44 +415,24 @@ function drawPlacedBets() {
 }
 
 function saveBetUnits(bet) {
+  ///saves the betting units rather than absolute position so that they can be resized properly when the window size changes
   bet.xUnit = (bet.x - betX) / cellX;
-
-  // dozens and bottom row use cellX for vertical height in your drawing code
-  if (
-    bet.value.startsWith("Dozen") ||
-    bet.value === "1 to 18" ||
-    bet.value === "Even" ||
-    bet.value === "Red" ||
-    bet.value === "Black" ||
-    bet.value === "Odd" ||
-    bet.value === "19 to 36"
-  ) {
-    bet.yMode = "cellX";
-    bet.yUnit = (bet.y - betY) / cellX;
-  }
-  else {
-    bet.yMode = "cellY";
-    bet.yUnit = (bet.y - betY) / cellY;
-  }
+  bet.yUnit = (bet.y - betY) / cellY;
 }
 
 function resizePlacedBets() {
+  ///resize and relocated the placed bets based on changed window size
   for (let i = 0; i < placedBets.length; i++) {
     let bet = placedBets[i];
 
     bet.x = betX + bet.xUnit * cellX;
-
-    if (bet.yMode === "cellX") {
-      bet.y = betY + bet.yUnit * cellX;
-    }
-    else {
-      bet.y = betY + bet.yUnit * cellY;
-    }
+    bet.y = betY + bet.yUnit * cellY;
   }
 }
 
 
 function getTypeFromGrid(x, y) {
+  //// determines what type of bet the user is trying to place based on where they click, returns null if they click an invalid spot
   if (x < betX && x > betX - cellX && y > betY && y < betY + cellY * 3) {
     return "0 or 00";
   }
@@ -437,63 +457,130 @@ function addOrIncreaseBet(newBet) {
 
     // same snapped chip location = same bet spot
     if (oldBet.x === newBet.x && oldBet.y === newBet.y) {
-      if (oldBet.amount === 1000){
-        newBet.amount = 1000;
+
+      // already maxed, add nothing
+      if (oldBet.amount >= 1000) {
+        return 0;
       }
-      else{
-        oldBet.amount += newBet.amount;
-        return;
-      }
+
+      // only add up to the max
+      let spaceLeft = 1000 - oldBet.amount;
+      let amountToAdd = min(newBet.amount, spaceLeft);
+
+      oldBet.amount += amountToAdd;
+      return amountToAdd;
     }
   }
 
-  // if no matching bet exists, place a new chip
+  // new bet spot
   placedBets.push(newBet);
+  return newBet.amount;
 }
 
-
 function keyPressed() {
-  if (key === 'Enter') {
+  if (key === 'Enter' && spinning === false) {
     let output = tempRandomOutput();
-    calcResult(output);
+
+    spinToNumber(output);
+
     console.log("the output is: " + output);
-    displayResult(output);
-    state = 'spin';
   }
 }
 
+function spinButton(){
+  if (spinning === false){
+    ///draw the spin button
+    rectMode(CENTER);
+    fill(212,141,51);
+    rect(buttonX, buttonY, buttonW, buttonH);
+    fill('white');
+    text('SPIN!', buttonX, buttonY);
+    rectMode(CORNER);
+    
+  }
+  
+}
+
 function displayResult(output) {
-  textSize(60);
-  fill('orange');
-  textAlign(CENTER, CENTER);
-  text("the result is" + output, 200,200);
+
 }
 
 
 
 
 function calcResult(output) {
-  let totalChange = 0;
+  let totalWinnings = 0;
 
   for (let i = 0; i < placedBets.length; i++) {
+    ///go through each bet and determine if its a winner
     let bet = placedBets[i];
+    let won = false;
 
-    if (isWinningBet(bet, output)) {
-      let winnings = bet.amount * getPayout(bet.value);
-      totalChange += winnings;
-      console.log("Won $" + winnings + " on", bet);
+    // straight, split, corner, 0, 00
+    if (bet.numbers.includes(output)) {
+      won = true;
     }
-    else {
-      totalChange -= bet.amount;
-      console.log("Lost $" + bet.amount + " on", bet);
+
+    // dozens
+    else if (bet.value === "Dozen 1" && output >= 1 && output <= 12) {
+      won = true;
+    }
+    else if (bet.value === "Dozen 2" && output >= 13 && output <= 24) {
+      won = true;
+    }
+    else if (bet.value === "Dozen 3" && output >= 25 && output <= 36) {
+      won = true;
+    }
+
+    // bottom row
+    else if (bet.value === "1 to 18" && output >= 1 && output <= 18) {
+      won = true;
+    }
+    else if (bet.value === "19 to 36" && output >= 19 && output <= 36) {
+      won = true;
+    }
+    else if (bet.value === "Even" && output !== 0 && output !== "00" && output % 2 === 0) {
+      won = true;
+    }
+    else if (bet.value === "Odd" && output !== 0 && output !== "00" && output % 2 === 1) {
+      won = true;
+    }
+    else if (bet.value === "Red" && REDNUMBERS.includes(output)) {
+      won = true;
+    }
+    else if (bet.value === "Black" && BLACKNUMBERS.includes(output)) {
+      won = true;
+    }
+
+    // 2 to 1
+    else if (bet.value === "2 to 1") {
+      for (let col = 0; col < ROWS; col++) {
+        if (bettingGrid[col][bet.row] === output) {
+          won = true;
+        }
+      }
+    }
+
+    /// if they won check what type of bet it was for multiplyer
+    if (won) {
+      let winnings = bet.amount * getPayout(bet.value);
+      totalWinnings += winnings;
+      hasWon = true;
     }
   }
 
-  playerMoney += totalChange;
+  playerMoney += totalWinnings;
+  ///determine the sound effect to play
+  if (hasWon) {
+    win.play();
+  }
+  else {
+    lose.play();
+  }
+  ///reset winnings for next round
+  hasWon = false;
 
-  console.log("Total change: $" + totalChange);
-  console.log("New balance: $" + playerMoney);
-
+  // reset placed bets aftrer each spin
   placedBets = [];
 }
 
@@ -510,89 +597,38 @@ function tempRandomOutput(){
   return output;
 }
 
-function isWinningBet(bet, output) {
-  // straight, split, corner, 0, and 00
-  if (bet.numbers.includes(output)) {
-    return true;
-  }
-
-  // dozens
-  if (bet.value === "Dozen 1" && output >= 1 && output <= 12) {
-    return true;
-  }
-  else if (bet.value === "Dozen 2" && output >= 13 && output <= 24) {
-    return true;
-  }
-  else if (bet.value === "Dozen 3" && output >= 25 && output <= 36) {
-    return true;
-  }
-
-  // bottom row bets
-  else if (bet.value === "1 to 18" && output >= 1 && output <= 18) {
-    return true;
-  }
-  else if (bet.value === "19 to 36" && output >= 19 && output <= 36) {
-    return true;
-  }
-  else if (bet.value === "Even" && output !== 0 && output !== "00" && output % 2 === 0) {
-    return true;
-  }
-  else if (bet.value === "Odd" && output !== 0 && output !== "00" && output % 2 === 1) {
-    return true;
-  }
-  else if (bet.value === "Red" && REDNUMBERS.includes(output)) {
-    return true;
-  }
-  else if (bet.value === "Black" && BLACKNUMBERS.includes(output)) {
-    return true;
-  }
-
-  // 2 to 1 bets
-  else if (bet.value === "2 to 1") {
-    for (let col = 0; col < ROWS; col++) {
-      if (bettingGrid[col][bet.row] === output) {
-        return true;
-      }
-    }
-  }
-
-  return false;
-}
 
 function getPayout(type) {
+  // total return multiplier, including the original bet
   if (type === "straight" || type === "0" || type === "00") {
-    return 35;
+    return 36;
   }
   else if (type === "split") {
-    return 17;
+    return 18;
   }
   else if (type === "corner") {
-    return 8;
+    return 9;
   }
   else if (type.startsWith("Dozen")) {
-    return 2;
+    return 3;
   }
   else if (type === "2 to 1") {
-    return 2;
+    return 3;
   }
   else {
     // red, black, odd, even, 1 to 18, 19 to 36
-    return 1;
+    return 2;
   }
 }
 
 function drawrouletteWheel() {
-  let wheelNumbers = [
-    0, 28, 9, 26, 30, 11, 7, 20, 32, 17, 5, 22,
-    34, 15, 3, 24, 36, 13, 1, "00", 27, 10, 25, 29,
-    12, 8, 19, 31, 18, 6, 21, 33, 16, 4, 23, 35, 14, 2
-  ];
-
+  ///function to draw the actual roulette wheel
   let totalSlots = wheelNumbers.length;
   let angleSize = TWO_PI / totalSlots;
 
   push();
   translate(circleX, circleY);
+  rotate(wheelRotation);
 
   // outer wheel
   fill("brown");
@@ -605,7 +641,6 @@ function drawrouletteWheel() {
     let startAngle = i * angleSize - HALF_PI;
     let endAngle = startAngle + angleSize;
 
-    //fillColours
     if (num === 0 || num === "00") {
       fill("green");
     }
@@ -618,7 +653,6 @@ function drawrouletteWheel() {
 
     arc(0, 0, circleR * 2, circleR * 2, startAngle, endAngle, PIE);
 
-    // number text
     let textAngle = startAngle + angleSize / 2;
     let textX = cos(textAngle) * circleR * 0.78;
     let textY = sin(textAngle) * circleR * 0.78;
@@ -644,6 +678,14 @@ function drawrouletteWheel() {
   circle(0, 0, circleR * 0.18);
 
   pop();
+
+  // pointer at top, not rotated with the wheel
+  fill("yellow");
+  triangle(
+    circleX, circleY - circleR - 20,
+    circleX - 12, circleY - circleR + 10,
+    circleX + 12, circleY - circleR + 10
+  );
 }
 
 
@@ -653,16 +695,61 @@ function drawBetSelection(){
   rect(0, windowHeight - 100, windowWidth, 100);
 }
 
-function spinWheel(){
-  if (state === 'spin'){
-    counter = 0;
-    if (frameCount % 10 === 0 && counter < 100){
-      push();
-      rotate(10);
-      pop();
-      counter ++;
+function spinWheel() {
+  if (spinning) {
+    spinProgress += spinSpeed;
+
+    if (spinProgress >= 1) {
+      spinProgress = 1;
+    }
+
+    // ease-out: fast at first, slow at the end
+    let easedProgress = 1 - pow(1 - spinProgress, 3);
+
+    wheelRotation = lerp(startRotation, targetRotation, easedProgress);
+
+    if (spinProgress >= 1) {
+      wheelRotation = targetRotation;
+      spin.stop();
+      stop.play();
+      spinning = false;
+      state = "main";
+
+      calcResult(spinResult);
+      displayResult(spinResult);
     }
   }
+}
+
+function spinToNumber(output) {
+  spinResult = output;
+  spinning = true;
+  state = "spin";
+
+  spinProgress = 0;
+  startRotation = wheelRotation;
+
+  let index = wheelNumbers.indexOf(output);
+  let angleSize = TWO_PI / wheelNumbers.length;
+
+  //the center angle of the chosen slot
+  let numberAngle = index * angleSize + angleSize / 2 - HALF_PI;
+
+  //the pointer is at the top
+  let pointerAngle = -HALF_PI;
+
+  ///rotation needed to bring chosen number to pointer
+  let neededRotation = pointerAngle - numberAngle;
+
+  //convert that to a positive clockwise amount
+  while (neededRotation < 0) {
+    neededRotation += TWO_PI;
+  }
+
+  ///add many full spins
+  let extraSpins = TWO_PI * 6;
+
+  targetRotation = startRotation + extraSpins + neededRotation;
 }
 
 
