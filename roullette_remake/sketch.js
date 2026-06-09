@@ -41,10 +41,10 @@ function setup() {
   createCanvas(windowWidth, windowHeight - 80);
   createGrid();
   updateLayout();
-  win = loadSound('roulette/Assets/audio/se/r88_Casino_se/win.mp3');
-  lose = loadSound('roulette/Assets/audio/se/r88_Casino_se/lose.mp3');
-  spin = loadSound('roulette/Assets/audio/se/r88_Casino_se/roulette_spin.ogg');
-  stop = loadSound('roulette/Assets/audio/se/r88_Casino_se/roulette_stop.ogg');
+  win = loadSound('roullette_remake/Assets/audio/se/r88_Casino_se/win.mp3');
+  lose = loadSound('roullette_remake/Assets/audio/se/r88_Casino_se/lose.mp3');
+  spin = loadSound('roullette_remake/Assets/audio/se/r88_Casino_se/roulette_spin.ogg');
+  stop = loadSound('roullette_remake/Assets/audio/se/r88_Casino_se/roulette_stop.ogg');
 }
 
 function updateLayout() {
@@ -227,7 +227,7 @@ function mousePressed() {
   let betType = getTypeFromGrid(mouseX, mouseY);
     // check if spin button was clicked
   if (spinning === false && collidePointRect(mouseX, mouseY, buttonX - buttonW / 2, buttonY - buttonH / 2, buttonW, buttonH)) {
-    let output = tempRandomOutput();
+    let output = randomOutput();
     spinToNumber(output);
     spin.play();
     return;
@@ -479,7 +479,7 @@ function addOrIncreaseBet(newBet) {
 
 function keyPressed() {
   if (key === 'Enter' && spinning === false) {
-    let output = tempRandomOutput();
+    let output = randomOutput();
 
     spinToNumber(output);
 
@@ -584,7 +584,7 @@ function calcResult(output) {
   placedBets = [];
 }
 
-function tempRandomOutput(){
+function randomOutput(){
   /// for testing purposes, outputs a random number from 0-36 or 00 when you click the canvas
   let output;
   let rand = random(0, 38);
