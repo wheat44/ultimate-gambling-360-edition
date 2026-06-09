@@ -21,6 +21,20 @@ let buttonH;
 let buttonX;
 let buttonY;
 
+let cardX;
+let cardY;
+let dealerCardX;
+let dealerCardY;
+let cardWidth;
+let cardHeight;
+
+let hitButtonX; 
+let hitButtonY;
+let standButtonX; 
+let standButtonY;
+let actionButtonW; 
+let actionButtonH;
+
 function preload() {
   // connect to a p5party server
   bOC = loadImage('blackjack remake online/Assets/Cards/back_of_card.png');
@@ -74,7 +88,8 @@ function preload() {
     dealerCards: [],
     deck: [],
     state: "waiting",
-    full: false
+    full: false,
+    turn: 1
   });
 }
 
@@ -145,13 +160,66 @@ function setup() {
   else if (mySeat ===4){
     buttonX = windowWidth/1.5;
     buttonY= windowWidth/3;
+  
   }
+
+  updateLayout();
+}
+
+
+
+
+
+function updateLayout() {
+  cardWidth = windowWidth / 12;
+  cardHeight = cardWidth * 1.4;
+
+  dealerCardX = windowWidth / 2 - cardWidth;
+  dealerCardY = windowHeight / 8;
+
+  cardY = windowHeight * 0.65;
+
+  buttonW = windowWidth / 10;
+  buttonH = windowHeight / 14;
+
+  actionButtonW = windowWidth / 10;
+  actionButtonH = windowHeight / 14;
+
+  hitButtonX = windowWidth * 0.4;
+  standButtonX = windowWidth * 0.52;
+  hitButtonY = windowHeight * 0.85;
+  standButtonY = windowHeight * 0.85;
+
+  
+  if (mySeat === 1) {
+    buttonX = windowWidth * 0.2;
+  }
+  else if (mySeat === 2) {
+    buttonX = windowWidth * 0.4;
+  }
+  else if (mySeat === 3) {
+    buttonX = windowWidth * 0.6;
+  }
+  else if (mySeat === 4) {
+    buttonX = windowWidth * 0.8;
+  }
+
+  buttonY = windowHeight * 0.8;
 }
 
 
 function draw() {
   background("#374243");
+
   readyButtons();
+  dealDealerCards();
+  drawPlayerCards();
+  drawActionButtons();
+
+  if (partyIsHost() && game.state === "dealer") {
+    dealerPlay();
+  }
+
 
   if (partyIsHost()) {
     if (game.state === "waiting" && everyoneReady()) {
@@ -162,22 +230,60 @@ function draw() {
 }
 
 
-function dealCards(){
-  ///only host deals the cards clear everyones cards
-  if (partyIsHost()){
-    
+function dealCards() {
+  if (!partyIsHost()) {
+    return;
   }
 
-  ///assign cards to everyone
+  game.dealerCards = [];
 
-  ///assign 2 dealer cards
-  for (let index = 0; index < 2; index++) {
-    game.dealerCards.push({
-      suit: floor(random(0,4)),
-      value: floor(random(0,13))
-    });
+  players.player1.cards = [];
+  players.player2.cards = [];
+  players.player3.cards = [];
+  players.player4.cards = [];
+
+  for (let i = 0; i < 2; i++) {
+    game.dealerCards.push(getRandomCard());
+
+    if (players.player1.id !== null) {
+      players.player1.cards.push(getRandomCard());
+    }
+
+    if (players.player2.id !== null) {
+      players.player2.cards.push(getRandomCard());
+    }
+
+    if (players.player3.id !== null) {
+      players.player3.cards.push(getRandomCard());
+    }
+
+    if (players.player4.id !== null) {
+      players.player4.cards.push(getRandomCard());
+    }
   }
 }
+
+function drawPlayerCards() {
+  drawCardsForPlayer(players.player1, windowWidth * 0.15, windowHeight * 0.62);
+  drawCardsForPlayer(players.player2, windowWidth * 0.35, windowHeight * 0.62);
+  drawCardsForPlayer(players.player3, windowWidth * 0.55, windowHeight * 0.62);
+  drawCardsForPlayer(players.player4, windowWidth * 0.75, windowHeight * 0.62);
+}
+
+
+function drawCardsForPlayer(player, x, y) {
+  if (player.id === null) {
+    return;
+  }
+
+  for (let i = 0; i < player.cards.length; i++) {
+    let card = player.cards[i];
+    let key = values[card.value] + "_" + suits[card.suit];
+
+    image(cardImages[key], x + i * cardWidth * 0.45, y, cardWidth, cardHeight);
+  }
+}
+
 
 function everyoneReady() {
 
@@ -210,29 +316,148 @@ function buildDeck() {
     }
   }
 
-  shuffle(game.deck, true);
+  shuffleCards(game.deck, true);
 }
 
-function shuffle(deck, shuffle){
+function shuffleCards(deck, shuffle){
   if (shuffle === 'true'){
     ///reset and shuffle the deck
   }
 
   ///set shuffle to false
   shuffle = false;
-  
-}
-
-
-function drawDealerCards(){
 
 }
 
 
-function readyButtons(){
-  if (game.state === 'waiting' && myPlayer.ready === false){
-    rect(buttonX, buttonY, buttonW, buttonH);
+function dealDealerCards() {
+
+if (game.state === "playing") {
+  for (let i = 0; i < game.dealerCards.length; i++) {
+
+    let card = game.dealerCards[i];
+    let key = values[card.value] + "_" + suits[card.suit];
+
+    // Hide second card unless player stands or round over
+    if (i === 1 && game.state === "playing") {
+      image(bOC, dealerCardX + i * (width/10), dealerCardY, cardWidth, cardHeight);
+    } 
+    else {
+      image(cardImages[key], dealerCardX + i * (width/10), dealerCardY, cardWidth, cardHeight);
+    }
+  }
+}
+}
+
+function getRandomCard() {
+  return {
+    suit: floor(random(0, 4)),
+    value: floor(random(0, 13))
+  };
+}
+
+function readyButtons() {
+  if (game.state === "waiting" && myPlayer.ready === false) {
+    fill("gold");
+    rect(buttonX, buttonY, buttonW, buttonH, 10);
+
+    fill("black");
+    textAlign(CENTER, CENTER);
+    textSize(buttonH * 0.35);
+    text("READY", buttonX + buttonW / 2, buttonY + buttonH / 2);
+  }
+}
+
+function mousePressed() {
+  if (
+    game.state === "waiting" &&
+    collidePointRect(mouseX, mouseY, buttonX, buttonY, buttonW, buttonH)
+  ) {
+    myPlayer.ready = true;
   }
 
+  if (game.state === "playing" && game.turn === mySeat) {
+  if (collidePointRect(mouseX, mouseY, hitButtonX, hitButtonY, actionButtonW, actionButtonH)) {
+    myPlayer.cards.push(getRandomCard());
+    return;
+  }
 
+  if (collidePointRect(mouseX, mouseY, standButtonX, standButtonY, actionButtonW, actionButtonH)) {
+    game.turn++;
+    return;
+  }
+}
+}
+
+function drawActionButtons() {
+  if (game.state === "playing" && game.turn === mySeat) {
+    fill("green");
+    rect(hitButtonX, hitButtonY, actionButtonW, actionButtonH, 10);
+
+    fill("white");
+    textAlign(CENTER, CENTER);
+    text("HIT", hitButtonX + actionButtonW / 2, hitButtonY + actionButtonH / 2);
+
+    fill("red");
+    rect(standButtonX, standButtonY, actionButtonW, actionButtonH, 10);
+
+    fill("white");
+    text("STAND", standButtonX + actionButtonW / 2, standButtonY + actionButtonH / 2);
+  }
+}
+
+function getHandValue(cards) {
+  let total = 0;
+  let aces = 0;
+
+  for (let i = 0; i < cards.length; i++) {
+    let v = cards[i].value;
+
+    if (v === 0) {
+      total += 11;
+      aces++;
+    }
+    else if (v >= 9) {
+      total += 10;
+    }
+    else {
+      total += v + 1;
+    }
+  }
+
+  while (total > 21 && aces > 0) {
+    total -= 10;
+    aces--;
+  }
+
+  return total;
+}
+
+
+function drawHandTotals() {
+  fill("white");
+  textSize(24);
+  textAlign(CENTER, CENTER);
+
+  if (players.player1.id !== null) {
+    text(getHandValue(players.player1.cards), windowWidth * 0.15, windowHeight * 0.58);
+  }
+
+  if (players.player2.id !== null) {
+    text(getHandValue(players.player2.cards), windowWidth * 0.35, windowHeight * 0.58);
+  }
+
+  if (players.player3.id !== null) {
+    text(getHandValue(players.player3.cards), windowWidth * 0.55, windowHeight * 0.58);
+  }
+
+  if (players.player4.id !== null) {
+    text(getHandValue(players.player4.cards), windowWidth * 0.75, windowHeight * 0.58);
+  }
+}
+
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  updateLayout();
 }
