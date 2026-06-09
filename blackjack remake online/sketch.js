@@ -21,12 +21,12 @@ let buttonH;
 let buttonX;
 let buttonY;
 
-let cardX;
 let cardY;
 let dealerCardX;
 let dealerCardY;
 let cardWidth;
 let cardHeight;
+let scoreTextY;
 
 let hitButtonX; 
 let hitButtonY;
@@ -150,9 +150,9 @@ function updateLayout() {
   cardHeight = cardWidth * 1.4;
 
   dealerCardX = windowWidth / 2 - cardWidth;
-  dealerCardY = windowHeight / 8;
+  dealerCardY = windowHeight / 9;
 
-  cardY = windowHeight * 0.65;
+  cardY = windowHeight * 0.50;
 
   buttonW = windowWidth / 10;
   buttonH = windowHeight / 14;
@@ -160,26 +160,31 @@ function updateLayout() {
   actionButtonW = windowWidth / 10;
   actionButtonH = windowHeight / 14;
 
-  hitButtonX = windowWidth * 0.4;
-  standButtonX = windowWidth * 0.52;
-  hitButtonY = windowHeight * 0.85;
-  standButtonY = windowHeight * 0.85;
-
+  scoreTextY = windowHeight * 0.45;
+  
+  hitButtonY = windowHeight * 0.75;
+  standButtonY = windowHeight * 0.75;
+  buttonY = windowHeight * 0.75;
   
   if (mySeat === 1) {
     buttonX = windowWidth * 0.2;
+    hitButtonX = windowWidth * 0.15;
+    standButtonX = windowWidth * 0.25;
   }
   else if (mySeat === 2) {
     buttonX = windowWidth * 0.4;
+    hitButtonX = windowWidth * 0.4;
   }
   else if (mySeat === 3) {
     buttonX = windowWidth * 0.6;
+    hitButtonX = windowWidth * 0.6;
   }
   else if (mySeat === 4) {
     buttonX = windowWidth * 0.8;
+    hitButtonX = windowWidth * 0.8;
   }
 
-  buttonY = windowHeight * 0.8;
+  
 }
 
 
@@ -244,10 +249,10 @@ function dealCards() {
 }
 
 function drawPlayerCards() {
-  drawCardsForPlayer(players.player1, windowWidth * 0.15, windowHeight * 0.62);
-  drawCardsForPlayer(players.player2, windowWidth * 0.35, windowHeight * 0.62);
-  drawCardsForPlayer(players.player3, windowWidth * 0.55, windowHeight * 0.62);
-  drawCardsForPlayer(players.player4, windowWidth * 0.75, windowHeight * 0.62);
+  drawCardsForPlayer(players.player1, windowWidth * 0.15, cardY);
+  drawCardsForPlayer(players.player2, windowWidth * 0.35, cardY);
+  drawCardsForPlayer(players.player3, windowWidth * 0.55, cardY);
+  drawCardsForPlayer(players.player4, windowWidth * 0.75, cardY);
 }
 
 
@@ -517,19 +522,19 @@ function drawHandTotals() {
   textAlign(CENTER, CENTER);
 
   if (players.player1.id !== null && players.player1.cards.length > 0) {
-    text(getHandValue(players.player1.cards), windowWidth * 0.15, windowHeight * 0.58);
+    text(getHandValue(players.player1.cards), windowWidth * 0.16, scoreTextY);
   }
 
   if (players.player2.id !== null && players.player2.cards.length > 0) {
-    text(getHandValue(players.player2.cards), windowWidth * 0.35, windowHeight * 0.58);
+    text(getHandValue(players.player2.cards), windowWidth * 0.36, scoreTextY);
   }
 
   if (players.player3.id !== null && players.player3.cards.length > 0) {
-    text(getHandValue(players.player3.cards), windowWidth * 0.55, windowHeight * 0.58);
+    text(getHandValue(players.player3.cards), windowWidth * 0.56, scoreTextY);
   }
 
   if (players.player4.id !== null && players.player4.cards.length > 0) {
-    text(getHandValue(players.player4.cards), windowWidth * 0.75, windowHeight * 0.58);
+    text(getHandValue(players.player4.cards), windowWidth * 0.76, scoreTextY);
   }
 }
 
@@ -543,19 +548,19 @@ function drawResults() {
   textAlign(CENTER, CENTER);
 
   if (players.player1.id !== null) {
-    text(game.results.player1, windowWidth * 0.15, windowHeight * 0.55);
+    text(game.results.player1, windowWidth * 0.15, scoreTextY*1.05);
   }
 
   if (players.player2.id !== null) {
-    text(game.results.player2, windowWidth * 0.35, windowHeight * 0.55);
+    text(game.results.player2, windowWidth * 0.35, scoreTextY*1.05);
   }
 
   if (players.player3.id !== null) {
-    text(game.results.player3, windowWidth * 0.55, windowHeight * 0.55);
+    text(game.results.player3, windowWidth * 0.55, scoreTextY*1.05);
   }
 
   if (players.player4.id !== null) {
-    text(game.results.player4, windowWidth * 0.75, windowHeight * 0.55);
+    text(game.results.player4, windowWidth * 0.75, scoreTextY *1.05);
   }
 }
 
@@ -580,7 +585,7 @@ function drawTurnText() {
 
 
 function drawResetButton() {
-    if (game.state === "roundOver" && partyIsHost()) {
+  if (game.state === "roundOver" && partyIsHost()) {
     fill("gold");
     rect(buttonX, buttonY, buttonW, buttonH, 10);
 
