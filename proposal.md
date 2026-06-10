@@ -5,11 +5,11 @@ Jonathan Hlady and his sidekick Thomas Jordan Ham have the goal to make a functi
 - Clean website UI 🟨
 - Multiple accurate casino style games - (Blackjack, Slots, Plinko, Mines, Ride the Bus, Roulette)✅
 - local storage for currency ✅
-- Consistant graphics throughout games
+- Consistant graphics throughout games ✅
 - Bug Free gameplay/UI 
 - uniform Gameplay(games follows a consistant sequence)
 - Sound effects and music
-- Physics based plinko
+- Physics based plinko ✅
 
 
 ## Nice to have
@@ -19,5 +19,5 @@ Jonathan Hlady and his sidekick Thomas Jordan Ham have the goal to make a functi
 - In game purchases 
 - Mobile compatability
 - Make it harder to cheat
-- plinko autobet
+- plinko autobet ✅
 - plinko standard deviation
