@@ -438,7 +438,7 @@ function drawText(){
   text("BET: $" + bet, windowWidth * 0.87, windowHeight * 0.08);
 
   fill("white");
-  text("Number Of Rows: " + newRows, windowWidth*0.88, windowHeight*0.125);
+  text("Number Of Columns: " + newRows, windowWidth*0.88, windowHeight*0.125);
 
 }
 
