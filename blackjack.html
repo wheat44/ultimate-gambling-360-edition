@@ -10,12 +10,11 @@
 
   <script src="libraries/p5.js"></script>
   <script src="libraries/p5.sound.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/p5.party@latest/dist/p5.party.js"></script>
   <script src="libraries/p5.collide2d.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/p5.party@latest/dist/p5.party.js"></script>
 </head>
 
 <body>
-
 
   <div class="topnav">
     <a href="index.html">
@@ -23,10 +22,11 @@
 
     </a>
 
+    <script src="blackjack remake online/sketch.js"></script>
+
       <a href="#" class="account-btn" id="accountBtn">Instructions</a>
     
     <h1 id="moneyDisplay">Money: </h1>
-
 
     <style>
       .account-btn {
@@ -44,17 +44,30 @@
       }
     </style>
   </div>
-
-  <div id="gameViewport">
-
-
-  </div>
+  
   
   <div class="popup" id="popup">
+  <div class="popup-content">
     <button id="closePopup">Close</button>
-  </div>
 
-  <script src="blackjack remake online/sketch.js"></script>
+    <p>
+    • Choose an open seat to join the table.<br>
+    • Scroll up or down to change your bet before the round starts.<br>
+    • Click READY UP to lock in your bet.<br>
+    • Your bet is taken from your money when you ready up.<br>
+    • Once all players are ready, the dealer gives everyone two cards.<br>
+    • On your turn, click HIT to take another card.<br>
+    • Click STAND to keep your current hand.<br>
+    • Try to get as close to 21 as possible without going over.<br>
+    • If your hand goes over 21, you bust and lose the round.<br>
+    • After all players finish, the dealer reveals their hand.<br>
+    • If you beat the dealer, you win money.<br>
+    • If you tie the dealer, your bet is returned.<br>
+    • If the dealer beats you, you lose your bet.<br>
+    • After the round ends, the host clicks RESET to start another round.<br>
+    </p>
+  </div>
+</div>
 
   <script>
     const popup = document.getElementById("popup");
@@ -84,5 +97,9 @@
 
   updateMoneyDisplay();
   </script>
+
+  <script src="music.js"></script>
+
+  
 </body>
 </html>
