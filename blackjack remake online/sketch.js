@@ -5,9 +5,6 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-
-
-
 let cardImages = [];
 let suits = ["spades", "hearts", "diamonds", "clubs"];
 let values = [ "ace","2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king"];
