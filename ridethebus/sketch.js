@@ -1,6 +1,4 @@
-// Array Assignmemnt - Ride the bus
-// Tj Ham
-// 3/17/2026
+// Ride the bus
 
 // Extra for Experts:
 //my project serves as a clean, streamlined example of what my previous card game should have been more like. it includes features such as:
@@ -13,8 +11,6 @@
 //-advanced logic for gameplay mechanics
 //-fonts
 
-//The game uses some assets from my previous project, but otherwise it is fundimentally very different using cleaner solutions for cards, completely different logic systems
-//and a complicated loop/array based button system that im very proud of. its seriously the most beatiful thing ive ever created in my life. Hope you enjoy!
 
 
 ///define gamestate
@@ -114,6 +110,8 @@ function draw() {
   displayButtons();
   displayCardValue();
   updateLocalStorage();
+  fill(255, 200, 0);
+  text("BET: $" + bet, windowWidth * 0.87, windowHeight * 0.08);
 
 }
 
@@ -321,7 +319,7 @@ function calcResult(){
 
 function mouseWheel(event) {
   ///scrolling down
-  if (event.delta > 0 && bet > 0 && (state === 'main' ||  state === 'redo') && bet <= playerMoney){
+  if (event.delta > 0 && bet > 25 && (state === 'main' ||  state === 'redo') && bet <= playerMoney){
     bet -= 25;
     betSound.play();
   }
