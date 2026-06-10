@@ -112,14 +112,14 @@ canvas {
   background-position: center;
 }
 
-.Slotts:hover {
-  background-image: url("Assets/plinkoimage.png");
+.Slots:hover {
+  background-image: url("Assets/slotsHoverImage.png");
   background-size: cover;
   background-position: center;
 }
 
 .Mines:hover {
-  background-image: url("Assets/plinkoimage.png");
+  background-image: url("Assets/minesHoverImage.png");
   background-size: cover;
   background-position: center;
 }

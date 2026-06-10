@@ -343,8 +343,6 @@ function autoBet() {
   }
 }
 
-
-
 function keyPressed(){
   if (key === "a"){
     autoBetMode = !autoBetMode;
