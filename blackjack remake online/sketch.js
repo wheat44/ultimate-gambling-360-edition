@@ -1,41 +1,33 @@
-// Project Title
-// Your Name
-// Date
-//
-// Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// Blackjack Remake
+///dont forget to remove the temp auto seat assigning that was changed, just ctrl f temp
 
+///card arrays
 let cardImages = [];
 let suits = ["spades", "hearts", "diamonds", "clubs"];
 let values = [ "ace","2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king"];
 
+
+//individual player variables
 let me;
 let myPlayer;
 let mySeat = null;
 let myId;
 
+///button/location Variables
 let buttonW;
 let buttonH;
 let buttonX;
 let buttonY;
-
 let seatX = [];
 let seatY;
 let seatButtonY;
 let infoY;
-
-
-let betAmount = 100;
-let paidThisRound = false;
-
-
 let cardY;
 let dealerCardX;
 let dealerCardY;
 let cardWidth;
 let cardHeight;
 let scoreTextY;
-
 let hitButtonX; 
 let hitButtonY;
 let standButtonX; 
@@ -43,14 +35,13 @@ let standButtonY;
 let actionButtonW; 
 let actionButtonH;
 
-
-
-
-
+///betting varaibles
+let betAmount = 100;
+let paidThisRound = false;
 
 
 function preload() {
-  // connect to a p5party server
+  ///load images
   bOC = loadImage('blackjack remake online/Assets/Cards/back_of_card.png');
 
   ///load cards using a nested loop
@@ -63,15 +54,18 @@ function preload() {
       cardImages[key] = loadImage("blackjack remake online/Assets/Cards/" + fileName);
     }
   }
+  ///connect to p5 party server
   partyConnect(
     "wss://demoserver.p5party.org",
-    "blackJack_test_8",
+    "blackJackMain",
   );
 
+  ///assign me variable to shared server
   me = partyLoadMyShared({
     seat: null
   });
 
+  ///assign players varible to shared server
   players = partyLoadShared("players", {
     player1: {
       id: null,
@@ -106,6 +100,7 @@ function preload() {
     }
   });
 
+  ///assign game variables to shared server
   game = partyLoadShared("game", {
     dealerCards: [],
     deck: [],
@@ -124,16 +119,20 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
+  ///assign each player their id based on if they already have one
   myId = sessionStorage.getItem("blackjackId");
 
   if (myId === null) {
+    ///if they dont have one assing them in form player_# then set it
     myId = "player_" + floor(random(1000000, 9999999));
     sessionStorage.setItem("blackjackId", myId);
   }
 
+  ///reset mySeat and myPlayer each time someone connects
   mySeat = null;
   myPlayer = null;
 
+  ///temp, remove when seat seleciton is done to not auto do it. make sure it works after
   for (let seat = 1; seat <= 4; seat++) {
     let player = players["player" + seat];
 
@@ -150,6 +149,7 @@ function setup() {
 
 
 function updateLayout() {
+  ///update layout function that assings all variables so i dont have to do each thing twice in resize and setup
   cardWidth = windowWidth / 13;
   cardHeight = cardWidth * 1.4;
 
@@ -157,6 +157,7 @@ function updateLayout() {
   dealerCardY = windowHeight * 0.12;
 
   seatX = [
+    ///x values for seat button loations
     windowWidth * 0.16,
     windowWidth * 0.38,
     windowWidth * 0.60,
@@ -181,6 +182,7 @@ function updateLayout() {
   standButtonY = windowHeight * 0.78;
 
   if (mySeat !== null) {
+    ///if i have a seat assign my seatX value
     buttonX = seatX[mySeat - 1] - buttonW / 2;
 
     hitButtonX = seatX[mySeat - 1] - actionButtonW - 10;
@@ -192,6 +194,7 @@ function updateLayout() {
 function draw() {
   background("#374243");
 
+  ///constantly keep the paidThisRound FUnction false
   if (game.state === "waiting") {
     paidThisRound = false;
   }
@@ -217,14 +220,17 @@ function draw() {
   drawResetButton();
 
   if (partyIsHost()) {
+    ///only one person is doing this, this partyIsHost is built into p5 party
 
     if (game.state === "waiting" && everyoneReady()) {
+      ///check the everyoneReady function if state is waiting to start the game
       dealCards();
       game.turn = firstReadySeat();
       game.state = "playing";
     }
 
     if (game.state === "dealer") {
+      ///always check if its dealer time
       dealerPlay();
     }
   }
@@ -232,18 +238,24 @@ function draw() {
 
 
 function dealCards() {
+  ///deals cards to each connected player
   if (!partyIsHost()) {
     return;
+    ///only the host should deal the cards to players so they arent being assigned tons of cards
   }
 
+  ///reset dealer cards
   game.dealerCards = [];
 
+  //reset player cards
   players.player1.cards = [];
   players.player2.cards = [];
   players.player3.cards = [];
   players.player4.cards = [];
 
+
   for (let i = 0; i < 2; i++) {
+    ///assing two cards to each ready player using getRandom Card function
     game.dealerCards.push(getRandomCard());
 
     if (players.player1.ready) {
@@ -265,6 +277,9 @@ function dealCards() {
 }
 
 function drawPlayerCards() {
+  ///draws the dealt player cards
+
+  ///create an array to iterate through
   let playerList = [
     players.player1,
     players.player2,
@@ -276,16 +291,13 @@ function drawPlayerCards() {
     let player = playerList[p];
 
     if (player.id !== null) {
+      ///if they are a connected player draw them cards
       for (let i = 0; i < player.cards.length; i++) {
         let card = player.cards[i];
         let key = values[card.value] + "_" + suits[card.suit];
 
-        image(
-          cardImages[key],
-          seatX[p] - cardWidth / 2 + i * cardWidth * 0.45,
-          cardY,
-          cardWidth,
-          cardHeight
+        image(cardImages[key],seatX[p] - cardWidth / 2 + i * cardWidth * 0.45,
+          cardY,cardWidth,cardHeight
         );
       }
     }
