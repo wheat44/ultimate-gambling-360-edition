@@ -17,27 +17,13 @@
 
   <div class="topnav">
     <a href="index.html">
-      <img src="Assets/logo.png" alt="logo" style="width:400px;height:100px;">
+      <img src="Assets/logo.png" alt="logo" class="logo">
     </a>
       <a href="#" class="account-btn" id="accountBtn">👤 About US</a>
     
     <h1 id="moneyDisplay">Money: </h1>
 
-    <style>
-      .account-btn {
-        background-color: grey; 
-        color: white;
-        padding: 10px 20px;
-        text-decoration: none;
-        border-radius: 10px;
-        border-color: gold;
-        display: inline-block;
-        transition: 0.25s;
-      }
-      .account-btn:hover {
-        background-color: #0056b3;
-      }
-    </style>
+
   </div>
 
   <div class="game-grid">
@@ -85,7 +71,7 @@
 
 
   accountBtn.onclick = function() {
-    popup.style.display = "block";
+    popup.style.display = "flex";
   };
 
 
@@ -106,7 +92,6 @@
   updateMoneyDisplay();
 </script>
 
-<script src="music.js"></script>
 
 </body>
 </html>

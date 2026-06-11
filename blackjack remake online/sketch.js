@@ -2,8 +2,6 @@
 //uses p5 party to create a 4 player to one dealer environment
 
 
-///dont forget to remove the temp auto seat assigning that was changed, just ctrl f temp
-
 ///card arrays
 let cardImages = [];
 let suits = ["spades", "hearts", "diamonds", "clubs"];
@@ -15,6 +13,10 @@ let me;
 let myPlayer;
 let mySeat = null;
 let myId;
+
+let game;
+let players;
+let bOC;
 
 ///button/location Variables
 let buttonW;
@@ -107,7 +109,6 @@ function preload() {
   game = partyLoadShared("game", {
     dealerCards: [],
     state: "waiting",
-    full: false,
     turn: 1,
     results: {
       player1: "",
@@ -134,7 +135,7 @@ function setup() {
   mySeat = null;
   myPlayer = null;
 
-  ///temp, remove when seat seleciton is done to not auto do it. make sure it works after
+  ///if someone refreshes they will be assigned the same seat based on their id
   for (let seat = 1; seat <= 4; seat++) {
     let player = players["player" + seat];
 
@@ -424,6 +425,7 @@ function getRandomCard() {
 
 
 function readyButtons() {
+  //draw the ready buttons
   if (myPlayer === null) {
     return;
   }
@@ -453,6 +455,7 @@ function readyButtons() {
 
 
 function firstReadySeat() {
+  /// checks what is the first ready seat to let them start the turn when the game starts
   for (let seat = 1; seat <= 4; seat++) {
     let player = players["player" + seat];
 
@@ -465,6 +468,7 @@ function firstReadySeat() {
 }
 
 function nextTurn() {
+  ///move from player to player with turns
   let next = game.turn + 1;
 
   while (next <= 4) {
@@ -482,7 +486,10 @@ function nextTurn() {
 }
 
 function mousePressed() {
+  ///hand all mouse pressed functions
+
   if (mySeat === null) {
+    ///if they have no seat, using p5 collide check if the clicked a seat button
     for (let seat = 1; seat <= 4; seat++) {
       let player = players["player" + seat];
 
@@ -512,14 +519,13 @@ function mousePressed() {
 
 
   if (myPlayer === null) {
+    //checks if its a properly connected player to avoid crashes with mouse functions
     return;
   }
 
 
-  if (
-    game.state === "waiting" &&
-    collidePointRect(mouseX, mouseY, buttonX, buttonY, buttonW, buttonH)
-  ) {
+  if (game.state === "waiting" && collidePointRect(mouseX, mouseY, buttonX, buttonY, buttonW, buttonH)) {
+    ///ready up button function, checks if they clicked the ready up button and if they have enough money to place the bet
     let money = parseInt(localStorage.getItem("money")) || 5000;
 
     if (money >= betAmount) {
@@ -535,6 +541,7 @@ function mousePressed() {
   }
 
   if (game.state === "playing" && game.turn === mySeat) {
+    ///hit
 
     if (collidePointRect(mouseX, mouseY, hitButtonX, hitButtonY, actionButtonW, actionButtonH)) {
       myPlayer.cards.push(getRandomCard());
@@ -545,13 +552,13 @@ function mousePressed() {
 
       return;
     }
-
+      ///stand
     if (collidePointRect(mouseX, mouseY, standButtonX, standButtonY, actionButtonW, actionButtonH)) {
       nextTurn();
       return;
     }
   }
-
+  ///reset button
   if (game.state === "roundOver") {
     if (collidePointRect(mouseX, mouseY, buttonX, buttonY, buttonW, buttonH)) {
       resetRound();
@@ -563,6 +570,7 @@ function mousePressed() {
 
 
 function mouseWheel(event) {
+  ///mousewheel to handle bet changes
   if (myPlayer === null) {
     return;
   }
@@ -594,6 +602,7 @@ function mouseWheel(event) {
 
 
 function drawBetAmount() {
+  ///display the bet amount for each player
   if (myPlayer === null) {
     return;
   }
@@ -611,6 +620,7 @@ function drawBetAmount() {
 
 
 function dealerPlay() {
+  ///handles the dealers turn logic
   if (!partyIsHost()) {
     return;
   }
@@ -625,6 +635,7 @@ function dealerPlay() {
 
 
 function drawActionButtons() {
+  ///draws the hit and stand buttons for the players whos turn it is
   if (game.state === "playing" && game.turn === mySeat) {
     fill("green");
     rect(hitButtonX, hitButtonY, actionButtonW, actionButtonH, 10);
@@ -643,6 +654,7 @@ function drawActionButtons() {
 }
 
 function getHandValue(cards) {
+  //determines the hand value of a given array of cards
   let total = 0;
   let aces = 0;
 
@@ -662,6 +674,7 @@ function getHandValue(cards) {
   }
 
   while (total > 21 && aces > 0) {
+    //if the total is over 21 and there are aces count them as 1 instead of 11
     total -= 10;
     aces--;
   }
@@ -671,6 +684,7 @@ function getHandValue(cards) {
 
 
 function calculateResults() {
+  ///determine the results of the round for each player
   let dealerTotal = getHandValue(game.dealerCards);
 
   for (let seat = 1; seat <= 4; seat++) {
@@ -700,6 +714,7 @@ function calculateResults() {
 
 
 function drawResults() {
+  ///draws the results of the roound once the round is over
   if (game.state !== "roundOver") {
     return;
   }
@@ -709,23 +724,24 @@ function drawResults() {
   textAlign(CENTER, CENTER);
 
   if (players.player1.id !== null) {
-    text(game.results.player1, windowWidth * 0.15, scoreTextY*1.05);
+    text(game.results.player1, windowWidth * 0.15, scoreTextY*1.12);
   }
 
   if (players.player2.id !== null) {
-    text(game.results.player2, windowWidth * 0.35, scoreTextY*1.05);
+    text(game.results.player2, windowWidth * 0.35, scoreTextY*1.12);
   }
 
   if (players.player3.id !== null) {
-    text(game.results.player3, windowWidth * 0.55, scoreTextY*1.05);
+    text(game.results.player3, windowWidth * 0.55, scoreTextY*1.12);
   }
 
   if (players.player4.id !== null) {
-    text(game.results.player4, windowWidth * 0.75, scoreTextY *1.05);
+    text(game.results.player4, windowWidth * 0.75, scoreTextY *1.12);
   }
 }
 
 function drawTurnText() {
+  ///draw the text at the top that says whos turn it is or if waiting for players
   fill("white");
   textAlign(CENTER, CENTER);
   textSize(28);
@@ -746,6 +762,7 @@ function drawTurnText() {
 
 
 function drawResetButton() {
+  ///reset button for the host to start a new round
   if (game.state === "roundOver" && partyIsHost()) {
     fill("gold");
     rect(buttonX, buttonY, buttonW, buttonH, 10);
@@ -758,6 +775,7 @@ function drawResetButton() {
 }
 
 function resetRound() {
+  ///allows the host to reset the round, handles reseting the round
   if (!partyIsHost()) {
     return;
   }
@@ -783,6 +801,7 @@ function resetRound() {
 }
 
 function drawPlayerInfo() {
+  ///draws the actual player info
   let playerList = [
     players.player1,
     players.player2,
@@ -818,6 +837,7 @@ function drawPlayerInfo() {
 }
 
 function updateMoneyAfterRound() {
+  ///update the players money after the round is over based on if they won, lost, or pushed
   if (myPlayer === null) {
     return;
   }
@@ -837,6 +857,7 @@ function updateMoneyAfterRound() {
 }
 
 function updateLocalStorage() {
+  //update the local storage with the players current money and update the display
   if (myPlayer === null) {
     return;
   }

@@ -10,54 +10,36 @@
 
   <script src="libraries/p5.js"></script>
   <script src="libraries/p5.sound.min.js"></script>
+  <script src="libraries/p5.collide2d.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/p5.party@latest/dist/p5.party.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
 </head>
 
 <body>
 
   <div class="topnav">
     <a href="index.html">
-      <img src="Assets/logo.png" alt="logo" style="width:400px;height:100px;">
+      <img src="Assets/logo.png" alt="Ultimate Gambling 360 logo" class="logo">
 
     </a>
-
-    <script src="slots/sketch.js"></script>
-
       <a href="#" class="account-btn" id="accountBtn">Instructions</a>
     
     <h1 id="moneyDisplay">Money: </h1>
 
-    <style>
-      .account-btn {
-        background-color: grey; 
-        color: white;
-        padding: 10px 20px;
-        text-decoration: none;
-        border-radius: 10px;
-        border-color: gold;
-        display: inline-block;
-        transition: 0.25s;
-      }
-      .account-btn:hover {
-        background-color: #0056b3;
-      }
-    </style>
   </div>
+  
   
   <div class="popup" id="popup">
   <div class="popup-content">
     <button id="closePopup">Close</button>
 
     <p>
+    • Choose an open seat to join the table.<br>
       • Pull the lever down to place a bet<br>
       • Use scroll wheel to change your bet <br>
       • Three triangles is a jackpot(100x bet)<br>
       • Three circles is a big win(25x bet)<br>
       • Three squares is a normal win(2x bet)<br>
-    </p>
-
-    <p>
-      • 2 squares is breaking even(1x bet)<br>
-
     </p>
   </div>
 </div>
@@ -69,7 +51,7 @@
 
 
     accountBtn.onclick = function() {
-      popup.style.display = "block";
+      popup.style.display = "flex";
     };
 
 
@@ -90,5 +72,10 @@
 
   updateMoneyDisplay();
   </script>
+  
+  <script src="slots/sketch.js"></script>
+
+
+  
 </body>
 </html>

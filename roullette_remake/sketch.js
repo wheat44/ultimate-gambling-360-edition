@@ -5,7 +5,7 @@
 
 ///Global Variables
 let playerMoney = parseInt(localStorage.getItem("money")) || 5000;
-state = 'main';
+let state = 'main';
 
 const REDNUMBERS = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
 const BLACKNUMBERS = [2,4,6,8,10,11,13,15,17,20,22,24,26,28,29,31,33,35];
@@ -62,8 +62,6 @@ function updateLayout() {
   circleX = windowWidth / 4;
   circleY = windowHeight / 2.3;
   circleR = windowWidth  / 8;
-  menuWidth = windowWidth / 2;
-  menuHeight = 100;
   buttonH = windowHeight/ 10;
   buttonW = windowWidth / 10;
   buttonX = windowWidth / 4;
@@ -217,7 +215,6 @@ function createExtraSquares(){
     fill('white');
     if (x === 2 || x === 3){
       text(colour, betX + 2*cellX * x + cellX, (cellX/2 , betY + cellY *COLS) + cellX*1.5);
-      text(colour, betX + 2*cellX * x + cellX, (cellX/2 , betY + cellY *COLS) + cellX*1.5);
     }
     else {
       text(squareText, betX + 2*cellX * x + cellX, (cellX/2 , betY + cellY *COLS) + cellX*1.5);
@@ -233,6 +230,7 @@ function mousePressed() {
   // check if spin button was clicked
   if (spinning === false && collidePointRect(mouseX, mouseY, buttonX - buttonW / 2, buttonY - buttonH / 2, buttonW, buttonH)) {
     let output = randomOutput();
+    console.log("the output is: " + output);
     spinToNumber(output);
     spin.play();
     return;
@@ -503,14 +501,7 @@ function spinButton(){
     rectMode(CORNER);
     
   }
-  
 }
-
-function displayResult(output) {
-
-}
-
-
 
 
 function calcResult(output) {
@@ -691,22 +682,29 @@ function drawrouletteWheel() {
 
 
 function drawBetSelection(){
-  /// draws a betting selectio menu on the bottom of the screen
   fill('black');
   rect(0, windowHeight - 100, windowWidth, 100);
+
+  fill('white');
+  textSize(28);
+  textAlign(CENTER, CENTER);
+  text("Current Bet: $" + betAmount, windowWidth / 2, windowHeight - 50);
 }
 
 function spinWheel() {
   if (spinning) {
     spinProgress += spinSpeed;
+    ///each fram increase the progress
 
     if (spinProgress >= 1) {
+      ///dont let progress go over 1
       spinProgress = 1;
     }
 
-    // ease-out: fast at first, slow at the end
+    //fast at first and slow dow using a tertiary function
     let easedProgress = 1 - pow(1 - spinProgress, 3);
 
+    ///find value between the start and target rotation based on the progress of the spin
     wheelRotation = lerp(startRotation, targetRotation, easedProgress);
 
     if (spinProgress >= 1) {
@@ -717,12 +715,12 @@ function spinWheel() {
       state = "main";
 
       calcResult(spinResult);
-      displayResult(spinResult);
     }
   }
 }
 
 function spinToNumber(output) {
+  ///dettermines the values needed to spin the wheel to the right spot baased on the output
   spinResult = output;
   spinning = true;
   state = "spin";
@@ -733,26 +731,20 @@ function spinToNumber(output) {
   let index = wheelNumbers.indexOf(output);
   let angleSize = TWO_PI / wheelNumbers.length;
 
-  //the center angle of the chosen slot
   let numberAngle = index * angleSize + angleSize / 2 - HALF_PI;
-
-  //the pointer is at the top
   let pointerAngle = -HALF_PI;
 
-  ///rotation needed to bring chosen number to pointer
-  let neededRotation = pointerAngle - numberAngle;
+  let currentRotation = startRotation % TWO_PI;
+  let neededRotation = pointerAngle - numberAngle - currentRotation;
 
-  //convert that to a positive clockwise amount
   while (neededRotation < 0) {
     neededRotation += TWO_PI;
   }
 
-  ///add many full spins
   let extraSpins = TWO_PI * 6;
 
   targetRotation = startRotation + extraSpins + neededRotation;
 }
-
 
 
 

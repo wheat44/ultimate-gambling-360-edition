@@ -6,7 +6,7 @@ Jonathan Hlady and his sidekick Thomas Jordan Ham have the goal to make a functi
 - Multiple accurate casino style games - (Blackjack, Slots, Plinko, Mines, Ride the Bus, Roulette)✅
 - local storage for currency ✅
 - Consistant graphics throughout games ✅
-- Bug Free gameplay/UI 🟨
+- Bug Free gameplay/UI ✅
 - uniform Gameplay(games follows a consistant sequence)✅
 - Sound effects and music✅
 - Physics based plinko ✅

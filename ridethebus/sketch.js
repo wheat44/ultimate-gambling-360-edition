@@ -34,7 +34,6 @@ let cardY;
 let spacing;
 let totalWidth;
 
-const NAVBAR = 80;
 let updatedScreenheight;
 
 
@@ -49,14 +48,6 @@ let choice;
 
 
 function preload() {
-  ///load background and menu images
-  main = loadImage("ridethebus/assets/bg/mainbg.png");
-  menu = loadImage("ridethebus/assets/bg/menu.png");
-  instructions = loadImage('ridethebus/assets/bg/instructions.png');
-
-  ///load font
-  font = loadFont('ridethebus/assets/moralanademo.otf');
-
   //back of card
   bOC = loadImage('ridethebus/assets/cards/back_of_card.png');
 
@@ -102,6 +93,7 @@ function draw() {
   displayCardValue();
   updateLocalStorage();
   fill(255, 200, 0);
+  textSize(20);
   text("BET: $" + bet, windowWidth * 0.87, windowHeight * 0.08);
 
 }
@@ -157,16 +149,10 @@ function displayButtons(){
   buttons = [];
   options = [];
 
-  ///Start button during menu state
-  if (state === 'menu'){
-    fill(212,141,51);
-    rect(buttonX, buttonY, buttonW, buttonH);
-    fill('black');
-    text('START!', buttonX, buttonY);
-  } 
+
 
   ///okay button during instructions state
-  else if (state === 'instructions'){ 
+  if (state === 'instructions'){ 
     fill(212,141,51);
     rect(buttonX, buttonY, buttonW, buttonH);
     fill('black');
@@ -399,16 +385,6 @@ function decideCardValue(){
   }
 }
 
-
-function keyPressed(){
-  /// r to reset 
-  if (key === "r") {
-    state = "menu";
-    playStage = 0;
-    choice = "";
-  }
-}
-    
 function windowResized() {
   /// redefine variables when window is resized.
   updatedScreenheight = windowHeight - 80;

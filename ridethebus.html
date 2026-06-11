@@ -10,55 +10,38 @@
 
   <script src="libraries/p5.js"></script>
   <script src="libraries/p5.sound.min.js"></script>
+  <script src="libraries/p5.collide2d.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/p5.party@latest/dist/p5.party.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
 </head>
 
 <body>
 
   <div class="topnav">
     <a href="index.html">
-      <img src="Assets/logo.png" alt="logo" style="width:400px;height:100px;">
+      <img src="Assets/logo.png" alt="Ultimate Gambling 360 logo" class="logo">
 
     </a>
-
-    <script src="ridethebus/sketch.js"></script>
-
       <a href="#" class="account-btn" id="accountBtn">Instructions</a>
     
     <h1 id="moneyDisplay">Money: </h1>
 
-    <style>
-      .account-btn {
-        background-color: grey; 
-        color: white;
-        padding: 10px 20px;
-        text-decoration: none;
-        border-radius: 10px;
-        border-color: gold;
-        display: inline-block;
-        transition: 0.25s;
-      }
-      .account-btn:hover {
-        background-color: #0056b3;
-      }
-    </style>
   </div>
   
- <div class="popup" id="popup">
+  
+  <div class="popup" id="popup">
   <div class="popup-content">
     <button id="closePopup">Close</button>
 
     <p>
-      • Deal out your cards with the deal button<br>
-      • Your first guess will be between red or black<br>
-      • Then based on the number value of the first card guess higher or lower or same<br>
-      • Your third guess will be to see if the next card to be revealed is inside or outside the two cards already shown<br>
-      • On the last guess, guess the suit of the final card!<br>
-      • Scroll wheel to change your bet<br>
-    </p>
-
-    <p>
-      • Cashout at anytime!<br>
-
+    • Deal out your cards with the deal button<br>
+    • Your first guess will be between red or black<br>
+    • Then based on the number value of the first card guess higher or lower or same<br>
+    • Your third guess will be to see if the next card to be revealed is inside or outside the two cards already shown<br>
+    • On the last guess, guess the suit of the final card!<br>
+    • Scroll wheel to change your bet<br>
+    • Cashout at anytime!<br>
+      
     </p>
   </div>
 </div>
@@ -70,7 +53,7 @@
 
 
     accountBtn.onclick = function() {
-      popup.style.display = "block";
+      popup.style.display = "flex";
     };
 
 
@@ -91,5 +74,10 @@
 
   updateMoneyDisplay();
   </script>
+  
+  <script src="ridethebus/sketch.js"></script>
+
+
+  
 </body>
 </html>

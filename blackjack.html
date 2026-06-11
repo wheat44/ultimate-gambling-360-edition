@@ -12,37 +12,20 @@
   <script src="libraries/p5.sound.min.js"></script>
   <script src="libraries/p5.collide2d.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/p5.party@latest/dist/p5.party.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
 </head>
 
 <body>
 
   <div class="topnav">
     <a href="index.html">
-      <img src="Assets/logo.png" alt="logo" style="width:400px;height:100px;">
+      <img src="Assets/logo.png" alt="Ultimate Gambling 360 logo" class="logo">
 
     </a>
-
-    <script src="blackjack remake online/sketch.js"></script>
-
       <a href="#" class="account-btn" id="accountBtn">Instructions</a>
     
     <h1 id="moneyDisplay">Money: </h1>
 
-    <style>
-      .account-btn {
-        background-color: grey; 
-        color: white;
-        padding: 10px 20px;
-        text-decoration: none;
-        border-radius: 10px;
-        border-color: gold;
-        display: inline-block;
-        transition: 0.25s;
-      }
-      .account-btn:hover {
-        background-color: #0056b3;
-      }
-    </style>
   </div>
   
   
@@ -76,7 +59,7 @@
 
 
     accountBtn.onclick = function() {
-      popup.style.display = "block";
+      popup.style.display = "flex";
     };
 
 
@@ -97,8 +80,9 @@
 
   updateMoneyDisplay();
   </script>
+  
+  <script src="blackjack remake online/sketch.js"></script>
 
-  <script src="music.js"></script>
 
   
 </body>

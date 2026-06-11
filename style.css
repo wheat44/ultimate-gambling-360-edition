@@ -1,22 +1,18 @@
-html, 
-
-body {
-  background-color: #374243 ;
-  padding-top: 5px;
-  margin: 0;
-  font-family: Arial, sans-serif;
-  color: white;
-  text-align: center;
-  display: flex;
-  flex-direction: column; 
-}
-
 html, body {
   height: 100%;
   width: 100%;
   margin: 0;
-  overflow-x: hidden;
-  overflow: hidden; 
+  padding-top: 5px;
+
+  background-color: #374243;
+  font-family: Arial, sans-serif;
+  color: white;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
 }
 
 
@@ -34,11 +30,29 @@ canvas {
   display: block;
 }
 
+.logo {
+  width: 400px;
+  height: 100px;
+  object-fit: contain;
+}
+
 .account-btn {
   margin-left: auto;
   margin-right: 10%;
-
+  background-color: grey; 
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 10px;
+  border-color: gold;
+  display: inline-block;
+  transition: 0.25s;
 }
+      
+.account-btn:hover {
+  background-color: gold;
+}
+
 
 .instrutions {
   margin-left: auto;
@@ -46,12 +60,6 @@ canvas {
 
 }
 
-
-.topnav img {
-  height: 60px;
-  width: auto; 
-  padding-left: 20px;
-}
 
 .game-grid {
   align-items: center;
@@ -69,8 +77,6 @@ canvas {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 300px;
-  width: 600px;
 
   background: #111;
   border: 2px solid #222;
@@ -130,13 +136,10 @@ canvas {
 }
 
 
-
-
-
 .game-card h2 {
   margin: 0;
   color: gold;
-  font-size: (20rem)
+  font-size: 2rem
 
 }
 
@@ -160,8 +163,6 @@ canvas {
   box-sizing: border-box;
 
   color: black;
-
-  display: none;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
@@ -222,7 +223,6 @@ canvas {
   z-index: 1000;
 }
 
-/* ENTIRE GAME AREA */
 #gameSection {
 
   width: 100%;
@@ -233,7 +233,6 @@ canvas {
 
 }
 
-/* GAME WINDOW */
 #gameViewport {
   width: 100%;
   height: calc(100vh - 110px);
@@ -287,23 +286,6 @@ canvas {
   box-shadow: 0 0 20px rgba(255, 170, 40, 0.75);
 }
 
-
-.topnav {
-  width: 100%;
-  height: 110px;
-
-  background-color: black;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 0 20px;
-  box-sizing: border-box;
-
-  position: relative;
-  z-index: 1000;
-}
 
 #gameSection {
 
