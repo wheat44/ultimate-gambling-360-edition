@@ -426,14 +426,14 @@ function drawPopup(){
     if (millis() - popupStartTime < 50) {
       winSoundPlayed = false;
     }
-     // Automatically removes popup after fixed time so gameplay flow continues
+    // Automatically removes popup after fixed time so gameplay flow continues
     if(millis() - popupStartTime > popupDuration){
       showPopup = false;
       return;
     }
     fill(0,180);
     rect(windowWidth/2, windowHeight/2, 
-    windowWidth*0.35, windowHeight*0.25,20);
+      windowWidth*0.35, windowHeight*0.25,20);
 
     fill(255);
     textAlign(CENTER,CENTER);
@@ -443,16 +443,16 @@ function drawPopup(){
     if(winnings > 0){
       fill(0,255,0);
 
-       if(winnings > 0){
+      if(winnings > 0){
 
-      fill(0,255,0);
+        fill(0,255,0);
 
-      // play win sound ONCE when popup appears
-      if (!winSoundPlayed){
-        winSound.play();
-        winSoundPlayed = true;
-      }
-      text(result + "\n+$" + winnings, windowWidth/2, windowHeight/2);
+        // play win sound ONCE when popup appears
+        if (!winSoundPlayed){
+          winSound.play();
+          winSoundPlayed = true;
+        }
+        text(result + "\n+$" + winnings, windowWidth/2, windowHeight/2);
       }
     }
     else{

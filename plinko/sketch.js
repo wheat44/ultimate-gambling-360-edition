@@ -1,6 +1,6 @@
 // Plinko
-// Goal was to use Matter.js to create a realistic plinko style game instead of creating my own physics
-//  Sub game for major project website
+// Uses Matter.js to create a realistic plinko style game rather than coding all the physics ourselves
+
 
 //physics engine variables
 let Engine = Matter.Engine;

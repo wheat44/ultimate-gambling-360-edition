@@ -1,9 +1,4 @@
 //Mines
-// Jonathan Hlady
-// April 15th 2026
-//
-// Extra for Experts:
-// 
 
 
 // Tracks whether the player is in a round; controls input + UI state
