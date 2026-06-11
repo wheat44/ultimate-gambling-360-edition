@@ -1,3 +1,8 @@
+///roulette
+//uses a SnapBet() system to create an advance betting system and more robust gameplay
+
+
+
 ///Global Variables
 let playerMoney = parseInt(localStorage.getItem("money")) || 5000;
 state = 'main';
@@ -225,7 +230,7 @@ function createExtraSquares(){
 
 function mousePressed() {
   let betType = getTypeFromGrid(mouseX, mouseY);
-    // check if spin button was clicked
+  // check if spin button was clicked
   if (spinning === false && collidePointRect(mouseX, mouseY, buttonX - buttonW / 2, buttonY - buttonH / 2, buttonW, buttonH)) {
     let output = randomOutput();
     spinToNumber(output);

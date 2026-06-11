@@ -1,15 +1,6 @@
 // Ride the bus
-
-// Extra for Experts:
-//my project serves as a clean, streamlined example of what my previous card game should have been more like. it includes features such as:
-//-no duplicate card drawing
-//-sound effects
-//-polished visuals
-//-advanced array and object notation use (even both at the same time)
-//-clean draw loop
-//-fully implimented window resize features (all features designed with this in mind)
-//-advanced logic for gameplay mechanics
-//-fonts
+//Clean gameplay simplified for Website use. 
+//employs website functionality like local storage and improved window resizing
 
 
 

@@ -1,4 +1,7 @@
-// Blackjack Remake
+//Blackjack Remake
+//uses p5 party to create a 4 player to one dealer environment
+
+
 ///dont forget to remove the temp auto seat assigning that was changed, just ctrl f temp
 
 ///card arrays
@@ -103,7 +106,6 @@ function preload() {
   ///assign game variables to shared server
   game = partyLoadShared("game", {
     dealerCards: [],
-    deck: [],
     state: "waiting",
     full: false,
     turn: 1,
@@ -307,7 +309,9 @@ function drawPlayerCards() {
 
 
 function drawSeatSelect() {
+  //Draw the seat selection
   if (mySeat !== null) {
+    //only run if you have a seat
     return;
   }
 
@@ -345,6 +349,7 @@ function drawSeatSelect() {
 
 
 function everyoneReady() {
+  ///check if everyone is ready
   let someoneIsReady = false;
 
   if (players.player1.id !== null) {
@@ -376,34 +381,15 @@ function everyoneReady() {
   }
 
   return someoneIsReady;
-}
-
-function buildDeck() {
-  game.deck = [];
-
-  for (let s = 0; s < 4; s++) {
-    for (let v = 0; v < 13; v++) {
-      game.deck.push({ suit: s, value: v });
-    }
-  }
-
-  shuffleCards(game.deck, true);
-}
-
-function shuffleCards(deck, shuffle){
-  if (shuffle === 'true'){
-    ///reset and shuffle the deck
-  }
-
-  ///set shuffle to false
-  shuffle = false;
-
+  //use someoneisready variable to see if we can deal the cards
 }
 
 
 function dealDealerCards() {
+  ///assign cards to dealer
   if (game.state === "waiting") {
     return;
+    ///only if in playing gamestates
   }
 
   for (let i = 0; i < game.dealerCards.length; i++) {
@@ -429,6 +415,7 @@ function dealDealerCards() {
 }
 
 function getRandomCard() {
+  ///function that is called to assign random cards to players
   return {
     suit: floor(random(0, 4)),
     value: floor(random(0, 13))
@@ -776,7 +763,6 @@ function resetRound() {
   }
 
   game.dealerCards = [];
-  game.deck = [];
   game.state = "waiting";
   game.turn = 1;
 
@@ -830,7 +816,6 @@ function drawPlayerInfo() {
     }
   }
 }
-
 
 function updateMoneyAfterRound() {
   if (myPlayer === null) {
